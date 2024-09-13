@@ -1,0 +1,30 @@
+/* Sidebar styles */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 60px; /* Small width to show only icons */
+    background-color: #60a5fa;
+    color: white;
+    padding: 20px 10px; /* Adjusted padding for icons only */
+    height: 95vh;
+    
+}
+
+.sidebar-icons a {
+    display: flex;
+    justify-content: center;
+    color: #252525;
+    margin: 15px 0;
+    text-decoration: none;
+
+}
+
+.sidebar-icons a:hover {
+    color: #6c6c6c; /* Optional hover effect */
+}
+
+.sidebar-icons svg {
+    font-size: 24px; /* Adjust icon size */
+}
+
