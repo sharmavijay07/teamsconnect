@@ -40,17 +40,17 @@ const CreateGroup = ({ organizationId, onGroupCreated }) => {
   };
 
   return (
-    <div className=''>
+    <div className='mt-2'>
       {error && <p style={{ color: 'red' }}>{error}</p>}
-    <Dialog>
+    <Dialog className='shadow'>
     <DialogTrigger asChild>
       <Button className="rounded bg-white my-2 hover:bg-blue-400" variant="default">Add new group</Button>
     </DialogTrigger>
-    <DialogContent className="sm:max-w-[425px] bg-blue-300">
+    <DialogContent className="sm:max-w-[425px] bg-blue-200 ">
       <DialogHeader>
         <DialogTitle>Add new group</DialogTitle>
         <DialogDescription>
-          add new group in your organization
+          Add new group in your organization
         </DialogDescription>
       </DialogHeader>
       <div className="grid gap-4 py-4">
@@ -59,7 +59,7 @@ const CreateGroup = ({ organizationId, onGroupCreated }) => {
             Name
           </Label>
           <Input
-             className='bg-gray-50 border-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-black rounded-3'
+             className='bg-gray-50 border-2 border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-50 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 rounded-3 shadow'
              type="text"
              placeholder="Group Name"
              value={groupName}
@@ -67,11 +67,11 @@ const CreateGroup = ({ organizationId, onGroupCreated }) => {
           />
         </div>
         <div className="flex items-center gap-4">
-          <Label htmlFor="Group Description" className="w-[40%]">
+          <Label htmlFor="Group Description" className="w-[40%] ">
             Description
           </Label>
           <Input
-            className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 border-2 rounded-3'
+            className='bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 border-2 rounded-3 shadow'
             type="text"
             placeholder="Group Description"
             value={groupDescription}
@@ -79,9 +79,9 @@ const CreateGroup = ({ organizationId, onGroupCreated }) => {
           />
         </div>
       </div>
-      <DialogFooter>
-        <Button  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-      onClick={handleCreateGroup} >Save changes</Button>
+      <DialogFooter className="justify-center">
+        <Button  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-3 text-sm me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 shadow"
+      onClick={handleCreateGroup} >Add Group</Button>
       </DialogFooter>
     </DialogContent>
   </Dialog>

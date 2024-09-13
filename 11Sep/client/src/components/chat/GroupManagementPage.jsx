@@ -29,7 +29,7 @@ const GroupManagementPage = () => {
 
   return (
   
-    <div className='flex flex-col items-center'>
+    <div className='flex flex-col items-center w-full'>
 
 
       <CreateGroup organizationId={organizationId} onGroupCreated={handleGroupCreated} />

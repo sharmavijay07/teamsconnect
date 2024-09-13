@@ -49,14 +49,14 @@ const GroupsList = ({ organizationId }) => {
   };
 
   return (
-    <div className='flex flex-col items-center border-t-2 border-black'>
+    <div className='flex flex-col items-center border-t-2 border-blue-200 w-full p-3'>
       <h3>Groups in Organization</h3>
       {loading && <p>Loading groups...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      <ul className='w-[100%]'>
+      <ul className='w-[100%] p-2'>
         {groups.map((group) => (
           <li 
-            className='p-2 bg-white m-1 rounded w-[100%] cursor-pointer'
+            className='p-2 m-1 rounded w-[100%] cursor-pointer flex justify-between  border-b-2 rounded-xl mx-1 my-2 border-gray-600/40 bg-blue-200 transform h-50 transition duration-500 hover:bg-blue-100 w-full'
             key={group.id}
             onClick={() => handleGroupClick(group)}
           >

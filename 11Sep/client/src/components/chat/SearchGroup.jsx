@@ -53,15 +53,15 @@ const SearchGroups = ({ organizationId }) => {
   };
 
   return (
-    <div className='flex border-t-2 border-black p-1 mb-2 gap-x-1'>
+    <div className='flex border-t-2  p-3 mt-2 gap-x-1'>
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      <Input
+      <Input className=''
         type="text"
         placeholder="Search Groups"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
-      <Button className="rounded bg-white border-1" variant="default" onClick={handleSearch}>
+      <Button className="rounded-3 bg-blue-600 text-white border-1 border-blue-300" variant="default" onClick={handleSearch}>
         Search
       </Button>
       {loading && <p>Searching groups...</p>}
