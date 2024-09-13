@@ -93,7 +93,8 @@ CREATE TABLE users (
 Step 2 : create 3 terminals
 
 
-(      make sure you are in correct directory  you may have to do cd 11Sep first)
+(      make sure you are in correct directory  you may have to do cd 11Sep first    )
+(              please install node modules            )
 
 
 step 3 cd client
@@ -103,4 +104,4 @@ step 4 cd server
          npm start
 
 step 5 cd socket
-          npm run start         
+          npm run socket        
