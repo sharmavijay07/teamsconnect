@@ -16,7 +16,6 @@ function Sidebar({ setActiveSection }) {
                 <a href="#reports" title="reports" onClick={() => setActiveSection('reports')}><Report /></a>
                 <a href="#analytics" title="analytics" onClick={() => setActiveSection('analytics')}><Analytics /></a>
                 <a href="#more" title="more" onClick={() => setActiveSection('more')}><MoreHoriz /></a>
-                <NavLink to='/usergroups' >groups</NavLink>
             </div>
             <div  className="sidebar-icons visible"> 
                 <a href="#settings" title="Settings" className='setting' onClick={() => setActiveSection('settings')}><Settings /></a>
