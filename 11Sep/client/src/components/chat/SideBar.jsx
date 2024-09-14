@@ -11,7 +11,7 @@ function Sidebar({ setActiveSection }) {
                 <a href="#group"  title="Group" onClick={() => setActiveSection('group')}><Group /></a>
                 <a href="#chat" title="chat" onClick={() => setActiveSection('chat')}><Chat /></a>
                 <a href="#calendar"  title="Calendar" onClick={() => setActiveSection('calendar')}><CalendarToday /></a>
-                <a href="#call" title="Call" onClick={() => setActiveSection('call')}><Call /></a>
+                <a href="http://localhost:3001/" title="Call"><Call /></a>
                 <a href="#files" title="Files" onClick={() => setActiveSection('files')}><Folder /></a>
                 <a href="#reports" title="reports" onClick={() => setActiveSection('reports')}><Report /></a>
                 <a href="#analytics" title="analytics" onClick={() => setActiveSection('analytics')}><Analytics /></a>
