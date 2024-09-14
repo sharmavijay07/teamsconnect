@@ -14,6 +14,7 @@ import GroupPage from './components/group/GroupChatPage'
 import UserGroups from './components/chat/UserGroups'
 import Profile from './components/profile/Profile'
 import {useState} from 'react'
+import { ToastContainer } from 'react-toastify';
 
 
 function App() {
@@ -36,9 +37,21 @@ function App() {
           <Route path="/usergroups" element={<UserGroups />} />
           <Route path="/profile" element={<Profile />} />
 
-
+         
 
       </Routes>
+      <ToastContainer
+          position="top-center"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+          />
       </GroupProvider>
     
     </ChatContextProvider>
