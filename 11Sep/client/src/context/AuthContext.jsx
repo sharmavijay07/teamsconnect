@@ -22,7 +22,7 @@ export const AuthContextProvider = ({ children }) => {
   });
 
   //File Handling
-  const [file, setFile] = useState([]);
+  const [file, setFile] = useState([{}]);
   const [fileChatId, setFileChatId] = useState(null);
 
   const getFileName = useCallback(
@@ -30,7 +30,7 @@ export const AuthContextProvider = ({ children }) => {
       .get(`http://localhost:4500/api/upload/file/${fileChatId}`)
       .then((resp) => {
         console.log(resp);
-        setFile(resp);
+        setFile(resp.data.file);
       })
       .catch((err) => {
         console.error("you got error:", err);

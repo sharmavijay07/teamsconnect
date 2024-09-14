@@ -53,7 +53,7 @@ router.get('/file/:chatId',(req,resp) => {
     db.query(query,[chatId],(err,result) => {
         if(err) {
             console.error("Database get error",err);
-            return res.status(500).json({success:false,message:"Database error",error:err})
+            return resp.status(500).json({success:false,message:"Database error",error:err})
         }
         resp.status(200).json({success:true,message:"File got successfully",file:result})
     })

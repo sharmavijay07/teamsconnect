@@ -7,7 +7,7 @@ import axios from "axios";
 Modal.setAppElement("#root"); // Adjust if your root element is different
 
 const Profile = () => {
-  const { user, setUser } = useContext(AuthContext); // Assuming AuthContext provides user object
+  const { user, setUser ,file} = useContext(AuthContext); // Assuming AuthContext provides user object
 
   // State to control modal visibility
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -65,6 +65,17 @@ const Profile = () => {
           onClick={openModal}
         >
           Update
+        {
+          file.map((file) => {
+            return(
+              <div key={file.id}>
+                <h1>{file.filePath}</h1>
+                <h1>{file.uploadedAt}</h1>
+
+              </div>
+            )
+          })
+        }
         </button>
       </div>
       <div className="flex flex-col mx-2 ">
