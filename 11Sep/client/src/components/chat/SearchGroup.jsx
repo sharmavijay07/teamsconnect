@@ -53,9 +53,10 @@ const SearchGroups = ({ organizationId }) => {
   };
 
   return (
-    <div className='flex border-t-2  p-3 mt-2 gap-x-1'>
+    <div className='flex flex-col border-t-2 rounded-3 p-3 mt-2 gap-x-1 '>
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      <Input className=''
+      <div className='flex p-1 gap-2'>
+      <Input className='border rounded-3 p-2 gap-2'
         type="text"
         placeholder="Search Groups"
         value={query}
@@ -64,19 +65,21 @@ const SearchGroups = ({ organizationId }) => {
       <Button className="rounded-3 bg-blue-600 text-white border-1 border-blue-300" variant="default" onClick={handleSearch}>
         Search
       </Button>
+      </div>
+      <div className='p-1'>
       {loading && <p>Searching groups...</p>}
       <ul>
         {groups.map((group) => (
           <li 
             key={group.id}
-            className="cursor-pointer"
+            className="p-2 bg-blue-200 my-1 cursor-pointer flex justify-between  border-b-2 rounded-xl mx-1 border-gray-600/40 transform h-50 transition duration-500 hover:bg-blue-100 w-full"
             onClick={() => handleGroupClick(group)}
           >
             {group.name}
           </li>
         ))}
       </ul>
-
+        </div>
       {selectedGroup && (
         <GroupJoinModal 
           isOpen={modalIsOpen}
