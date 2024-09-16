@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const path = require('path')
 const userRoute = require('./routes/userRoute');
 const chatRoute = require('./routes/chatRoute');
 const messageRoute = require('./routes/messageRoute');
@@ -11,7 +12,7 @@ const PORT = process.env.PORT || 4500;
 
 app.use(express.json());
 app.use(cors());
-app.use(express.static('uploads')); // Serve static files from the uploads directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve static files from the uploads directory
 
 app.use('/api/users', userRoute);
 app.use('/api/chat', chatRoute);

@@ -209,7 +209,7 @@ const Profile = () => {
           className="p-2 w-auto bg-blue-500 text-white rounded-3 cursor-pointer"
           onClick={openModal}
         >
-          Edit Profile
+          Update
         </button>
       </div>
 
