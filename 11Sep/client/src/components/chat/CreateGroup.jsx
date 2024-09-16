@@ -46,7 +46,7 @@ const CreateGroup = ({ organizationId, onGroupCreated }) => {
     <DialogTrigger asChild>
       <Button className="rounded bg-white my-2 hover:bg-blue-400" variant="default">Add new group</Button>
     </DialogTrigger>
-    <DialogContent className="sm:max-w-[425px] bg-blue-200 ">
+    <DialogContent className="sm:max-w-[425px] bg-gradient-to-r from-blue-300 to-blue-200 ">
       <DialogHeader>
         <DialogTitle>Add new group</DialogTitle>
         <DialogDescription>
@@ -71,7 +71,7 @@ const CreateGroup = ({ organizationId, onGroupCreated }) => {
             Description
           </Label>
           <Input
-            className='bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 border-2 rounded-3 shadow'
+            className='bg-gray-50 border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 border-2 rounded-3 shadow'
             type="text"
             placeholder="Group Description"
             value={groupDescription}
@@ -80,7 +80,7 @@ const CreateGroup = ({ organizationId, onGroupCreated }) => {
         </div>
       </div>
       <DialogFooter className="justify-center">
-        <Button  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-3 text-sm me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 shadow"
+        <Button  className="text-white bg-gradient-to-l from-blue-600 to-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-3 text-sm me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 shadow"
       onClick={handleCreateGroup} >Add Group</Button>
       </DialogFooter>
     </DialogContent>

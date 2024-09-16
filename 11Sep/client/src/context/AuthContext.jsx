@@ -27,36 +27,36 @@ export const AuthContextProvider = ({ children }) => {
     password: "",
   });
 
-  // File Handling
-  const [file, setFile] = useState([]);
-  const [fileChatId, setFileChatId] = useState(null);
+// File Handling
+const [file, setFile] = useState([]);
+const [fileChatId, setFileChatId] = useState(null);
 
-  useEffect(() => {
-    // Ensure messages is an array before mapping over it
-    if (Array.isArray(messages)) {
-      messages.map((msg) => {
-        setFileChatId(msg?.chatId);
+useEffect(() => {
+  // Ensure messages is an array before mapping over it
+  if (Array.isArray(messages)) {
+    messages.map((msg) => {
+      setFileChatId(msg?.chatId);
+    });
+  }
+
+  if (fileChatId) {
+   axios
+      .get(`http://localhost:4500/api/upload/file/${fileChatId}`)
+      .then((resp) => {
+        console.log("Response:", resp);
+
+        if (resp.data && resp.data.file) {
+          console.log("Files:", resp.data.file);
+          setFile(resp.data.file); // Set the 'file' array to state
+        } else {
+          console.error("No file data found in the response");
+        }
+      })
+      .catch((err) => {
+        console.error("you got error:", err);
       });
-    }
-
-    if (fileChatId) {
-     axios
-        .get(`http://localhost:4500/api/upload/file/${fileChatId}`)
-        .then((resp) => {
-          console.log("Response:", resp);
-
-          if (resp.data && resp.data.file) {
-            console.log("Files:", resp.data.file);
-            setFile(resp.data.file); // Set the 'file' array to state
-          } else {
-            console.error("No file data found in the response");
-          }
-        })
-        .catch((err) => {
-          console.error("you got error:", err);
-        });
-    }
-  }, [fileChatId, messages]);
+  }
+}, [fileChatId, messages]);
 
   useEffect(() => {
     const user = localStorage.getItem("User");
