@@ -215,7 +215,7 @@ const ChatBox = () => {
             </div>
 
             
-            <div gap={3} className="bg-blue-100 overflow-y-scroll scrollbar scrollbar-thumb-gray-800/60 scrollbar-corner-sky-500 scrollbar-thumb-rounded-full hover:scrollbar-thumb-sky-500 overscroll-y-auto rounded-[5px] w-[76vw] h-[87vh]   
+            <div gap={3} className="bg-blue-100 overflow-y-scroll scrollbar scrollbar-thumb-sky-500 scrollbar-corner-sky-500 scrollbar-thumb-rounded-full  hover:scrollbar-thumb-sky-500/60 overscroll-y-auto rounded-[5px] w-[76vw] h-[87vh]   
                   " style={{ color: "black" }}>
                     <FileDisplay />
                 {messages && messages.map((message, index) =>
@@ -246,6 +246,8 @@ const ChatBox = () => {
             className="border border-[rgba(72,255,200,0.4)] focus:outline-none focus:border-red-500 rounded-none px-4 py-2"
             onKeyDown={handleKeyDown}
         />
+
+        {/* below is div for file click and upload  */}
         <div>
             <input
                 type="file"

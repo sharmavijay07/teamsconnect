@@ -222,11 +222,22 @@ const Profile = () => {
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         contentLabel="Update Profile"
-        className="bg-gradient-to-l from-blue-200 to-blue-400 border-none p-5 rounded-5 w-auto overflow-auto"
+        className="bg-gradient-to-l from-blue-300 to-blue-500 border-none p-5 rounded-5 w-auto overflow-auto"
         overlayClassName="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center"
       >
         <div className="flex gap-5">
           <div className="grid items-center justify-center">
+          {isCameraOpen && (
+                <div>
+                  <video id="camera" className="w-full h-auto"></video>
+                  <button
+                    className="p-2 w-auto bg-red-500 text-white rounded-3 cursor-pointer mt-2"
+                    onClick={capturePhoto}
+                  >
+                    Capture Photo
+                  </button>
+                </div>
+              )}
             {cameraPreview ? (
               <img
                 src={cameraPreview}
@@ -242,7 +253,7 @@ const Profile = () => {
             ) : null}
             <h2 className="text-[2rem] font-bold">Update Profile</h2>
           </div>
-          <div className="flex flex-col p-4 gap-3">
+          <div className="flex flex-col p-4 gap-3 border-l-4 border-white ">
             <div className="flex flex-col item-center">
               <label className="text-[1rem] font-semibold" htmlFor="name">
                 Name:
@@ -282,24 +293,14 @@ const Profile = () => {
 
               {!isCameraOpen && (
                 <button
-                  className="p-2 w-auto bg-blue-500 text-white rounded-3 cursor-pointer mt-2"
+                  className="p-2 w-auto bg-blue-500 text-white rounded-3 cursor-pointer mt-4"
                   onClick={startCamera}
                 >
                   Take a Photo
                 </button>
               )}
 
-              {isCameraOpen && (
-                <div>
-                  <video id="camera" className="w-full h-auto"></video>
-                  <button
-                    className="p-2 w-auto bg-red-500 text-white rounded-3 cursor-pointer mt-2"
-                    onClick={capturePhoto}
-                  >
-                    Capture Photo
-                  </button>
-                </div>
-              )}
+             
             </div>
             <div className="flex justify-center gap-2 mt-4">
               <button

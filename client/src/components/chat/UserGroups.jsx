@@ -40,7 +40,7 @@ const UserGroups = () => {
   };
 
   return (
-    <div className='flex flex-col items-center border-t-2 border-black gap-y-2  p-2 w-full '>
+    <div className='flex flex-col items-center border-black gap-y-1 p-2 mr-3 w-full '>
 
       <h3>Your Groups</h3>
       {loading && <p>Loading groups...</p>}
