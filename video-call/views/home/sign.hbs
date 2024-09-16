@@ -48,50 +48,55 @@
     <script src="assets/js/materialize.min.js"></script>
     <script src="assets/js/client.js"></script>
     <script>
-        $(function() {
+       $(function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    var meeting_id = urlParams.get('meetingID');
 
-            const urlParams = new URLSearchParams(window.location.search);
+    if (!meeting_id) {
+        // Handling 'Host' and 'Join' Buttons
+        $(document).on("click", ".join-meeting", function() {
+            $(".action-wrap").empty().html('<div class="row"> <form class="col s12"> <a href="/sign"><i class="material-icons prefix">arrow_back</i></a><div class="row"> <div class="input-field col s6" style="width: 100%;"> <i class="material-icons prefix">call_to_action</i> <input id="icon_prefix" type="text" class="validate join-value"> <label for="icon_prefix">Meeting ID [Without Space]</label> </div> </div> <button class="btn waves-effect waves-light teal darken-2 join-submit" type="submit" name="action">Join<i class="material-icons right">send</i></button></form> </div>');
+        });
 
-            var meeting_id = urlParams.get('meetingID');
+        $(document).on("click", ".join-submit", function(e) {
+            e.preventDefault();
+            var join_value = $("input.join-value").val();
+            var meetingUrl = window.location.origin + "?meetingID=" + join_value;
+            window.location.replace(meetingUrl);
+        });
 
-            if (!meeting_id) {
+        $(document).on("click", ".host-meeting", function(e) {
+            let eight_d_number = Math.floor(Math.random() * 100000000);
+            var meetingUrl = window.location.origin + "?meetingID=" + eight_d_number;
+            window.location.replace(meetingUrl);
+        });
 
-                // var murl = window.location.origin + "?meetingID=" + (new Date()).getTime();
-                // $('#meetingid').attr('href', murl).text(murl);
-                $(document).on("click", ".join-meeting", function() {
-                    $(".action-wrap").empty().html('<div class="row"> <form class="col s12"> <a href="/sign"><i class="material-icons prefix">arrow_back</i></a><div class="row"> <div class="input-field col s6" style="width: 100%;"> <i class="material-icons prefix">call_to_action</i> <input id="icon_prefix" type="text" class="validate join-value"> <label for="icon_prefix">Meeting ID [Without Space]</label> </div> </div> <button class="btn waves-effect waves-light teal darken-2 join-submit" type="submit" name="action">Join<i class="material-icons right">send</i></button></form> </div>')
-                })
+        return;
+    } else {
+        $("#remote-video").empty();
+    }
 
-                $(document).on("click", ".join-submit", function(e) {
-                    e.preventDefault();
-                    var join_value = $("input.join-value").val();
-                    var meetingUrl = window.location.origin + "?meetingID=" + join_value;
-                    window.location.replace(meetingUrl);
-                })
-                $(document).on("click", ".host-meeting", function(e) {
-                    let eight_d_number = Math.floor(Math.random() * 100000000);
-                    var meetingUrl = window.location.origin + "?meetingID=" + eight_d_number;
-                    window.location.replace(meetingUrl);
-                })
+    // Handling Username from LocalStorage
+    var userData = JSON.parse(localStorage.getItem('User')) || null;
+    var user_id = urlParams.get('uid');
+    
+    if (!userData) {
+        // If no user data found in localStorage, prompt for username
+        var userName = window.prompt('Enter your nick!');
+        if (userName) {
+            userData = { name: userName };
+            localStorage.setItem('user', JSON.stringify(userData));
+        }
+    } else {
+        user_id = userData.name;
+    }
 
-                return;
-            } else {
-                $("#remote-video").empty();
-            }
+    if (!user_id || !meeting_id) {
+        alert('User ID or meeting ID missing');
+        return;
+    }
+});
 
-            var user_id = urlParams.get('uid');
-            if (!user_id) {
-
-                user_id = window.prompt('Enter your nick!');
-            }
-
-
-            if (!user_id || !meeting_id) {
-                alert('user id or meeting id missing');
-                return;
-            }
-
-        })
 
     </script>
 

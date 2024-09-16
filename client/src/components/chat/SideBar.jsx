@@ -1,4 +1,4 @@
-import { Group, Chat, CalendarToday, Call, Folder, MoreHoriz, Report, Analytics, Settings } from '@mui/icons-material';
+import { Group, Chat, CalendarToday, VideoCall, Folder, MoreHoriz, Report, Analytics, Settings } from '@mui/icons-material';
 import './styles.css';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
@@ -11,7 +11,7 @@ function Sidebar({ setActiveSection }) {
                 <a href="#group"  title="Group" onClick={() => setActiveSection('group')}><Group /></a>
                 <a href="#chat" title="chat" onClick={() => setActiveSection('chat')}><Chat /></a>
                 <a href="#calendar"  title="Calendar" onClick={() => setActiveSection('calendar')}><CalendarToday /></a>
-                <a href="http://localhost:3001/" title="Call"><Call /></a>
+                <a href="#video" title="Video" onClick={() => setActiveSection('video')}><VideoCall /></a>
                 <a href="#files" title="Files" onClick={() => setActiveSection('files')}><Folder /></a>
                 <a href="#reports" title="reports" onClick={() => setActiveSection('reports')}><Report /></a>
                 <a href="#analytics" title="analytics" onClick={() => setActiveSection('analytics')}><Analytics /></a>
