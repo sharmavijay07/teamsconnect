@@ -7,7 +7,8 @@ import axios from "axios";
 Modal.setAppElement("#root"); // Adjust if your root element is different
 
 const Profile = () => {
-  const { user, setUser } = useContext(AuthContext); // Assuming AuthContext provides user object
+  const { user, setUser,file } = useContext(AuthContext); // Assuming AuthContext provides user object
+  console.log(file)
 
   // State to control modal visibility
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -59,7 +60,8 @@ const Profile = () => {
   return (
     <div className="flex p-5 bg-blue-300">
       <div className="grid items-center">
-        <div className="w-[30vh] h-[30vh] rounded-full mb-4 p-4 bg-gray-300"></div>
+        <div className="w-[30vh] h-[30vh] rounded-full mb-4 p-4 bg-gray-300">
+        </div>
         <button
           className="px-5 py-2 bg-blue-500 text-white rounded-lg cursor-pointer"
           onClick={openModal}
@@ -82,7 +84,9 @@ const Profile = () => {
         className="bg-white p-5 rounded-lg w-96"
         overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
       >
-        <h2 className="text-lg font-bold mb-4">Update Profile</h2>
+        <h2 className="text-lg font-bold mb-4">Update Profile
+    
+        </h2>
 
         <div className="flex flex-col gap-4">
           {/* Input for Name */}

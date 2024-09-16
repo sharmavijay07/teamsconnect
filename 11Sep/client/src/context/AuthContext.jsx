@@ -1,11 +1,17 @@
-import { createContext, useCallback, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { baseUrl, postRequest } from "../utils/services";
 import axios from "axios";
+import { ChatContext } from "./ChatContext"; // Ensure this is being correctly imported
 
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+
+  // Check if ChatContext exists before trying to destructure messages
+  const chatContext = useContext(ChatContext);
+  const messages = chatContext?.messages || []; // Safely access messages, use an empty array as fallback
+
   const [registerError, setRegisterError] = useState(null);
   const [isRegisterLoading, setRegisterLoading] = useState(false);
   const [registerInfo, setRegisterInfo] = useState({
@@ -21,25 +27,37 @@ export const AuthContextProvider = ({ children }) => {
     password: "",
   });
 
-  //File Handling
+  // File Handling
   const [file, setFile] = useState([]);
   const [fileChatId, setFileChatId] = useState(null);
 
-  const getFileName = useCallback(
-    axios
-      .get(`http://localhost:4500/api/upload/file/${fileChatId}`)
-      .then((resp) => {
-        console.log(resp);
-        setFile(resp);
-      })
-      .catch((err) => {
-        console.error("you got error:", err);
-      }),
-    [fileChatId]
-  );
+  useEffect(() => {
+    // Ensure messages is an array before mapping over it
+    if (Array.isArray(messages)) {
+      messages.map((msg) => {
+        setFileChatId(msg?.chatId);
+      });
+    }
 
-  // console.log('loginInfo',loginInfo)
-  // console.log('User',user)
+    if (fileChatId) {
+     axios
+        .get(`http://localhost:4500/api/upload/file/${fileChatId}`)
+        .then((resp) => {
+          console.log("Response:", resp);
+
+          if (resp.data && resp.data.file) {
+            console.log("Files:", resp.data.file);
+            setFile(resp.data.file); // Set the 'file' array to state
+          } else {
+            console.error("No file data found in the response");
+          }
+        })
+        .catch((err) => {
+          console.error("you got error:", err);
+        });
+    }
+  }, [fileChatId, messages]);
+
   useEffect(() => {
     const user = localStorage.getItem("User");
     setUser(JSON.parse(user));
@@ -71,6 +89,7 @@ export const AuthContextProvider = ({ children }) => {
   const updateLoginInfo = useCallback((info) => {
     setLoginInfo(info);
   }, []);
+
   const loginUser = useCallback(
     async (e) => {
       e.preventDefault();
@@ -114,7 +133,6 @@ export const AuthContextProvider = ({ children }) => {
         setFileChatId,
         file,
         setUser,
-        
       }}
     >
       {children}

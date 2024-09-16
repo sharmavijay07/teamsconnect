@@ -43,20 +43,34 @@ router.post('/', upload.single('file'), (req, res) => {
             return res.status(500).json({ success: false, message: "Database error", error: err });
         }
 
-        res.status(200).json({ success: true, message: "File uploaded and saved in database successfully", file: req.file });
+        res.status(200).json({ success: true, message: "File uploaded and saved in database successfully", file:req.file });
     });
 });
 
 router.get('/file/:chatId',(req,resp) => {
     const chatId = req.params.chatId
-    const query = `SELECT filePath FROM files WHERE chatId = ?`;
+    const query = `SELECT filePath,uploadedAt FROM files WHERE chatId = ?`;
     db.query(query,[chatId],(err,result) => {
         if(err) {
             console.error("Database get error",err);
-            return res.status(500).json({success:false,message:"Database error",error:err})
+            return resp.status(500).json({success:false,message:"Database error",error:err})
         }
         resp.status(200).json({success:true,message:"File got successfully",file:result})
     })
 })
+
+const serveFile = (req, res) => {
+    const filePath = req.params.filePath.replace(/\\/g, '/');; // Extract the file path from the URL
+    const fullPath = path.join(__dirname, '..', 'uploads', filePath); 
+    
+  
+    res.sendFile(fullPath, (err) => {
+      if (err) {
+        console.error('File sending error:', err);
+        res.status(404).send('File not found');
+      }
+    });
+  };
+router.get('/:filePath',serveFile);
 
 module.exports = router;

@@ -8,9 +8,11 @@ import InputImoji from 'react-input-emoji';
 import SideBar from "./SideBar";
 import PotentialChats from "./PotentialChats";
 import UserChat from "./UserChat";
+import FileDisplay from "../fileHandling/FileDisplay";
 
 const ChatBox = () => {
-    const { user ,setFileChatId} = useContext(AuthContext);
+    const { user ,setFileChatId,file} = useContext(AuthContext);
+    console.log('file is',file)
     const { currentChat, messages, isMessagesLoading, sendTextMessage, userChats, isUserChatsLoading } = useContext(ChatContext);
     const { recipientUser } = useFetchRecipientUser(currentChat, user);
     const [textMessage, setTextMessage] = useState('');
@@ -64,6 +66,13 @@ const ChatBox = () => {
     const monthName = currentTime.toLocaleDateString('en-US', { month: 'long' });
 
  ///----------------------------------------9/09/24--------------------------------------------
+
+ useEffect(()=> {
+    if(currentChat) {
+    setFileChatId(currentChat.id)
+
+    }
+ },[currentChat])
  const handleFileChange = (event) => {
     const file = event.target.files[0];
     console.log("Selected File:", file);
@@ -73,7 +82,7 @@ const ChatBox = () => {
   
 
   const handleFileUpload = async () => {
-    setFileChatId(messages.chatId)
+    // console.log("filechatid")
     if (selectedFile) {
         const formData = new FormData();
         formData.append('file', selectedFile);
@@ -208,6 +217,7 @@ const ChatBox = () => {
             
             <div gap={3} className="bg-blue-100 overflow-y-scroll scrollbar scrollbar-thumb-gray-800/60 scrollbar-corner-sky-500 scrollbar-thumb-rounded-full hover:scrollbar-thumb-sky-500 overscroll-y-auto rounded-[5px] w-[76vw] h-[87vh]   
                   " style={{ color: "black" }}>
+                    <FileDisplay />
                 {messages && messages.map((message, index) =>
                     <div key={index} className={
                         `${message?.senderId == user?.id
@@ -257,15 +267,19 @@ const ChatBox = () => {
                             <span>{selectedFile.name}</span>
                         </div>
                     )}
-                    <button onClick={handleFileUpload} className="send-file-btn text-black border border-gray-600 rounded px-2 py-1 mt-1">
+                    {/* <button onClick={handleFileUpload} className="send-file-btn text-black border border-gray-600 rounded px-2 py-1 mt-1">
                         Send
-                    </button>
+                    </button> */}
                 </div>
             )}
         </div>
 
 
-                <Button className="send-btn" onClick={() => sendTextMessage(textMessage, user, currentChat.id, setTextMessage)}>
+                <Button className="send-btn" onClick={() => {
+                    sendTextMessage(textMessage, user, currentChat.id, setTextMessage)
+                    handleFileUpload()
+                    
+                }}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="cyan" className="bi bi-send-fill" viewBox="1 1 16 16">
                         <path d="M15.964.686a.5.5 0 0 0-.588-.186L1.12 6.172a.5.5 0 0 0-.073.91l2.506 1.16-1.644 3.59a.5.5 0 0 0 .798.606l2.396-1.84 6.806 3.045a.5.5 0 0 0 .638-.263l4-9a.5.5 0 0 0-.209-.617z"/>
                     </svg>
