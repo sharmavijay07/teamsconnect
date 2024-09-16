@@ -6,14 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Profile = () => {
-<<<<<<< HEAD
-  const { user, setUser,file } = useContext(AuthContext); // Assuming AuthContext provides user object
-  console.log(file)
-
-  // State to control modal visibility
-=======
   const { user, setUser } = useContext(AuthContext);
->>>>>>> b7a548af83b2e41941ffcf7769d1319eb67b176d
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
@@ -106,15 +99,10 @@ const Profile = () => {
   return (
     <div className="flex items-center p-4 bg-blue-300">
       <div className="grid items-center">
-<<<<<<< HEAD
-        <div className="w-[30vh] h-[30vh] rounded-full mb-4 p-4 bg-gray-300">
-        </div>
-=======
         <div
           className="w-[30vh] h-[30vh] rounded-full mb-4 p-4 bg-gray-300"
           style={{ backgroundImage: `url(${preview})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
         ></div>
->>>>>>> b7a548af83b2e41941ffcf7769d1319eb67b176d
         <button
           className="p-2 w-auto bg-blue-500 text-white rounded-3 cursor-pointer"
           onClick={openModal}
@@ -135,11 +123,6 @@ const Profile = () => {
         className="bg-gradient-to-l from-blue-200 to-blue-400 border-none p-5 rounded-5 w-auto overflow-auto"
         overlayClassName="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center"
       >
-<<<<<<< HEAD
-        <h2 className="text-lg font-bold mb-4">Update Profile
-    
-        </h2>
-=======
         <div className="flex gap-5">
           <div className="grid items-center ml-4">
             <h2 className="text-[2rem] font-bold">Update Profile</h2>
@@ -156,7 +139,6 @@ const Profile = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
->>>>>>> b7a548af83b2e41941ffcf7769d1319eb67b176d
 
               <label className="text-sm font-semibold" htmlFor="email">
                 Email:
