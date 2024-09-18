@@ -265,12 +265,13 @@ img.signin-image {
 .video-wrap {
     /* width: 60vw; */
     height: 600px;
+    background-color: #bfdbfe;
 }
 
 .video-wrap > * {
 
     flex: 1 1 250px;
-    border: 1px solid white;
+    border: 1px solid rgb(0, 0, 0);
     /* background-color:brown; */
 }
 
@@ -287,7 +288,7 @@ img.signin-image {
     flex-direction: column;
 }
 video{
-    border: 1px solid;
+    border: 1px solid black;
 }
 .recording-wrap {
     position: absolute;
