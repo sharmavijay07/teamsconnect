@@ -29,7 +29,7 @@ const GroupManagementPage = () => {
 
   return (
   
-    <div className='flex flex-col items-center w-full'>
+    <div className='flex flex-col items-center w-full overflow-hidden'>
 
 
       <CreateGroup organizationId={organizationId} onGroupCreated={handleGroupCreated} />
@@ -37,9 +37,9 @@ const GroupManagementPage = () => {
         <AddUserToGroup groupId={currentGroupId} onUserAdded={handleUserAdded} />
       )}
             <SearchGroups organizationId={organizationId} />
-
+            <UserGroups/>
       <GroupsList organizationId={organizationId} />
-      <UserGroups/>
+      
     </div>
     
     

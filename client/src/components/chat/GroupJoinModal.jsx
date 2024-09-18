@@ -17,14 +17,16 @@ const GroupJoinModal = ({ isOpen, group, onRequestClose, onJoin }) => {
           transform: "translate(-50%, -50%)",
           border: "1px solid #ccc",
           background: "black",
-          opacity:"90%",
+          opacity: "90%",
           color: "white",
-          borderRadius: "4px",
+          borderRadius: "20px",
           padding: "2rem",
           zIndex: 1000,
         },
         overlay: {
-          backgroundColor: "transparent", // No dimming effect
+          background: "shadow",
+          overflow: "hidden",
+          // No dimming effect
         },
       }}
     >
@@ -40,7 +42,10 @@ const GroupJoinModal = ({ isOpen, group, onRequestClose, onJoin }) => {
           >
             Join Now
           </button>
-          <button onClick={onRequestClose} className="p-2 bg-gray-500 cursor-pointer flex items-center border-b-2 rounded-xl border-gray-600/40 transform transition duration-500 hover:bg-gray-300">
+          <button
+            onClick={onRequestClose}
+            className="p-2 bg-gray-500 cursor-pointer flex items-center border-b-2 rounded-xl border-gray-600/40 transform transition duration-500 hover:bg-gray-300"
+          >
             Cancel
           </button>
         </div>
