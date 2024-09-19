@@ -28,7 +28,7 @@ const NavBar = () => {
                          </NavLink>
 
 
-                         <NavLink to='/profile' className="flex items-center justify-center  ml-[7vw] w-[30px] h-[30px] bg-gray-300 rounded-full overflow-hidden">
+                         <NavLink to='/profile' className="flex items-center justify-center p-2  ml-[7vw] w-[25px] h-[20px] bg-gray-300 rounded-full overflow-hidden">
                          <span class="material-symbols-outlined">
                             person
                             </span>

@@ -10,7 +10,7 @@ let user;
      
  
      console.log("User received:", user);
-     localStorage.setItem("User",JSON.stringify(user))
+    //  localStorage.setItem("User",JSON.stringify(user))
      res.json({ message: "User received successfully" });
    } else {
      res.status(400).json({ message: "No user found" });

@@ -19,7 +19,7 @@ const UserChat = ({chat,user}) => {
     console.log("Recipient User",recipientUser)
     return ( 
         <>
-        <div direction="horizontal" gap={1} className=" flex justify-between  border-b-2 rounded-xl mx-1 p-1 border-gray-600/40 bg-blue-200 transform h-50 transition duration-500 hover:bg-blue-100" role="button">    
+        <div direction="horizontal" gap={1} className=" flex justify-between  border-b-2 rounded-xl mx-1 p-1 border-gray-600/40 bg-gradient transform h-50 transition duration-200 hover:bg-blue-200" role="button">    
             <div className="d-flex  ">
                 <div className="me-2">
                     <img src={avatar} height='35px' className="profile-image"/>

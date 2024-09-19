@@ -196,8 +196,9 @@ const Profile = () => {
     <>
       <div className="flex flex-col min-h-screen">
         <NavBar />
-        <div className="flex flex-1">
+        <div className="flex flex-1 bg-black">
           <Sidebar />
+        
           <div className="flex flex-col items-center bg-gradient-to-r from-blue-500 to-gray-400"> {/* flex-1 */}
             {/* Profile section with partitioned background */}
             <div className="relative w-full h-[30vh] bg-gradient-to-r from-blue-500 to-gray-400">
@@ -234,7 +235,7 @@ const Profile = () => {
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         contentLabel="Update Profile"
-        className="bg-gradient-to-l from-blue-300 to-blue-500 border-none p-5 rounded-5 w-auto overflow-auto"
+        className="bg-gradient-to-r from-blue-500 to-gray-400 border-none p-5 rounded-5 w-auto overflow-auto"
         overlayClassName="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center"
       >
         <div className="flex gap-5">
@@ -265,7 +266,7 @@ const Profile = () => {
             ) : null}
             <h2 className="text-[2rem] font-bold">Update Profile</h2>
           </div>
-          <div className="flex flex-col p-4 gap-3 border-l-4 border-white ">
+          <div className="flex flex-col p-4 gap-3 border-l-4 border-gray-200 ">
             <div className="flex flex-col item-center">
               <label className="text-[1rem] font-semibold" htmlFor="name">
                 Name:
@@ -326,11 +327,14 @@ const Profile = () => {
                 Save
               </button>
             </div>
+          
+            </div>
           </div>
-        </div>
+          
       </Modal>
 
       <ToastContainer />
+  
     </>
   );
 };

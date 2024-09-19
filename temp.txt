@@ -1,3 +1,5 @@
+sign
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -50,17 +52,6 @@
     <script src="assets/js/client.js"></script>
      <script>
        $(function() {
-         window.onload = function() {
-            const user = {{{user}}}; // The user object sent from the backend
-            alert("user in sign hbs",user.name)
-            if (user) {
-                localStorage.setItem('User',JSON.stringify(user));
-                console.log('User stored in localStorage:', user);
-            }
-        };
-
-     
-
     const urlParams = new URLSearchParams(window.location.search);
     var meeting_id = urlParams.get('meetingID');
 
@@ -118,3 +109,42 @@
 
 
 
+
+
+
+
+
+_____________home head script
+ <script>
+        $(function() {
+
+            const urlParams = new URLSearchParams(window.location.search);
+
+            var meeting_id = urlParams.get('meetingID');
+
+            // if (!meeting_id) {
+            //     var murl = window.location.origin + "?meetingID=" + (new Date()).getTime();
+            //     $('#meetingid').attr('href', murl).text(murl);
+            //     $("#meetingContainer").hide();
+            //     $("#meetingbox").show();
+            //     return;
+            // }
+
+            var user_id = urlParams.get('uid');
+            if (!user_id) {
+                user_id = window.prompt('Enter your nick!');
+            }
+
+            if (!user_id || !meeting_id) {
+                alert('user id or meeting id missing');
+                window.location.href = '/sign';
+                return;
+            }
+            $("#meetingContainer").show();
+            $("#meetingbox").hide();
+            $(".username_holder").val(user_id);
+            MyApp._init(user_id, meeting_id);
+
+        });
+
+    </script>
