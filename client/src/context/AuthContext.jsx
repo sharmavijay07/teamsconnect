@@ -105,6 +105,8 @@ useEffect(() => {
       }
       localStorage.setItem("User", JSON.stringify(response));
       setUser(response);
+
+      
     },
     [loginInfo]
   );
@@ -113,6 +115,24 @@ useEffect(() => {
     localStorage.removeItem("User");
     setUser(null);
   }, []);
+
+  
+
+  useEffect(() => {
+    const user = localStorage.getItem("User")
+    axios.post('http://localhost:3001/api/getUser',{user})
+    .then((resp) => {
+      console.log("successfully passed the user to port 3001",resp)
+    })
+    .catch((err) => {
+      console.log("Error",err)
+    })
+  },[])
+
+  console.log("user in authcontext",user)
+
+
+  
 
   return (
     <AuthContext.Provider

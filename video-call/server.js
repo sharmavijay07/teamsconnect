@@ -2,17 +2,20 @@ require("./models/db");
 
 const express = require("express");
 const path = require("path");
+const cors = require('cors')
 const exphbs = require("express-handlebars");
 const bodyparser = require("body-parser");
 
 const employeeController = require("./controllers/employeeController");
 const homeController = require("./controllers/homeController");
 const loginController = require("./controllers/loginController");
+const {router} = require("./controllers/userController");
 const fileUpload = require("express-fileupload");
 const fs = require("fs");
 var connectionId;
 var _userConnections = [];
 var app = express();
+app.use(cors())
 app.use(
     bodyparser.urlencoded({
         extended: true,
@@ -38,7 +41,10 @@ app.set("view engine", "hbs");
 app.use("/employee", employeeController);
 app.use("/", homeController);
 app.use("/sign", loginController);
-server = app.listen(process.env.PORT || 3001);
+app.use("/api", router);
+server = app.listen(process.env.PORT || 3001,() => {
+    console.log("server is running on 3001 port")
+});
 /*   for webrtc application */
 const io = require("socket.io")(server);
 

@@ -1,9 +1,11 @@
-import React, { useContext, useState, useEffect } from "react";
+  import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import Modal from "react-modal";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import NavBar from "../NavBar";
+import Sidebar from "../chat/SideBar";
 
 const Profile = () => {
   const { user, setUser } = useContext(AuthContext);
@@ -11,13 +13,12 @@ const Profile = () => {
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
   const [file, setFile] = useState(null);
-  const [preview, setPreview] = useState(user.profilePicture || ""); // For uploaded or existing profile picture
-  const [cameraPreview, setCameraPreview] = useState(""); // For camera captured preview
+  const [preview, setPreview] = useState(user.profilePicture || "");
+  const [cameraPreview, setCameraPreview] = useState("");
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [cameraStream, setCameraStream] = useState(null);
 
   useEffect(() => {
-    // Update preview when file changes, unless there's a camera preview
     if (file && !cameraPreview) {
       const reader = new FileReader();
       reader.onloadend = () => setPreview(reader.result);
@@ -31,7 +32,7 @@ const Profile = () => {
   const closeModal = () => {
     setModalIsOpen(false);
     stopCamera();
-    setCameraPreview(""); // Reset camera preview when closing the modal
+    setCameraPreview("");
   };
 
   const notify = (message, type) => {
@@ -44,7 +45,7 @@ const Profile = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setFile(file);
-    setCameraPreview(""); // Reset camera preview when a file is selected
+    setCameraPreview("");
   };
 
   const uploadProfilePicture = async () => {
@@ -85,7 +86,7 @@ const Profile = () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
-          facingMode: "user", // Ensures the front camera is used
+          facingMode: "user",
         },
       });
       const videoElement = document.querySelector("#camera");
@@ -115,9 +116,9 @@ const Profile = () => {
       canvasElement.height
     );
     const dataUrl = canvasElement.toDataURL("image/jpeg");
-    setCameraPreview(dataUrl); // Set the camera preview as base64 data
-    setFile(null); // Clear any file upload
-    stopCamera(); // Stop the camera after capturing
+    setCameraPreview(dataUrl);
+    setFile(null);
+    stopCamera();
   };
 
   const stopCamera = () => {
@@ -150,7 +151,6 @@ const Profile = () => {
         hasChanges = true;
       }
 
-      // Update name if changed
       if (name !== user.name) {
         const nameResponse = await axios.put(
           `http://localhost:4500/api/users/updateName/${id}`,
@@ -164,7 +164,6 @@ const Profile = () => {
         hasChanges = true;
       }
 
-      // Update email if changed
       if (email !== user.email) {
         const emailResponse = await axios.put(
           `http://localhost:4500/api/users/updateMail/${id}`,
@@ -178,10 +177,9 @@ const Profile = () => {
         hasChanges = true;
       }
 
-      // Save updated user details to local storage
       if (hasChanges) {
-        const updatedUser = { ...user, name, email }; // Collect the updated user details
-        localStorage.setItem("User", JSON.stringify(updatedUser)); // Store in local storage
+        const updatedUser = { ...user, name, email };
+        localStorage.setItem("User", JSON.stringify(updatedUser));
         notify("Profile updated successfully!", "success");
       } else {
         notify("No changes made to the profile.", "info");
@@ -195,29 +193,43 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex items-center p-4 bg-blue-300">
-      <div className="grid items-center">
-        <div
-          className="w-[30vh] h-[30vh] rounded-full mb-4 p-4 bg-gray-300"
-          style={{
-            backgroundImage: `url(${cameraPreview || preview})`, // Display cameraPreview if available, otherwise file preview
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        ></div>
-        <button
-          className="p-2 w-auto bg-blue-500 text-white rounded-3 cursor-pointer"
-          onClick={openModal}
-        >
-          Update
-        </button>
+    <>
+      <div className="flex flex-col min-h-screen">
+        <NavBar />
+        <div className="flex flex-1">
+          <Sidebar />
+          <div className="flex flex-col items-center bg-gradient-to-r from-blue-500 to-gray-400"> {/* flex-1 */}
+            {/* Profile section with partitioned background */}
+            <div className="relative w-full h-[30vh] bg-gradient-to-r from-blue-500 to-gray-400">
+              {/* Profile Picture */}
+              <div
+                className="absolute w-[30vh] h-[30vh] rounded-full bg-gray-300 shadow-2xl border-none"
+                style={{
+                  backgroundImage: `url(${cameraPreview || preview})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  left: "50%",
+                  transform: "translateX(-50%) translateY(50%)",
+                }}
+              ></div>
+            </div>
+
+            {/* Name and Email */}
+            <div className="flex flex-col items-center p-4 mt-20"> {/* Ensuring margin to avoid overlap */}
+              <h1 className="rounded-lg p-2 text-[3rem] text-center">{user.name}</h1>
+              <p className="p-2 text-[1.5rem] text-center mb-3 ">{user.email}</p>
+              <button
+                className="p-2 w-auto text-auto bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-3 border-none cursor-pointer"
+                onClick={openModal}
+              >
+                Update
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="flex flex-col mx-5">
-        <h1 className="rounded-lg p-3 text-[4rem]">{user.name}</h1>
-        <p className="p-3 text-[2rem]">{user.email}</p>
-      </div>
-
+      {/* Modal remains unchanged */}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
@@ -227,17 +239,17 @@ const Profile = () => {
       >
         <div className="flex gap-5">
           <div className="grid items-center justify-center">
-          {isCameraOpen && (
-                <div>
-                  <video id="camera" className="w-full h-auto"></video>
-                  <button
-                    className="p-2 w-auto bg-red-500 text-white rounded-3 cursor-pointer mt-2"
-                    onClick={capturePhoto}
-                  >
-                    Capture Photo
-                  </button>
-                </div>
-              )}
+            {isCameraOpen && (
+              <div>
+                <video id="camera" className="w-full h-auto"></video>
+                <button
+                  className="p-2 w-auto bg-red-500 text-white rounded-3 cursor-pointer mt-2"
+                  onClick={capturePhoto}
+                >
+                  Capture Photo
+                </button>
+              </div>
+            )}
             {cameraPreview ? (
               <img
                 src={cameraPreview}
@@ -299,8 +311,6 @@ const Profile = () => {
                   Take a Photo
                 </button>
               )}
-
-             
             </div>
             <div className="flex justify-center gap-2 mt-4">
               <button
@@ -319,8 +329,9 @@ const Profile = () => {
           </div>
         </div>
       </Modal>
+
       <ToastContainer />
-    </div>
+    </>
   );
 };
 

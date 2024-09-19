@@ -48,7 +48,17 @@
     <script src="assets/js/materialize.min.js"></script>
     <script src="assets/js/client.js"></script>
     <script>
+
        $(function() {
+         window.onload = function() {
+            const user = {{{user}}}; // The user object sent from the backend
+            if (user) {
+                localStorage.setItem('User', user);
+                console.log('User stored in localStorage:', user);
+            }
+        };
+
+    
     const urlParams = new URLSearchParams(window.location.search);
     var meeting_id = urlParams.get('meetingID');
 
@@ -78,14 +88,15 @@
 
     // Handling Username from LocalStorage
     var userData = JSON.parse(localStorage.getItem('User')) || null;
-    var user_id = urlParams.get('uid');
+    var user_id = userData.id
+    console.log("userdata",userData)
     
     if (!userData) {
         // If no user data found in localStorage, prompt for username
-        var userName = window.prompt('Enter your nick!');
+        var userName = userData.name;
         if (userName) {
             userData = { name: userName };
-            localStorage.setItem('user', JSON.stringify(userData));
+            localStorage.setItem('User', JSON.stringify(userData));
         }
     } else {
         user_id = userData.name;

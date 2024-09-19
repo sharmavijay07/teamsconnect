@@ -30,13 +30,101 @@
 
 /* src/Calendar.css */
 .calendar-container {
-    text-align: center;
-    padding: 20px;
+  text-align: center;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  color: #4a90e2;
+}
+
+.react-calendar {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.events-list {
+  margin-top: 20px;
+}
+
+.events-list h3 {
+  margin-bottom: 10px;
+}
+
+.events-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.event-item {
+  background: #e3f2fd;
+  border: 1px solid #90caf9;
+  border-radius: 5px;
+  padding: 15px;
+  margin: 5px 0;
+  transition: background 0.3s ease;
+}
+
+.event-item:hover {
+  background: #bbdefb;
+}
+
+.event-item h4 {
+  margin: 0;
+}
+
+.event-item button {
+  margin-left: 10px;
+}
+
+/* Modal Styles */
+.ReactModal__Overlay {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.ReactModal__Content {
+  padding: 20px;
+  border-radius: 10px;
+  background: #fff;
+}
+
+textarea {
+  width: 100%;
+  height: 60px;
+  margin: 10px 0;
+}
+
+.add-event-btn {
+  display: flex;
+  align-items: center;
+  background-color: #4a90e2;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.add-event-btn:hover {
+  background-color: #357ab8;
+}
+
+  @media (max-width: 768px) {
+    .calendar-container {
+      padding: 10px;
+    }
+    .events-list li {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .events-list button {
+      margin-top: 5px;
+      margin-left: 0;
+    }
   }
-  
-  .react-calendar {
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
