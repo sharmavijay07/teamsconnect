@@ -1,0 +1,15 @@
+{
+  "name": "teamsconnect",
+  "version": "1.0.0",
+  "description": "step 1:- create database",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"cd client && npm run dev\" \"cd server && npm start\" \"cd socket && npm run socket \" \"cd video-call && node server \" "
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^9.0.1"
+  }
+}
