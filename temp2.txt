@@ -1,7 +1,54 @@
+home head script 
+ 
+ <script>
+        $(function() {
+
+             window.onload = function() {
+            const user = {{{user}}}; // The user object sent from the backend
+            alert("user in sign hbs",user.name)
+            if (user) {
+                localStorage.setItem('User',JSON.stringify(user));
+                console.log('User stored in localStorage:', user);
+            }
+        };
+
+            const urlParams = new URLSearchParams(window.location.search);
+
+            var meeting_id = urlParams.get('meetingID');
+
+            // if (!meeting_id) {
+            //     var murl = window.location.origin + "?meetingID=" + (new Date()).getTime();
+            //     $('#meetingid').attr('href', murl).text(murl);
+            //     $("#meetingContainer").hide();
+            //     $("#meetingbox").show();
+            //     return;
+            // }
+            const storedUser = localStorage.getItem("User")
+            var user_id = ; storedUser.id;
+            if (!user_id) {
+                user_id = window.prompt('Enter your nick!');
+            }
+
+            if (!user_id || !meeting_id) {
+                alert('user id or meeting id missing');
+                window.location.href = '/sign';
+                return;
+            }
+            $("#meetingContainer").show();
+            $("#meetingbox").hide();
+            $(".username_holder").val(user_id);
+            MyApp._init(user_id, meeting_id);
+
+        });
+
+    </script>
+
+
+
+    signthis is sign
 <!DOCTYPE html>
 
 <html lang="en">
-    {{!-- apna naam bataiye kripa krke // < 3000 --}}
 
 <head>
 
@@ -48,7 +95,10 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="assets/js/materialize.min.js"></script>
     <script src="assets/js/client.js"></script>
-     <script>
+   
+
+    <script>
+
        $(function() {
          window.onload = function() {
             const user = {{{user}}}; // The user object sent from the backend
@@ -59,8 +109,7 @@
             }
         };
 
-     
-
+    
     const urlParams = new URLSearchParams(window.location.search);
     var meeting_id = urlParams.get('meetingID');
 
@@ -90,11 +139,12 @@
 
     // Handling Username from LocalStorage
     var userData = JSON.parse(localStorage.getItem('User')) || null;
-    var user_id = urlParams.get('uid');
+    var user_id = userData.id
+    console.log("userdata",userData)
     
     if (!userData) {
         // If no user data found in localStorage, prompt for username
-        var userName = window.prompt('Enter your nick!');
+        var userName = userData.name;
         if (userName) {
             userData = { name: userName };
             localStorage.setItem('User', JSON.stringify(userData));
@@ -115,6 +165,3 @@
 </body>
 
 </html>
-
-
-

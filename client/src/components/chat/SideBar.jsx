@@ -6,7 +6,7 @@ import UserGroups from './UserGroups';
 
 function Sidebar({ setActiveSection }) {
     return (
-        <div className="sidebar closed border-r-2 border-black">
+        <div className="sidebar closed border-r-2 border-black bg-blue-300">
             <div className="sidebar-icons visible">
                 <a href="#group"  title="Group" onClick={() => setActiveSection('group')}><Group /></a>
                 <a href="#chat" title="chat" onClick={() => setActiveSection('chat')}><Chat /></a>
