@@ -99,6 +99,7 @@ io.on("connection", (socket) => {
                 date: new Date()
             });
         }
+        io.to(socket.id).emit("getMessages", message);
     });
 
     // Video conference events

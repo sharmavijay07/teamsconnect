@@ -20,7 +20,7 @@ const GroupChatBox = ({ group }) => {
   const [senderNames, setSenderNames] = useState({});
 
   useEffect(() => {
-    scroll.current?.scrollIntoView({ behavior: "smooth" });
+    scroll.current?.scrollIntoView();
   }, [groupMessages]); // Ensure smooth scrolling whenever groupMessages changes
 
   useEffect(() => {

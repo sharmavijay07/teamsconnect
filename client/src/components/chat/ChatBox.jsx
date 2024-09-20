@@ -9,7 +9,29 @@ import SideBar from "./SideBar";
 import PotentialChats from "./PotentialChats";
 import UserChat from "./UserChat";
 import FileDisplay from "../fileHandling/FileDisplay";
+<<<<<<< HEAD
 import axios from "axios";
+=======
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
+
+
+const notify = (message, type) => {
+    const toastId = `${type}-${Date.now()}`;
+    toast[type](message, {
+      toastId,
+    });
+    toast.error("error file uploading!", {
+        position: "top-right",
+        autoClose: 5000, // duration in milliseconds
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+  };
+>>>>>>> 0d59c9721d0d8b8a7de3ea02afa248c75be216ae
 
 const ChatBox = () => {
     const { user ,setFileChatId,file} = useContext(AuthContext);
@@ -31,7 +53,7 @@ const ChatBox = () => {
     
     
     useEffect(() => {
-        scroll.current?.scrollIntoView({ behavior: "smooth" });
+        scroll.current?.scrollIntoView();
     }, [messages]);
 
     //all messages
@@ -128,7 +150,7 @@ const ChatBox = () => {
             const result = await response.json();
             if (result.success) {
                 const fileUrl = result.fileUrl; // Assume API response contains the uploaded file URL
-                alert('File uploaded successfully');
+                notify("file uploaded successfully!", "success");
                 
                 // Send the file URL as a message
                 sendTextMessage(fileUrl, user, currentChat.id, setTextMessage);
@@ -136,10 +158,11 @@ const ChatBox = () => {
                 setSelectedFile(null);
                 setPreviewURL(null);
             } else {
-                alert('File upload failed');
-            }
+                notify("file upload failed!", "error");
+            }   
         } catch (error) {
             console.error('Error during fetch:', error);
+            
             alert('An error occurred during file upload: ' + error.message);
         }
     }
@@ -345,6 +368,7 @@ const ChatBox = () => {
             </div>
         </div>
         </>
+        
     );
 };
 

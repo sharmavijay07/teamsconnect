@@ -1,4 +1,4 @@
-  import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import Modal from "react-modal";
 import axios from "axios";
@@ -12,6 +12,8 @@ const Profile = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
+  const [phone, setPhone] = useState(user.phone || "");
+  const [dob, setDob] = useState(user.dob || "");
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(user.profilePicture || "");
   const [cameraPreview, setCameraPreview] = useState("");
@@ -177,8 +179,34 @@ const Profile = () => {
         hasChanges = true;
       }
 
+      if (phone !== user.phone) {
+        const phoneResponse = await axios.put(
+          `http://localhost:4500/api/users/updatePhone/${id}`,
+          { phone }
+        );
+        const updatedPhone = phoneResponse.data.phone || phone;
+        setUser((prevUser) => ({
+          ...prevUser,
+          phone: updatedPhone,
+        }));
+        hasChanges = true;
+      }
+
+      if (dob !== user.dob) {
+        const dobResponse = await axios.put(
+          `http://localhost:4500/api/users/updateDob/${id}`,
+          { dob }
+        );
+        const updatedDob = dobResponse.data.dob || dob;
+        setUser((prevUser) => ({
+          ...prevUser,
+          dob: updatedDob,
+        }));
+        hasChanges = true;
+      }
+
       if (hasChanges) {
-        const updatedUser = { ...user, name, email };
+        const updatedUser = { ...user, name, email, phone, dob };
         localStorage.setItem("User", JSON.stringify(updatedUser));
         notify("Profile updated successfully!", "success");
       } else {
@@ -196,12 +224,12 @@ const Profile = () => {
     <>
       <div className="flex flex-col min-h-screen">
         <NavBar />
-        <div className="flex flex-1 bg-black">
+        <div className="flex flex-1 bg-gradient bg-blue-100">
           <Sidebar />
-        
-          <div className="flex flex-col items-center bg-gradient-to-r from-blue-500 to-gray-400"> {/* flex-1 */}
+
+          <div className="flex flex-col items-center w-[35vw] m-2 rounded-3 shadow-2xl">
             {/* Profile section with partitioned background */}
-            <div className="relative w-full h-[30vh] bg-gradient-to-r from-blue-500 to-gray-400">
+            <div className="relative w-full h-[30vh] bg-gradient-to-r from-blue-300 to-blue-300 rounded-3 shadow-xl">
               {/* Profile Picture */}
               <div
                 className="absolute w-[30vh] h-[30vh] rounded-full bg-gray-300 shadow-2xl border-none"
@@ -216,9 +244,19 @@ const Profile = () => {
             </div>
 
             {/* Name and Email */}
-            <div className="flex flex-col items-center p-4 mt-20"> {/* Ensuring margin to avoid overlap */}
-              <h1 className="rounded-lg p-2 text-[3rem] text-center">{user.name}</h1>
-              <p className="p-2 text-[1.5rem] text-center mb-3 ">{user.email}</p>
+            <div className="flex flex-col items-center p-4 mt-20">
+              <h1 className="rounded-lg p-2 text-[3rem] text-center">
+                {user.name}
+              </h1>
+              <p className="p-2 text-[1.5rem] text-center">
+                {user.email}
+              </p>
+              <p className=" text-[1rem] text-center ">
+                {user.phone || "No phone provided"}
+              </p>
+              <p className=" text-[1rem] text-center mb-3 ">
+                {user.dob || "No DOB provided"}
+              </p>
               <button
                 className="p-2 w-auto text-auto bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-3 border-none cursor-pointer"
                 onClick={openModal}
@@ -227,10 +265,18 @@ const Profile = () => {
               </button>
             </div>
           </div>
+
+          <div className=" bg-blue-400 m-3 border-gray-300 rounded-3 w-full">
+            <div className="bg-blue-200 h-[40vh]  p-1 m-3 border-gray-300 rounded-3">
+              Activity
+            </div>
+            <div className="bg-blue-200 h-[40vh]  p-2 m-3 border-gray-300 rounded-3">
+              3rd box for analytics or reports
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Modal remains unchanged */}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
@@ -289,7 +335,31 @@ const Profile = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
+            </div>
+            <div className=" flex  items-center gap-2">
+              <label className="text-sm font-semibold" htmlFor="phone">
+                Phone Number:
+              </label>
+              <input
+                id="phone"
+                type="text"
+                className="border border-gray-300 rounded-3 p-2 mb-2"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
 
+              <label className="text-sm font-semibold" htmlFor="dob">
+                Date of Birth:
+              </label>
+              <input
+                id="dob"
+                type="date"
+                className="border border-gray-300 rounded-3 p-2 mb-2"
+                value={dob}
+                onChange={(e) => setDob(e.target.value)}
+              />
+            </div>
+            <div className="flex items-center">
               <label
                 className="text-sm font-semibold p-2"
                 htmlFor="profilePicture"
@@ -327,14 +397,11 @@ const Profile = () => {
                 Save
               </button>
             </div>
-          
-            </div>
           </div>
-          
+        </div>
       </Modal>
 
       <ToastContainer />
-  
     </>
   );
 };
