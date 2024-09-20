@@ -42,10 +42,10 @@ CREATE TABLE group_messages (
 CREATE TABLE grouptable (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
-    organization_id INT,
+    organizationId INT,
     description VARCHAR(255),
     PRIMARY KEY (id),
-    FOREIGN KEY (organization_id) REFERENCES organizations(id)
+    FOREIGN KEY (organizationId) REFERENCES organizations(id)
 );
 
 -- 5. messages Table
@@ -87,6 +87,23 @@ CREATE TABLE users (
     organization_id INT,
     PRIMARY KEY (id),
     FOREIGN KEY (organization_id) REFERENCES organizations(id)
+);
+
+-- 9.user_info
+CREATE TABLE user_info (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    phone_no VARCHAR(15),
+    country_code VARCHAR(5),
+    city VARCHAR(100),
+    state VARCHAR(100),
+    country VARCHAR(100),
+    dob DATE,
+    joining_date DATE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX (user_id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 
