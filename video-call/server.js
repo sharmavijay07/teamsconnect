@@ -42,8 +42,8 @@ app.use("/employee", employeeController);
 app.use("/", homeController);
 app.use("/sign", loginController);
 app.use("/api", router);
-server = app.listen(process.env.PORT || 3001,() => {
-    console.log("server is running on 3001 port")
+server = app.listen(process.env.PORT || 3002,() => {
+    console.log("server is running on 3002 port")
 });
 /*   for webrtc application */
 const io = require("socket.io")(server);
