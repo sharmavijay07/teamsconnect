@@ -9,6 +9,7 @@ import GroupChatBox from "./GroupChatBox";
 import UserGroups from "./UserGroups";
 import { GroupContext } from "@/context/GroupContext";
 
+
 export default function Group() {
   const webRef = useRef(null);
   const { setOrganizationId, organizationId } = useContext(ChatContext);
@@ -17,7 +18,9 @@ export default function Group() {
     setOrganizationId(1);
   }, [organizationId]);
   return (
-    <div className="bg-white h-[95vh]">
+    <div className="bg-white h-[95vh] bg-cover bg-no-repeat bg-[url(src/assets/group2.png)]" >
+
+      
       <div className="h-[6vh] w-[76vw] bg-blue-400 flex justify-between  border-b-2 border-gray-700/50">
         <div className="h-[5vh] w-[10vw] flex justify-around p-1">
           <div className="bg-black h-[4vh] w-[4vh] p-1"></div>
