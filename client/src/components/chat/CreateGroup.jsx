@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { postRequest, baseUrl } from '../../utils/services';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -12,6 +14,28 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
+
+
+// import statements above ^^^
+
+// Component implementation begins below 
+
+const notify = (message, type) => {
+  const toastId = `${type}-${Date.now()}`;
+  
+  toast[type](message, {
+    closeOnClick:true,
+    autoClose: 3000,
+    newestOnTop:false,
+    hideProgressBar: false,
+    pauseOnHover: true,
+    draggable: false,
+    
+
+    toastId,
+  });
+};
 
 const CreateGroup = ({ organizationId, onGroupCreated }) => {
   const [groupName, setGroupName] = useState('');
@@ -20,7 +44,7 @@ const CreateGroup = ({ organizationId, onGroupCreated }) => {
 
   const handleCreateGroup = async () => {
     if (!groupName || !groupDescription) {
-      setError("Group name and description are required.");
+      notify(`All the details to create group. Group not created`, "error");
       return;
     }
 
@@ -85,7 +109,9 @@ const CreateGroup = ({ organizationId, onGroupCreated }) => {
       </DialogFooter>
     </DialogContent>
   </Dialog>
+  <ToastContainer />
   </div>
+  
     // -------------------------
   );
 };
