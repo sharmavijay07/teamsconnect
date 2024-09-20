@@ -2,15 +2,16 @@ import { useContext, useState, useRef, useEffect } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import { ChatContext } from "@/context/ChatContext";
 import { useFetchRecipientUser } from "@/hooks/useFetchRecipient";
-import { Button, Stack } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import moment from 'moment';
 import InputImoji from 'react-input-emoji';
-import SideBar from "./SideBar";
 import PotentialChats from "./PotentialChats";
 import UserChat from "./UserChat";
 import FileDisplay from "../fileHandling/FileDisplay";
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
+
+// input statements above ^ ^ ^ 
 
 
 const notify = (message, type) => {
@@ -36,10 +37,8 @@ const ChatBox = () => {
     const { recipientUser } = useFetchRecipientUser(currentChat, user);
     const [textMessage, setTextMessage] = useState('');
     const [currentTime, setCurrentTime] = useState(new Date());
-    ///------------------------9/09/24----------------------------
     const [selectedFile, setSelectedFile] = useState(null);
     const [previewURL, setPreviewURL] = useState(null);
-    //--------------------------9/09/24-------------------------
     
     const scroll = useRef();
 

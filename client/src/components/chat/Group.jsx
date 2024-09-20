@@ -9,6 +9,11 @@ import GroupChatBox from "./GroupChatBox";
 import UserGroups from "./UserGroups";
 import { GroupContext } from "@/context/GroupContext";
 
+import React, { useState } from "react";
+
+// ------------------------------------------------------------------
+
+// -----------------------------------------------------------------------
 
 export default function Group() {
   const webRef = useRef(null);
@@ -17,10 +22,9 @@ export default function Group() {
   useEffect(() => {
     setOrganizationId(1);
   }, [organizationId]);
-  return (
-    <div className="bg-white h-[95vh] bg-cover bg-no-repeat bg-[url(src/assets/group2.png)]" >
 
-      
+  return (
+    <div className="bg-white h-[95vh] bg-cover bg-no-repeat bg-[url(src/assets/groupOp0.5.png)]">
       <div className="h-[6vh] w-[76vw] bg-blue-400 flex justify-between  border-b-2 border-gray-700/50">
         <div className="h-[5vh] w-[10vw] flex justify-around p-1">
           <div className="bg-black h-[4vh] w-[4vh] p-1"></div>
