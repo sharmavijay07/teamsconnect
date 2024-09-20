@@ -3,10 +3,10 @@ const mysql = require('mysql2')
 const db = mysql.createConnection({
     host:'localhost',
     user:'root',
-    password:'Cosmicrolex@123',
-    // // password:'123456',
+    // password:'Cosmicrolex@123',
+    password:'123456',
     //password:'suravijay'
-    password: 'Shantanu@2104',
+    //password: 'Shantanu@2104',
     database:'teamsconnect'
 })
 
