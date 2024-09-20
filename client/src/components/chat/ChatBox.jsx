@@ -9,6 +9,7 @@ import SideBar from "./SideBar";
 import PotentialChats from "./PotentialChats";
 import UserChat from "./UserChat";
 import FileDisplay from "../fileHandling/FileDisplay";
+import axios from "axios";
 
 const ChatBox = () => {
     const { user ,setFileChatId,file} = useContext(AuthContext);
@@ -21,15 +22,41 @@ const ChatBox = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [previewURL, setPreviewURL] = useState(null);
     //--------------------------9/09/24-------------------------
+    const [allMessages,setAllMessages] = useState()
+
     
     const scroll = useRef();
 
-
+   
     
     
     useEffect(() => {
         scroll.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
+
+    //all messages
+
+    useEffect(() => {
+        const chatId = currentChat?.id
+        axios.get(`http://localhost:4500/api/upload/allMessages/${chatId}`)
+        .then((resp) => {
+        //   alert(chatId)
+          console.log("Got all messages with files",resp)
+          setAllMessages(resp.data.result)
+          // alert("got all messages")
+        })
+        .catch((err) => {
+          console.warn("Error of allMessages",err)
+        })
+      },[currentChat])
+
+      const getFileUrl = (filePath) => {
+        const formattedPath = filePath.replace(/\\/g, '/');
+        const fullPath = formattedPath.startsWith('uploads/') ? formattedPath.replace('uploads/', '') : formattedPath;
+        return `http://localhost:4500/uploads/${fullPath}`;
+      };
+    
+
 
     // Effect to update the time every minute
     useEffect(() => {
@@ -215,11 +242,12 @@ const ChatBox = () => {
             </div>
 
             
-            <div gap={3} className="bg-blue-100 overflow-y-scroll scrollbar scrollbar-thumb-sky-500 scrollbar-corner-sky-500 scrollbar-thumb-rounded-full  hover:scrollbar-thumb-sky-500/60 overscroll-y-auto rounded-[5px] w-[76vw] h-[87vh]   
+          <>
+           <div gap={3} className="bg-blue-100 overflow-y-scroll scrollbar scrollbar-thumb-sky-500 scrollbar-corner-sky-500 scrollbar-thumb-rounded-full  hover:scrollbar-thumb-sky-500/60 overscroll-y-auto rounded-[5px] w-[76vw] h-[87vh]   
                   " style={{ color: "black" }}>
-                    <FileDisplay />
-                {messages && messages.map((message, index) =>
-                    <div key={index} className={
+                    {/* <FileDisplay /> */}
+                {allMessages && allMessages?.map((message, index) =>
+                    <><div key={index} className={
                         `${message?.senderId == user?.id
                             ? "bg-gray-400/40 w-fit max-w-[70%] min-w-[15%] p-1  px-3 mr-2  rounded-[8px]  mt-2 ml-auto flex-grow-0  break-words  text-wrap  text-dark "
                             : "bg-blue-300/70 w-fit max-w-[70%] min-w-[15%] p-1 px-3 ml-2  rounded-[8px]  mt-1 flex-grow-0   break-words  text-dark"
@@ -234,8 +262,36 @@ const ChatBox = () => {
                             : " ml-auto"
                         }`}>{moment(message.createdAt).format('h:mm a')}</span></div>
                     </div>
+
+                    <div>
+                    {message.filePath.endsWith('.png') || message.filePath.endsWith('.jpg') || message.filePath.endsWith('.gif') ? (
+              <img
+                src={getFileUrl(message.filePath)}
+                alt={`file-${index}`}
+                style={{ width: '150px', height: '150px' }}
+              />
+            ) : (
+              // Download link for non-image files
+              <a href={getFileUrl(message.filePath)} download>
+                Download {message.filePath.split('/').pop()}
+              </a>
+            )}
+            <p>Uploaded At: {new Date(message.uploadedAt).toLocaleString()}</p>
+                    </div>
+                    </>
                 )}
+
+
+
+
             </div>
+
+
+       
+
+            
+    
+            </>
             
                 
 {/* Input area */}

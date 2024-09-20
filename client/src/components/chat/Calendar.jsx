@@ -5,7 +5,7 @@ import 'react-calendar/dist/Calendar.css';
 import Modal from 'react-modal';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { gapi } from 'gapi-script';
-import 'material-icons/iconfont/material-icons.css';
+// import 'material-icons/iconfont/material-icons.css';
 
 
 Modal.setAppElement('#root');

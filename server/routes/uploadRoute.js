@@ -71,6 +71,25 @@ const serveFile = (req, res) => {
       }
     });
   };
+
+
+
+const getAllMessages = (req,resp) => {
+    const chatId = req.params.chatId;
+    const query = "SELECT m.id AS messageId,m.chatId,m.senderId,m.text, m.createdAt AS messageCreatedAt, m.updatedAt AS messageUpdatedAt, f.id AS fileId,f.fileName,f.filePath, f.fileType,f.uploadedAt FROM messages m inner JOIN  files f ON m.id = f.chatId  WHERE  m.chatId = ? ORDER BY  m.createdAt;"
+    // const newquery ="SELECT m.id AS messageId, m.chatId, m.senderId, m.text, m.createdAt AS messageCreatedAt, m.updatedAt AS messageUpdatedAt, f.id AS fileId, f.fileName, f.filePath, f.fileType, f.uploadedAt FROM messages m LEFT JOIN files f ON m.id = f.chatId WHERE m.chatId = ? ORDER BY m.createdAt"
+    db.query(query,[chatId],(err,result) => {
+        if(err) {
+            console.log("Error got",err)
+            resp.status(500).json({err})
+        }
+        else {
+            resp.status(200).json({msg:"Successfully got messages",result:result})
+        }
+    })
+}
+
+router.get('/allMessages/:chatId',getAllMessages)
 router.get('/:filePath',serveFile);
 
 module.exports = router;
