@@ -8,11 +8,10 @@ import InputImoji from 'react-input-emoji';
 import PotentialChats from "./PotentialChats";
 import UserChat from "./UserChat";
 import FileDisplay from "../fileHandling/FileDisplay";
+import axios from 'axios'
 import 'react-toastify/dist/ReactToastify.css';
-import { toast } from 'react-toastify';
-
-// input statements above ^ ^ ^ 
-
+import { ToastContainer, toast } from 'react-toastify';
+import { CommitOutlined } from "@mui/icons-material";
 
 const notify = (message, type) => {
     const toastId = `${type}-${Date.now()}`;
@@ -39,15 +38,86 @@ const ChatBox = () => {
     const [currentTime, setCurrentTime] = useState(new Date());
     const [selectedFile, setSelectedFile] = useState(null);
     const [previewURL, setPreviewURL] = useState(null);
+
+    //--------------------------9/09/24-------------------------
+    const [allMessages,setAllMessages] = useState()
+    const [onlyMessages,setOnlyMessages] = useState([])
+    const [combinedMessages,setCombinedMessages] = useState()
+
+
+
+
     
     const scroll = useRef();
 
-
+   
     
     
     useEffect(() => {
         scroll.current?.scrollIntoView();
     }, [messages]);
+
+    //all messages
+
+    
+    function getMessage() {
+        const chatId = currentChat?.id
+        axios.get(`http://localhost:4500/api/messages/${chatId}`)
+        .then((resp) => {
+                console.log("got messages for particular chatid",resp)
+              setOnlyMessages(resp.data)
+              console.log("onlu=y messages",onlyMessages)
+
+
+              
+              const combinedMessage = [...(file || []), ...(onlyMessages || [])];
+            
+              // Sort the combined array based on the createdAt timestamp
+            //   combinedMessages.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+              combinedMessage.sort((a, b) => {
+                const aTime = a.createdAt ? new Date(a.createdAt) : new Date(a.uploadedAt);
+                const bTime = b.createdAt ? new Date(b.createdAt) : new Date(b.uploadedAt);
+                return aTime - bTime;
+            });
+          setCombinedMessages(combinedMessage)
+            
+              console.log("combinedMessages",combinedMessages)
+             
+            })
+            .catch((err) => {
+              console.warn("Error of allMessages",err)
+            })
+
+            
+    
+                
+               
+    }
+   
+
+    useEffect(() => {
+        const chatId = currentChat?.id
+        axios.get(`http://localhost:4500/api/upload/allMessages/${chatId}`)
+
+        .then((resp) => {
+            getMessage()
+        //   alert(chatId)
+          console.log("Got all messages with files",resp)
+          setAllMessages(resp.data.result)
+          // alert("got all messages")
+        })
+        .catch((err) => {
+          console.warn("Error of allMessages",err)
+        })
+      },[currentChat,textMessage,file])
+      
+      const getFileUrl = (filePath) => {
+        const formattedPath = filePath.replace(/\\/g, '/');
+        const fullPath = formattedPath.startsWith('uploads/') ? formattedPath.replace('uploads/', '') : formattedPath;
+        return `http://localhost:4500/uploads/${fullPath}`;
+      };
+    
+
 
     // Effect to update the time every minute
     useEffect(() => {
@@ -113,7 +183,7 @@ const ChatBox = () => {
             });
 
             if (!response.ok) {
-                throw new Error(`Error: ${response.statusText}`);
+                throw error
             }
 
             const result = await response.json();
@@ -234,27 +304,65 @@ const ChatBox = () => {
             </div>
 
             
-            <div gap={3} className="bg-blue-100 overflow-y-scroll scrollbar scrollbar-thumb-sky-500 scrollbar-corner-sky-500 scrollbar-thumb-rounded-full  hover:scrollbar-thumb-sky-500/60 overscroll-y-auto rounded-[5px] w-[76vw] h-[87vh]   
+          <>
+           <div gap={3} className="bg-blue-100 overflow-y-scroll scrollbar scrollbar-thumb-sky-500 scrollbar-corner-sky-500 scrollbar-thumb-rounded-full  hover:scrollbar-thumb-sky-500/60 overscroll-y-auto rounded-[5px] w-[76vw] h-[87vh]   
                   " style={{ color: "black" }}>
-                    <FileDisplay />
-                {messages && messages.map((message, index) =>
-                    <div key={index} className={
-                        `${message?.senderId == user?.id
-                            ? "bg-gray-400/40 w-fit max-w-[70%] min-w-[15%] p-1  px-3 mr-2  rounded-[8px]  mt-2 ml-auto flex-grow-0  break-words  text-wrap  text-dark "
-                            : "bg-blue-300/70 w-fit max-w-[70%] min-w-[15%] p-1 px-3 ml-2  rounded-[8px]  mt-1 flex-grow-0   break-words  text-dark"
-                        }`}
-                        ref={scroll}    
-                    >
-                        <span>{message.text}</span>
-                        <div className="">
-                        <span className={
-                        `${message?.senderId == user?.id
-                            ? " ml-auto "
-                            : " ml-auto"
-                        }`}>{moment(message.createdAt).format('h:mm a')}</span></div>
-                    </div>
+                    {/* <FileDisplay /> */}
+                {combinedMessages && combinedMessages?.map((message, index) =>
+                    <> {message.isFile?
+                         <div>
+                    {message.filePath.endsWith('.png') || message.filePath.endsWith('.jpg') || message.filePath.endsWith('.gif') ? (
+              <img
+                src={getFileUrl(message.filePath)}
+                alt={file-`${index}`}
+                style={{ width: '150px', height: '150px' }}
+              />
+            ) : (
+              // Download link for non-image files
+              <a href={getFileUrl(message.filePath)} download>
+                Download {message.filePath.split('/').pop()}
+              </a>
+            )}
+            <p>Uploaded At: {new Date(message.uploadedAt).toLocaleString()}</p>
+                    </div>:""}
+
+
+
+
+
+
+                        <div key={index} className={
+                            `${message?.senderId == user?.id
+                                ? "bg-gray-400/40 w-fit max-w-[70%] min-w-[15%] p-1  px-3 mr-2  rounded-[8px]  mt-2 ml-auto flex-grow-0  break-words  text-wrap  text-dark "
+                                : "bg-blue-300/70 w-fit max-w-[70%] min-w-[15%] p-1 px-3 ml-2  rounded-[8px]  mt-1 flex-grow-0   break-words  text-dark"
+                            }`}
+                            ref={scroll}    
+                        >
+                            <span>{message.text}</span>
+                            <div className="">
+                            <span className={
+                           ` ${message?.senderId == user?.id
+                                ? " ml-auto "
+                                : " ml-auto"
+                            }`}>{moment(message.createdAt).format('h:mm a')}</span></div>
+                        </div>
+                    
+
+                   
+                    </>
                 )}
+
+
+
+
             </div>
+
+
+       
+
+            
+    
+            </>
             
                 
 {/* Input area */}

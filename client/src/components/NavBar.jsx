@@ -17,7 +17,13 @@ const NavBar = () => {
                     <Stack direction='horizontal' gap={3}>
                     {
                         user && (
-                        <div className='flex items-center'>
+                        <div className='flex items-center justify-around p-2 gap-3'>
+                             <NavLink to='/profile' className="flex items-center justify-center p-2  ml-[7vw] w-[25px] h-[20px] bg-gray-300 rounded-full overflow-hidden">
+                         <span class="material-symbols-outlined">
+                            person
+                            </span>
+                        </NavLink>
+
                         <NavLink onClick={()=>logoutUser()} to='/login' className="link-light text-decoration-none">
                             <div><span class="material-symbols-outlined text-blue-400 text-2xl  "style= {{fontSize:'1rem'  }} >
                          directions_run</span>
@@ -28,12 +34,7 @@ const NavBar = () => {
                          </NavLink>
 
 
-                         <NavLink to='/profile' className="flex items-center justify-center p-2  ml-[7vw] w-[25px] h-[20px] bg-gray-300 rounded-full overflow-hidden">
-                         <span class="material-symbols-outlined">
-                            person
-                            </span>
-                        </NavLink>
-
+                        
 
 
                             
