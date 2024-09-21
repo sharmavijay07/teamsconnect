@@ -50,17 +50,6 @@
     <script src="assets/js/client.js"></script>
      <script>
        $(function() {
-         window.onload = function() {
-            const user = {{{user}}}; // The user object sent from the backend
-            alert("user in sign hbs",user.name)
-            if (user) {
-                localStorage.setItem('User',JSON.stringify(user));
-                console.log('User stored in localStorage:', user);
-            }
-        };
-
-     
-
     const urlParams = new URLSearchParams(window.location.search);
     var meeting_id = urlParams.get('meetingID');
 
@@ -115,6 +104,4 @@
 </body>
 
 </html>
-
-
 

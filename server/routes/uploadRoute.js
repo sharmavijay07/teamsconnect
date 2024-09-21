@@ -49,7 +49,7 @@ router.post('/', upload.single('file'), (req, res) => {
 
 router.get('/file/:chatId',(req,resp) => {
     const chatId = req.params.chatId
-    const query = `SELECT filePath,uploadedAt FROM files WHERE chatId = ?`;
+    const query = `SELECT filePath,isFile,uploadedAt FROM files WHERE chatId = ?`;
     db.query(query,[chatId],(err,result) => {
         if(err) {
             console.error("Database get error",err);
@@ -71,6 +71,25 @@ const serveFile = (req, res) => {
       }
     });
   };
+
+
+
+const getAllMessages = (req,resp) => {
+    const chatId = req.params.chatId;
+    const query = "SELECT m.id AS messageId,m.chatId,m.senderId,m.text, m.createdAt AS messageCreatedAt, m.updatedAt AS messageUpdatedAt, f.id AS fileId,f.fileName,f.filePath, f.fileType,f.uploadedAt FROM messages m inner JOIN  files f ON m.id = f.chatId  WHERE  m.chatId = ? ORDER BY  m.createdAt;"
+    const newquery ="SELECT m.id AS messageId, m.chatId, m.senderId, m.text, m.createdAt AS messageCreatedAt, m.updatedAt AS messageUpdatedAt, f.id AS fileId, f.fileName, f.filePath, f.fileType, f.uploadedAt FROM messages m LEFT JOIN files f ON m.chatId = f.chatId WHERE m.chatId = ? GROUP BY m.id, f.id ORDER BY m.createdAt, f.uploadedAt"
+    db.query(newquery,[chatId],(err,result) => {
+        if(err) {
+            console.log("Error got",err)
+            resp.status(500).json({err})
+        }
+        else {
+            resp.status(200).json({msg:"Successfully got messages",result:result})
+        }
+    })
+}
+
+router.get('/allMessages/:chatId',getAllMessages)
 router.get('/:filePath',serveFile);
 
 module.exports = router;

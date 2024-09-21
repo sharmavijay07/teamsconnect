@@ -19,7 +19,7 @@
     <!--    <script src="wrtchelper.js"></script>-->
     <script src="./../../app.js"></script>
 
-       <script>
+<script>
         $(function() {
 
             const urlParams = new URLSearchParams(window.location.search);
@@ -73,23 +73,23 @@
         <div class="g-top text-light">
             <div class="top-remote-video-show-wrap d-flex">
 
-                <div id="meetingContainer" style="display: none;flex-basis: 75%;">
+                <div id="meetingContainer" style="display: none;flex-basis: 95%;">
                     <h1 id='meetingname'></h1>
                     <div class="call-wrap " style="background-color: #bfdbfe'/; ">
                         <!-- <div style="width:200px;height:300px;float:left;overflow-y: scroll;display:none" id="messages">
                             <div><input type="text" id="msgbox" /><button id="btnsend">Send</button></div>
                         </div> -->
                         <div id='divUsers' class="video-wrap" style="display:none;display: flex;flex-wrap: wrap;">
-                            <div id="me" class="userbox div-center-column">
+                            <div id="me" class="userbox ">
                                 <h2 class="display-center" style="font-size: 14px;"></h2>
                                 <div class="display-center">
-                                    <video autoplay muted id="localVideoCtr" />
+                                    <video class="video_box" autoplay muted id="localVideoCtr" />
                                 </div>
                             </div>
-                            <div id="otherTemplate" class="userbox div-center-column" style="display:none">
+                            <div id="otherTemplate" class="userbox " style="display:none">
                                 <h2 class="display-center" style="font-size: 14px;"></h2>
                                 <div class="display-center">
-                                    <video autoplay muted id="remoteVideoCtr111"></video>
+                                    <video autoplay muted video_box id="remoteVideoCtr111"></video>
                                     <audio autoplay controls style="display:none" id="remoteAudioCtr111"></audio>
                                 </div>
                             </div>
