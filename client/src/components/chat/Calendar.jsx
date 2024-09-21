@@ -17,7 +17,7 @@ const CalendarComponent = () => {
   const [eventEndTime, setEventEndTime] = useState('');
   const [eventParticipants, setEventParticipants] = useState('');
   const [eventLink, setEventLink] = useState('');
-  const [isRecurring, setIsRecurring] = useState(false);
+  const [eventRecurrence, setEventRecurrence] = useState('none'); // none, daily, weekly, monthly
   const [isOpen, setIsOpen] = useState(false);
   const [currentEvent, setCurrentEvent] = useState(null);
 
@@ -43,7 +43,7 @@ const CalendarComponent = () => {
     setEventEndTime(event ? event.endTime : '');
     setEventParticipants(event ? event.participants.join(', ') : '');
     setEventLink(event ? event.link : '');
-    setIsRecurring(event ? event.isRecurring : false);
+    setEventRecurrence(event ? event.recurrence : 'none');
     setIsOpen(true);
   };
 
@@ -56,7 +56,7 @@ const CalendarComponent = () => {
     setEventEndTime('');
     setEventParticipants('');
     setEventLink('');
-    setIsRecurring(false);
+    setEventRecurrence('none');
   };
 
   const handleAddEvent = () => {
@@ -71,7 +71,7 @@ const CalendarComponent = () => {
         participants: participantsArray,
         link: eventLink,
         id: Date.now(),
-        isRecurring,
+        recurrence: eventRecurrence,
       };
 
       setEvents((prevEvents) => {
@@ -80,10 +80,27 @@ const CalendarComponent = () => {
           [dateString]: [...(prevEvents[dateString] || []), newEvent],
         };
 
-        if (isRecurring) {
-          for (let i = 1; i <= 5; i++) {
+        // Handle recurrence
+        let recurrenceDays = 0;
+        switch (eventRecurrence) {
+          case 'daily':
+            recurrenceDays = 1;
+            break;
+          case 'weekly':
+            recurrenceDays = 7;
+            break;
+          case 'monthly':
+            recurrenceDays = 30; // Approximation for simplicity
+            break;
+          default:
+            recurrenceDays = 0;
+            break;
+        }
+
+        for (let i = 1; i <= 5; i++) {
+          if (recurrenceDays > 0) {
             const nextDate = new Date(date);
-            nextDate.setDate(date.getDate() + i);
+            nextDate.setDate(date.getDate() + i * recurrenceDays);
             const nextDateString = nextDate.toDateString();
             updatedEvents[nextDateString] = [
               ...(updatedEvents[nextDateString] || []),
@@ -112,7 +129,7 @@ const CalendarComponent = () => {
             endTime: eventEndTime,
             participants: eventParticipants.split(',').map(participant => participant.trim()),
             link: eventLink,
-            isRecurring,
+            recurrence: eventRecurrence,
           }
         : event
     );
@@ -201,7 +218,7 @@ const CalendarComponent = () => {
                       >
                         <h4>
                           {event.input} ({event.startTime} - {event.endTime}) 
-                          {event.isRecurring && <span>🔁</span>}
+                          {event.recurrence !== 'none' && <span>🔁</span>}
                         </h4>
                         <p>{event.description}</p>
                         <p>Participants: {event.participants.join(', ')}</p>
@@ -263,14 +280,15 @@ const CalendarComponent = () => {
             onChange={(e) => setEventLink(e.target.value)}
             placeholder="Meeting Link"
           />
-          <label>
-            <input
-              type="checkbox"
-              checked={isRecurring}
-              onChange={(e) => setIsRecurring(e.target.checked)}
-            />
-            Recurring Meeting
-          </label>
+          <select
+            value={eventRecurrence}
+            onChange={(e) => setEventRecurrence(e.target.value)}
+          >
+            <option value="none">No Recurrence</option>
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+          </select>
         </div>
         <div className="modal-actions">
           <button onClick={currentEvent ? handleEditEvent : handleAddEvent}>
