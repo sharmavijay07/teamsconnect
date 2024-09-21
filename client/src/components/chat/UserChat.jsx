@@ -22,7 +22,7 @@ const UserChat = ({ chat, user }) => {
       <div
         direction="horizontal"
         gap={1}
-        className=" flex justify-between  border-b-2 rounded-xl mx-1 p-1 border-gray-600/40 bg-gradient-to-r from-blue-200 to-blue-400 transform h-50 transition duration-200 hover:bg-blue-200"
+        className=" flex justify-between  border-b-2 rounded-xl mx-1 p-1 border-gray-600/40 bg-gradient-to-b from-blue-200 to-blue-300 transform h-50 transition duration-200 hover:bg-blue-200"
         role="button"
       >
         <div className="d-flex  ">

@@ -2,19 +2,20 @@ import { useContext } from 'react';
 import {Nav,Navbar,Stack,Container} from 'react-bootstrap'
 import {NavLink} from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext';
+import { Content } from '@radix-ui/react-dialog';
 
 const NavBar = () => {
     const {user,logoutUser} = useContext(AuthContext)
     return ( 
-        <Navbar bg='dark' className='' style={{height:'5vh'}}>
-            <Container>
+        <Navbar bg='dark' justify-content='space-around' className='' style={{height:'5vh'}}>
+            <Container className='flex'>
                 <h2>
                     
-                <NavLink to='/' className="link-light text-deco ration-none">TeamsConnect</NavLink>
+                <NavLink to='/' className="mr-6 link-light text-deco ration-none items-start">TeamsConnect</NavLink>
                 </h2>
-                {user && <span className='text-warning'>Logged in as {user?.name}</span>}
+                {user && <span className='text-warning ml-8'>Logged in as {user?.name}</span>}
                 <Nav>
-                    <Stack direction='horizontal' gap={3}>
+                    <Stack direction='horizontal' className='flex justify-between' gap={3}>
                     {
                         user && (
                         <div className='flex items-center justify-around p-2 gap-3'>

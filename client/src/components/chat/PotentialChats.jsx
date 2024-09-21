@@ -9,7 +9,7 @@ const PotentialChats = () => {
     const searchContainerRef = useRef(null);
 
     const filteredChats = potentialChats?.filter((chat) =>
-        chat.name.toLowerCase().includes(searchTerm.toLowerCase())
+        chat.name?.toLowerCase().includes(searchTerm?.toLowerCase())
     );
 
     const handleClickOutside = (event) => {
