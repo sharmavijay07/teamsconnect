@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import NavBar from "../NavBar";
 import Sidebar from "../chat/SideBar";
 
+
 const Profile = () => {
   const { user, setUser } = useContext(AuthContext);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -220,16 +221,27 @@ const Profile = () => {
     }
   };
 
+  // db.query(
+  //   "INSERT INTO users(name, email, password, phone_no,) VALUES(?,?,?)",
+  //   [name, email, hashedPassword],
+  //   (err, result) => {
+  //     if (err) {
+  //       return resp.status(500).json({
+  //         message: "Database error",
+  //         error: err,
+  //       });
+  //     }})
+
   return (
     <>
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen ">
         <NavBar />
-        <div className="flex flex-1 bg-gradient bg-blue-100">
+        <div className="flex flex-1 bg-gradient-to-r from-blue-100 to-blue-200">  {/*bg-[url('./assets/group2.png')] */}
           <Sidebar />
 
           <div className="flex flex-col items-center w-[35vw] m-2 rounded-3 shadow-2xl">
             {/* Profile section with partitioned background */}
-            <div className="relative w-full h-[30vh] bg-gradient-to-r from-blue-300 to-blue-300 rounded-3 shadow-xl">
+            <div className="relative w-full h-[30vh] bg-gradient-to-r from-blue-300 to-blue-400 rounded-3 shadow-xl">
               {/* Profile Picture */}
               <div
                 className="absolute w-[30vh] h-[30vh] rounded-full bg-gray-300 shadow-2xl border-none"
@@ -266,23 +278,33 @@ const Profile = () => {
             </div>
           </div>
 
-          <div className=" bg-blue-400 m-3 border-gray-300 rounded-3 w-full">
-            <div className="bg-blue-200 h-[40vh]  p-1 m-3 border-gray-300 rounded-3">
+          <div className=" flex flex-col border-gray-300 rounded-3 w-full  ">
+            <div className="flex justify-center items-center bg-blue-300 h-[45vh]  p-1 m-2 border-gray-300 rounded-3  ">
               Activity
             </div>
-            <div className="bg-blue-200 h-[40vh]  p-2 m-3 border-gray-300 rounded-3">
-              3rd box for analytics or reports
+            <div className=" flex justify-between h-[45vh]  border-gray-300 rounded-3 m-2 gap-3">
+              <div className=" flex justify-center w-50 rounded-3 bg-gradient-to-r from-blue-400 to-blue-500 items-center">
+              reports
+              </div>
+              <div className=" flex justify-center w-50 bg-gradient-to-r from-blue-400 to-blue-500 rounded-3 items-center" > 
+               for analytics or 
+              </div>
             </div>
           </div>
         </div>
       </div>
 
+
+{/* updations Model starts here  */}
+
+
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         contentLabel="Update Profile"
-        className="bg-gradient-to-r from-blue-500 to-gray-400 border-none p-5 rounded-5 w-auto overflow-auto"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center"
+        className=" bg-blue-300 p-5 rounded-5 w-auto "
+        overlayClassName="fixed inset-0 flex items-center justify-center 
+         "
       >
         <div className="flex gap-5">
           <div className="grid items-center justify-center">
@@ -341,7 +363,7 @@ const Profile = () => {
                 Phone Number:
               </label>
               <input
-                id="phone"
+                id="phone_no"
                 type="text"
                 className="border border-gray-300 rounded-3 p-2 mb-2"
                 value={phone}
@@ -356,10 +378,10 @@ const Profile = () => {
                 type="date"
                 className="border border-gray-300 rounded-3 p-2 mb-2"
                 value={dob}
-                onChange={(e) => setDob(e.target.value)}
+                onChange={(e) => setDob(e.target.value.dob)}
               />
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center gap-2">
               <label
                 className="text-sm font-semibold p-2"
                 htmlFor="profilePicture"
@@ -370,13 +392,13 @@ const Profile = () => {
                 id="profilePicture"
                 type="file"
                 accept="image/*"
-                className="border border-gray-400 rounded-3 p-2"
+                className="border border-gray-400 rounded-3 p-2 "
                 onChange={handleFileChange}
               />
 
               {!isCameraOpen && (
                 <button
-                  className="p-2 w-auto bg-blue-500 text-white rounded-3 cursor-pointer mt-4"
+                  className="p-2 w-auto bg-blue-500 text-white rounded-3 cursor-pointer"
                   onClick={startCamera}
                 >
                   Take a Photo
