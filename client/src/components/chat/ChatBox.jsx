@@ -291,7 +291,7 @@ const ChatBox = () => {
     return (
         <>
            <div gap={4} className='h-[95vh] w-[76vw] flex flex-col justify-between bg-b-30 text-center' style={{ color: "white" }}>
-            <div className="bg-gray-400 flex rounded-[5px] border-1 border-black flex justify-between w-[76vw]">
+            <div className="bg-gray-400 rounded-[5px] border-1 border-black flex justify-between w-[76vw]">
                 <strong class="text-black mr-80  p-1  ml-3   " title="user Name">
                     {recipientUser.map((user) => user.name).join(',')}
                 </strong> 
@@ -314,8 +314,8 @@ const ChatBox = () => {
                     <> {message.isFile?
                          <div className={
                             `${message?.senderId == user?.id
-                                ? "bg-gray-400/40 w-fit max-w-[70%] min-w-[15%] p-1  px-3 mr-2  rounded-[8px]  mt-2 ml-auto flex-grow-0  break-words  text-wrap  text-dark "
-                                : "bg-blue-300/70 w-fit max-w-[70%] min-w-[15%] p-1 px-3 ml-2  rounded-[8px]  mt-1 flex-grow-0   break-words  text-dark"
+                                ? " w-auto max-w-[90%] min-w-[15%] p-1 rounded-[8px]  mt-2 ml-auto flex flex-col flex-grow-0 items-end  break-words  text-wrap  text-dark "
+                                : " w-fit max-w-[70%] min-w-[15%] p-1s ml-2  rounded-[8px]  mt-2 flex flex-col flex-grow-0   break-words  text-dark"
                             }`}
                             ref={scroll}   >
                     {message.filePath.endsWith('.png') || message.filePath.endsWith('.jpg') || message.filePath.endsWith('.gif') ? (

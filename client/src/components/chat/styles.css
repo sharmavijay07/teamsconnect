@@ -1,130 +1,144 @@
 /* Sidebar styles */
 .sidebar {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 60px; /* Small width to show only icons */
-    background-color: #60a5fa;
-    color: white;
-    padding: 20px 10px; /* Adjusted padding for icons only */
-    height: 95vh;
-    
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 60px;
+  background-color: #60a5fa;
+  color: white;
+  padding: 20px 10px;
+  height: 95vh;
 }
 
 .sidebar-icons a {
-    display: flex;
-    justify-content: center;
-    color: #252525;
-    margin: 15px 0;
-    text-decoration: none;
-
+  display: flex;
+  justify-content: center;
+  color: #252525;
+  margin: 15px 0;
+  text-decoration: none;
 }
 
 .sidebar-icons a:hover {
-    color: #6c6c6c; /* Optional hover effect */
+  color: #6c6c6c;
 }
 
 .sidebar-icons svg {
-    font-size: 24px; /* Adjust icon size */
+  font-size: 24px;
 }
 
-/* src/Calendar.css */
+/* Calendar container */
+/* General Container */
 .calendar-container {
   text-align: center;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  background-color: #f0f4f8;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
-  color: #4a90e2;
-}
-
+/* Calendar Styling */
 .react-calendar {
   border: 1px solid #ddd;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
+/* Event List Styling */
 .events-list {
-  margin-top: 20px;
+  margin-top: 30px;
+  padding: 0;
+  list-style-type: none;
 }
 
 .events-list h3 {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
-.events-list ul {
-  list-style: none;
-  padding: 0;
-}
-
+/* Event Item Styling */
 .event-item {
   background: #e3f2fd;
-  border: 1px solid #90caf9;
   border-radius: 5px;
   padding: 15px;
-  margin: 5px 0;
-  transition: background 0.3s ease;
+  margin: 10px 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
 }
 
-.event-item:hover {
-  background: #bbdefb;
-}
-
-.event-item h4 {
-  margin: 0;
-}
-
+/* Buttons */
+.add-event-btn,
 .event-item button {
-  margin-left: 10px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.add-event-btn:hover,
+.event-item button:hover {
+  background-color: #2563eb;
+  transform: scale(1.05);
 }
 
 /* Modal Styles */
 .ReactModal__Overlay {
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.75) !important;
 }
 
 .ReactModal__Content {
-  padding: 20px;
+  max-width: 500px;
+  margin: auto;
+  padding: 25px;
   border-radius: 10px;
-  background: #fff;
+  background-color: white;
 }
 
-textarea {
-  width: 100%;
-  height: 60px;
-  margin: 10px 0;
+/* Modal Inputs */
+.modal-inputs input,
+.modal-inputs textarea {
+  margin-bottom: 15px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  transition: border 0.3s;
 }
 
-.add-event-btn {
+.modal-inputs input:focus,
+.modal-inputs textarea:focus {
+  border: 1px solid #3b82f6;
+}
+
+/* Modal Action Buttons */
+.modal-actions {
   display: flex;
-  align-items: center;
-  background-color: #4a90e2;
-  color: white;
-  padding: 10px 15px;
+  justify-content: space-between;
+}
+
+.modal-actions button {
+  padding: 12px 24px;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background 0.3s, transform 0.2s;
 }
 
-.add-event-btn:hover {
-  background-color: #357ab8;
+.modal-actions button.save {
+  background-color: #3b82f6;
+  color: white;
 }
 
-  @media (max-width: 768px) {
-    .calendar-container {
-      padding: 10px;
-    }
-    .events-list li {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    .events-list button {
-      margin-top: 5px;
-      margin-left: 0;
-    }
-  }
+.modal-actions button.save:hover {
+  background-color: #2563eb;
+}
+
+.modal-actions button.cancel {
+  background-color: #f87171;
+  color: white;
+}
+
+.modal-actions button.cancel:hover {
+  background-color: #ef4444;
+}
