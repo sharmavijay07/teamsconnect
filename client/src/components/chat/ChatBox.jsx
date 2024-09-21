@@ -314,8 +314,8 @@ const ChatBox = () => {
                     <> {message.isFile?
                          <div className={
                             `${message?.senderId == user?.id
-                                ? "bg-gray-400/40 w-fit max-w-[70%] min-w-[15%] p-1  px-3 mr-2  rounded-[8px]  mt-2 ml-auto flex-grow-0  break-words  text-wrap  text-dark "
-                                : "bg-blue-300/70 w-fit max-w-[70%] min-w-[15%] p-1 px-3 ml-2  rounded-[8px]  mt-1 flex-grow-0   break-words  text-dark"
+                                ? " w-auto max-w-[90%] min-w-[15%] p-1 rounded-[8px]  mt-2 ml-auto flex flex-col flex-grow-0 items-end  break-words  text-wrap  text-dark "
+                                : " w-fit max-w-[70%] min-w-[15%] p-1s ml-2  rounded-[8px]  mt-2 flex flex-col flex-grow-0   break-words  text-dark"
                             }`}
                             ref={scroll}   >
                     {message.filePath.endsWith('.png') || message.filePath.endsWith('.jpg') || message.filePath.endsWith('.gif') ? (

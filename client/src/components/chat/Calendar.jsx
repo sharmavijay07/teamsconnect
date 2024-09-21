@@ -246,6 +246,8 @@ const CalendarComponent = () => {
   const [eventDescription, setEventDescription] = useState('');
   const [eventStartTime, setEventStartTime] = useState('');
   const [eventEndTime, setEventEndTime] = useState('');
+  const [eventParticipants, setEventParticipants] = useState('');
+  const [eventLink, setEventLink] = useState('');
   const [isRecurring, setIsRecurring] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [currentEvent, setCurrentEvent] = useState(null);
@@ -270,6 +272,8 @@ const CalendarComponent = () => {
     setEventDescription(event ? event.description : '');
     setEventStartTime(event ? event.startTime : '');
     setEventEndTime(event ? event.endTime : '');
+    setEventParticipants(event ? event.participants.join(', ') : '');
+    setEventLink(event ? event.link : '');
     setIsRecurring(event ? event.isRecurring : false);
     setIsOpen(true);
   };
@@ -281,17 +285,22 @@ const CalendarComponent = () => {
     setEventDescription('');
     setEventStartTime('');
     setEventEndTime('');
+    setEventParticipants('');
+    setEventLink('');
     setIsRecurring(false);
   };
 
   const handleAddEvent = () => {
     const dateString = date.toDateString();
     if (eventInput.trim() !== '' && eventStartTime && eventEndTime) {
+      const participantsArray = eventParticipants.split(',').map(participant => participant.trim());
       const newEvent = {
         input: eventInput,
         description: eventDescription,
         startTime: eventStartTime,
         endTime: eventEndTime,
+        participants: participantsArray,
+        link: eventLink,
         id: Date.now(),
         isRecurring,
       };
@@ -324,17 +333,15 @@ const CalendarComponent = () => {
 
   const handleEditEvent = () => {
     const dateString = date.toDateString();
-    const updatedEvents = events[dateString].map((event) =>
-      event.id === currentEvent.id
-        ? {
-            ...event,
-            input: eventInput,
-            description: eventDescription,
-            startTime: eventStartTime,
-            endTime: eventEndTime,
-            isRecurring,
-          }
-        : event
+    const updatedEvents = events[dateString].map(event =>
+      event.id === currentEvent.id ? {
+        ...event,
+        input: eventInput,
+        description: eventDescription,
+        startTime: eventStartTime,
+        endTime: eventEndTime,
+        isRecurring,
+      } : event
     );
 
     setEvents((prevEvents) => ({
@@ -376,6 +383,10 @@ const CalendarComponent = () => {
     }));
   };
 
+  const handleJoinMeeting = (link) => {
+    window.open(link, '_blank');
+  };
+
   return (
     <div className="calendar-container">
       <h1>My Calendar</h1>
@@ -383,23 +394,14 @@ const CalendarComponent = () => {
       <p>Selected Date: {date.toDateString()}</p>
 
       <button className="add-event-btn" onClick={() => handleOpenModal(null)}>
-        <span
-          className="material-icons"
-          style={{ verticalAlign: 'middle', marginRight: '5px' }}
-        >
-          add
-        </span>
-        Add Event
+      <span className="material-icons" style={{ verticalAlign: 'middle', marginRight: '5px' }}>add</span>
+      Add Event
       </button>
 
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId={date.toDateString()}>
           {(provided) => (
-            <div
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-              className="events-list"
-            >
+            <div {...provided.droppableProps} ref={provided.innerRef} className="events-list">
               <h3>Events:</h3>
               <ul>
                 {(events[date.toDateString()] || []).map((event, index) => (
@@ -420,12 +422,8 @@ const CalendarComponent = () => {
                           {event.isRecurring && <span>🔁</span>}
                         </h4>
                         <p>{event.description}</p>
-                        <button onClick={() => handleOpenModal(event)}>
-                          Edit
-                        </button>
-                        <button onClick={() => handleDeleteEvent(event)}>
-                          Delete
-                        </button>
+                        <button onClick={() => handleOpenModal(event)}>Edit</button>
+                        <button onClick={() => handleDeleteEvent(event)}>Delete</button>
                       </li>
                     )}
                   </Draggable>
@@ -437,45 +435,42 @@ const CalendarComponent = () => {
         </Droppable>
       </DragDropContext>
 
-      <Modal isOpen={isOpen} onRequestClose={handleCloseModal}>
+      <Modal isOpen={isOpen} onRequestClose={handleCloseModal} contentLabel="Event Modal">
         <h2>{currentEvent ? 'Edit Event' : 'Add Event'}</h2>
-        <div className="modal-inputs">
+        <input
+          type="text"
+          value={eventInput}
+          onChange={e => setEventInput(e.target.value)}
+          placeholder="Event Name"
+          required
+        />
+        <textarea
+          value={eventDescription}
+          onChange={e => setEventDescription(e.target.value)}
+          placeholder="Event Description"
+        />
+        <input
+          type="time"
+          value={eventStartTime}
+          onChange={e => setEventStartTime(e.target.value)}
+        />
+        <input
+          type="time"
+          value={eventEndTime}
+          onChange={e => setEventEndTime(e.target.value)}
+        />
+        <label>
           <input
-            type="text"
-            value={eventInput}
-            onChange={(e) => setEventInput(e.target.value)}
-            placeholder="Event Name"
+            type="checkbox"
+            checked={isRecurring}
+            onChange={(e) => setIsRecurring(e.target.checked)}
           />
-          <textarea
-            value={eventDescription}
-            onChange={(e) => setEventDescription(e.target.value)}
-            placeholder="Event Description"
-          />
-          <input
-            type="time"
-            value={eventStartTime}
-            onChange={(e) => setEventStartTime(e.target.value)}
-          />
-          <input
-            type="time"
-            value={eventEndTime}
-            onChange={(e) => setEventEndTime(e.target.value)}
-          />
-          <label>
-            <input
-              type="checkbox"
-              checked={isRecurring}
-              onChange={(e) => setIsRecurring(e.target.checked)}
-            />
-            Recurring Event
-          </label>
-        </div>
-        <div className="modal-actions">
-          <button onClick={currentEvent ? handleEditEvent : handleAddEvent}>
-            {currentEvent ? 'Update Event' : 'Add Event'}
-          </button>
-          <button onClick={handleCloseModal}>Close</button>
-        </div>
+          Recurring Event
+        </label>
+        <button onClick={currentEvent ? handleEditEvent : handleAddEvent}>
+          {currentEvent ? 'Update Event' : 'Add Event'}
+        </button>
+        <button onClick={handleCloseModal}>Close</button>
       </Modal>
     </div>
   );

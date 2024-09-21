@@ -41,6 +41,7 @@
   border: 1px solid #ddd;
   border-radius: 10px;
   margin-bottom: 30px;
+<<<<<<< HEAD
   background-color: white;
 }
 
@@ -50,6 +51,11 @@
 }
 
 /* Events List */
+=======
+}
+
+/* Event List Styling */
+>>>>>>> 51ce731bb75df9b73b819a5bf557e6949013f69d
 .events-list {
   margin-top: 30px;
   padding: 0;
@@ -57,6 +63,7 @@
 }
 
 .events-list h3 {
+<<<<<<< HEAD
   margin-bottom: 10px;
 }
 
@@ -168,6 +175,87 @@
   color: white;
 }
 
+=======
+  margin-bottom: 15px;
+}
+
+/* Event Item Styling */
+.event-item {
+  background: #e3f2fd;
+  border-radius: 5px;
+  padding: 15px;
+  margin: 10px 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Buttons */
+.add-event-btn,
+.event-item button {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.add-event-btn:hover,
+.event-item button:hover {
+  background-color: #2563eb;
+  transform: scale(1.05);
+}
+
+/* Modal Styles */
+.ReactModal__Overlay {
+  background-color: rgba(0, 0, 0, 0.75) !important;
+}
+
+.ReactModal__Content {
+  max-width: 500px;
+  margin: auto;
+  padding: 25px;
+  border-radius: 10px;
+  background-color: white;
+}
+
+/* Modal Inputs */
+.modal-inputs input,
+.modal-inputs textarea {
+  margin-bottom: 15px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  transition: border 0.3s;
+}
+
+.modal-inputs input:focus,
+.modal-inputs textarea:focus {
+  border: 1px solid #3b82f6;
+}
+
+/* Modal Action Buttons */
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-actions button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.modal-actions button.save {
+  background-color: #3b82f6;
+  color: white;
+}
+
+>>>>>>> 51ce731bb75df9b73b819a5bf557e6949013f69d
 .modal-actions button.save:hover {
   background-color: #2563eb;
 }
