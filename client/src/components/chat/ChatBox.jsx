@@ -291,7 +291,7 @@ const ChatBox = () => {
     return (
         <>
         <div gap={4} className='h-[95vh] w-[76vw] flex flex-col justify-between bg-b-30 text-center' style={{ color: "white" }}>
-            <div className="bg-gray-400 flex rounded-[5px] border-1 border-black flex justify-between w-[76vw]">
+            <div className="bg-gray-400 rounded-[5px] border-1 border-black flex justify-between w-[76vw]">
                 <strong class="text-black mr-80  p-1  ml-3   " title="user Name">
                     {recipientUser.map((user) => user.name).join(',')}
                 </strong> 
