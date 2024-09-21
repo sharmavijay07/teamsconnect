@@ -82,6 +82,7 @@ const ChatBox = () => {
           setCombinedMessages(combinedMessage)
             
               console.log("combinedMessages",combinedMessages)
+              console.log("files in combined",file)
              
             })
             .catch((err) => {
@@ -109,7 +110,7 @@ const ChatBox = () => {
         .catch((err) => {
           console.warn("Error of allMessages",err)
         })
-      },[currentChat,textMessage,file])
+      },[file,combinedMessages,currentChat])
       
       const getFileUrl = (filePath) => {
         const formattedPath = filePath.replace(/\\/g, '/');
@@ -175,6 +176,7 @@ const ChatBox = () => {
         const formData = new FormData();
         formData.append('file', selectedFile);
         formData.append('chatId', currentChat?.id);
+        formData.append('senderId',user.id);
 
         try {
             const response = await fetch('http://localhost:4500/api/upload', {
@@ -310,7 +312,12 @@ const ChatBox = () => {
                     {/* <FileDisplay /> */}
                 {combinedMessages && combinedMessages?.map((message, index) =>
                     <> {message.isFile?
-                         <div>
+                         <div className={
+                            `${message?.senderId == user?.id
+                                ? "bg-gray-400/40 w-fit max-w-[70%] min-w-[15%] p-1  px-3 mr-2  rounded-[8px]  mt-2 ml-auto flex-grow-0  break-words  text-wrap  text-dark "
+                                : "bg-blue-300/70 w-fit max-w-[70%] min-w-[15%] p-1 px-3 ml-2  rounded-[8px]  mt-1 flex-grow-0   break-words  text-dark"
+                            }`}
+                            ref={scroll}   >
                     {message.filePath.endsWith('.png') || message.filePath.endsWith('.jpg') || message.filePath.endsWith('.gif') ? (
               <img
                 src={getFileUrl(message.filePath)}
@@ -319,7 +326,7 @@ const ChatBox = () => {
               />
             ) : (
               // Download link for non-image files
-              <a href={getFileUrl(message.filePath)} download>
+              <a  href={getFileUrl(message.filePath)} download>
                 Download {message.filePath.split('/').pop()}
               </a>
             )}
