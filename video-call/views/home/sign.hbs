@@ -49,9 +49,12 @@
     <script src="assets/js/materialize.min.js"></script>
     <script src="assets/js/client.js"></script>
      <script>
+        
        $(function() {
     const urlParams = new URLSearchParams(window.location.search);
     var meeting_id = urlParams.get('meetingID');
+
+
 
     if (!meeting_id) {
         // Handling 'Host' and 'Join' Buttons

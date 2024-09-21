@@ -120,7 +120,7 @@ useEffect(() => {
 
   useEffect(() => {
     const user = localStorage.getItem("User")
-    axios.post('http://localhost:3001/api/getUser',{user})
+    axios.post('http://localhost:3002/api/getUser',{user})
     .then((resp) => {
       console.log("successfully passed the user to port 3001",resp)
     })
