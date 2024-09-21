@@ -15,7 +15,7 @@ const createToken = (userId) => {
 
 const registerUser = (req, resp) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, phone, dob } = req.body;
 
     if (!name || !email || !password)
       return resp.status(400).json({ message: "All fields are required" });
@@ -163,6 +163,42 @@ const updateMail = (req, resp) => {
     }
   });
 };
+
+const updatePhone = (req, resp) => {
+  const userId = req.params.userId;
+  const newPhone = req.body.phone;
+  const query = `update users set email="${newPhone}" where id=?`;
+  db.query(query, [userId], (err, result) => {
+    if (err) {
+      console.log("Database error", err);
+      resp.status(400).json({ message: "Database error", error: err });
+    } else {
+      console.log("Phone updated successfully");
+      resp
+        .status(200)
+        .json({ message: "Phone updated successfully", response: result });
+    }
+  });
+};
+
+const updateDob = (req, resp) => {
+  const userId = req.params.userId;
+  const newDob = req.body.dob;
+  const query = `update users set email="${newDob}" where id=?`;
+  db.query(query, [userId], (err, result) => {
+    if (err) {
+      console.log("Database error", err);
+      resp.status(400).json({ message: "Database error", error: err });
+    } else {
+      console.log("Dob updated successfully");
+      resp
+        .status(200)
+        .json({ message: "Dob updated successfully", response: result });
+    }
+  });
+};
+
+
 module.exports = {
   registerUser,
   userLogin,
@@ -170,4 +206,6 @@ module.exports = {
   getUser,
   updateName,
   updateMail,
+  updatePhone,
+  updateDob,
 };
