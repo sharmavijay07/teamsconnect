@@ -15,6 +15,8 @@ const CalendarComponent = () => {
   const [eventDescription, setEventDescription] = useState('');
   const [eventStartTime, setEventStartTime] = useState('');
   const [eventEndTime, setEventEndTime] = useState('');
+  const [eventParticipants, setEventParticipants] = useState('');
+  const [eventLink, setEventLink] = useState('');
   const [isRecurring, setIsRecurring] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [currentEvent, setCurrentEvent] = useState(null);
@@ -39,6 +41,8 @@ const CalendarComponent = () => {
     setEventDescription(event ? event.description : '');
     setEventStartTime(event ? event.startTime : '');
     setEventEndTime(event ? event.endTime : '');
+    setEventParticipants(event ? event.participants.join(', ') : '');
+    setEventLink(event ? event.link : '');
     setIsRecurring(event ? event.isRecurring : false);
     setIsOpen(true);
   };
@@ -50,17 +54,22 @@ const CalendarComponent = () => {
     setEventDescription('');
     setEventStartTime('');
     setEventEndTime('');
+    setEventParticipants('');
+    setEventLink('');
     setIsRecurring(false);
   };
 
   const handleAddEvent = () => {
     const dateString = date.toDateString();
     if (eventInput.trim() !== '' && eventStartTime && eventEndTime) {
+      const participantsArray = eventParticipants.split(',').map(participant => participant.trim());
       const newEvent = {
         input: eventInput,
         description: eventDescription,
         startTime: eventStartTime,
         endTime: eventEndTime,
+        participants: participantsArray,
+        link: eventLink,
         id: Date.now(),
         isRecurring,
       };
@@ -101,6 +110,8 @@ const CalendarComponent = () => {
             description: eventDescription,
             startTime: eventStartTime,
             endTime: eventEndTime,
+            participants: eventParticipants.split(',').map(participant => participant.trim()),
+            link: eventLink,
             isRecurring,
           }
         : event
@@ -145,6 +156,10 @@ const CalendarComponent = () => {
     }));
   };
 
+  const handleJoinMeeting = (link) => {
+    window.open(link, '_blank');
+  };
+
   return (
     <div className="calendar-container">
       <h1>My Calendar</h1>
@@ -158,7 +173,7 @@ const CalendarComponent = () => {
         >
           add
         </span>
-        Add Event
+        Schedule Meeting
       </button>
 
       <DragDropContext onDragEnd={handleDragEnd}>
@@ -169,7 +184,7 @@ const CalendarComponent = () => {
               ref={provided.innerRef}
               className="events-list"
             >
-              <h3>Events:</h3>
+              <h3>Meetings:</h3>
               <ul>
                 {(events[date.toDateString()] || []).map((event, index) => (
                   <Draggable
@@ -189,12 +204,18 @@ const CalendarComponent = () => {
                           {event.isRecurring && <span>🔁</span>}
                         </h4>
                         <p>{event.description}</p>
-                        <button onClick={() => handleOpenModal(event)}>
-                          Edit
-                        </button>
-                        <button onClick={() => handleDeleteEvent(event)}>
-                          Delete
-                        </button>
+                        <p>Participants: {event.participants.join(', ')}</p>
+                        <p>
+                          <button onClick={() => handleJoinMeeting(event.link)}>
+                            Join Meeting
+                          </button>
+                          <button onClick={() => handleOpenModal(event)}>
+                            Edit
+                          </button>
+                          <button onClick={() => handleDeleteEvent(event)}>
+                            Delete
+                          </button>
+                        </p>
                       </li>
                     )}
                   </Draggable>
@@ -207,18 +228,18 @@ const CalendarComponent = () => {
       </DragDropContext>
 
       <Modal isOpen={isOpen} onRequestClose={handleCloseModal}>
-        <h2>{currentEvent ? 'Edit Event' : 'Add Event'}</h2>
+        <h2>{currentEvent ? 'Edit Meeting' : 'Schedule Meeting'}</h2>
         <div className="modal-inputs">
           <input
             type="text"
             value={eventInput}
             onChange={(e) => setEventInput(e.target.value)}
-            placeholder="Event Name"
+            placeholder="Meeting Title"
           />
           <textarea
             value={eventDescription}
             onChange={(e) => setEventDescription(e.target.value)}
-            placeholder="Event Description"
+            placeholder="Meeting Description"
           />
           <input
             type="time"
@@ -230,18 +251,30 @@ const CalendarComponent = () => {
             value={eventEndTime}
             onChange={(e) => setEventEndTime(e.target.value)}
           />
+          <input
+            type="text"
+            value={eventParticipants}
+            onChange={(e) => setEventParticipants(e.target.value)}
+            placeholder="Participants (comma-separated)"
+          />
+          <input
+            type="text"
+            value={eventLink}
+            onChange={(e) => setEventLink(e.target.value)}
+            placeholder="Meeting Link"
+          />
           <label>
             <input
               type="checkbox"
               checked={isRecurring}
               onChange={(e) => setIsRecurring(e.target.checked)}
             />
-            Recurring Event
+            Recurring Meeting
           </label>
         </div>
         <div className="modal-actions">
           <button onClick={currentEvent ? handleEditEvent : handleAddEvent}>
-            {currentEvent ? 'Update Event' : 'Add Event'}
+            {currentEvent ? 'Update Meeting' : 'Schedule Meeting'}
           </button>
           <button onClick={handleCloseModal}>Close</button>
         </div>
@@ -251,4 +284,3 @@ const CalendarComponent = () => {
 };
 
 export default CalendarComponent;
- 
