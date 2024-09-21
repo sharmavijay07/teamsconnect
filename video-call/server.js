@@ -4,7 +4,9 @@ const express = require("express");
 const path = require("path");
 const cors = require('cors')
 const exphbs = require("express-handlebars");
+const session = require('express-session')
 const bodyparser = require("body-parser");
+const {user} = require('./controllers/userController')
 
 const employeeController = require("./controllers/employeeController");
 const homeController = require("./controllers/homeController");
@@ -33,10 +35,17 @@ app.engine(
 );
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "hbs");
+app.use(express.json())
 
 // app.listen(3000, () => {
 //   console.log("Express server started at port : 3000");
 // });
+app.use(session({
+    secret: "powerfulkey", // replace with a strong secret key
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 60000 } // Session expiry in milliseconds (optional)
+  }));
 
 app.use("/employee", employeeController);
 app.use("/", homeController);
@@ -51,6 +60,7 @@ const io = require("socket.io")(server);
 //listen on every connection
 io.on("connection", (socket) => {
     console.log(socket.id);
+
 
     socket.on("userconnect", (data) => {
         console.log("userconnect", data.dsiplayName, data.meetingid);

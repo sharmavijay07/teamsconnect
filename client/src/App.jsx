@@ -15,6 +15,7 @@ import UserGroups from './components/chat/UserGroups'
 import Profile from './components/profile/Profile'
 import {useState} from 'react'
 import { ToastContainer } from 'react-toastify';
+import Videohome from './components/chat/videohome'
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
           {/* <Route path="/grouppage" element={<GroupPage />} /> */}
           <Route path="/usergroups" element={<UserGroups />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/videohome" element={<Videohome />} />
 
          
 
