@@ -59,9 +59,12 @@ const Login = () => {
         // </Form>
         // </>
 
-        <div className="flex flex-col justify-center items-end h-90vh mt-10">
-      <img src="/src/assets/login.png" className="absolute bottom-0 left-0 -z-50 w-auto h-auto" alt="a person working on his desk" />
-      <Card className="w-[60vh] mr-20 sm:mr-20 md:mr-25 lg:mr-60 border-0 shadow-none mt-16 bg-none rounded-5">
+        <div className="flex h-[90vh] items-center mt-10 overflow-hidden"> 
+        
+        <img src="/src/assets/login.png" className=" absolute  bottom-0 -z-50 w-auto h-auto" alt="a person working on his desk" />
+      
+        <div className="flex items-center justify-center w-full lg:w-1/2 px-5 lg:px-8 ml-auto ">
+        <Card className="w-full max-w-md border-white">
         <CardHeader className="items-center" >
           <CardTitle>Login</CardTitle>
           <CardTitle>Welcome Back !</CardTitle>
@@ -70,11 +73,11 @@ const Login = () => {
           <Form onSubmit={loginUser}>
             <div className="grid w-full items-center">
               <div className="flex flex-col space-y-1.5">
-                <Label className="relative top-5 w-1/5 ml-4 bg-white p-2" htmlFor="name">E-mail</Label>
+                <Label className="relative text-nowrap top-5 w-1/5 ml-4 bg-white p-2" htmlFor="name">E-mail</Label>
                 <Input className="rounded" id="name" type='email' placeholder='Enter email' onChange={(e)=>updateLoginInfo({...loginInfo,email:e.target.value})} />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label className="relative top-5 w-1/4 ml-4 bg-white p-2" htmlFor="framework">Password</Label>
+                <Label className="relative top-5 w-1/4 ml-4 p-2 bg-white" htmlFor="framework">Password</Label>
                 <Input className="rounded" id="password" type='password' placeholder='Enter password' onChange={(e)=>updateLoginInfo({...loginInfo,password:e.target.value})} />
               </div>
               <br />
@@ -108,6 +111,8 @@ const Login = () => {
 
         </CardFooter>
       </Card>
+      </div>
+      
     </div>
      );
 }
