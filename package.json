@@ -12,6 +12,7 @@
   "dependencies": {
     "concurrently": "^9.0.1",
     "gapi-script": "^1.2.0",
+    "jquery": "^3.7.1",
     "material-icons": "^1.13.12",
     "react-beautiful-dnd": "^13.1.1",
     "react-calendar": "^5.0.0",
