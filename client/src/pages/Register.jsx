@@ -52,16 +52,19 @@ const Register = () => {
         // </Form>
         // </>
 
-        <div className="flex flex-col justify-center items-end h-90vh mt-20">
-      <img src="/src/assets/login.png" className="absolute bottom-0 left-0 -z-50" alt="a person working on his desk" />
-      <Card className="w-[400px] mr-20 sm:mr-20 md:mr-25 lg:mr-60 border-0 shadow-none bg-white rounded-5">
+        <div className="flex items-center h-[90vh] mt-10">
+
+      <img src="/src/assets/login.png" className="absolute bottom-0 left-0 -z-50 w-auto h-auto" alt="a person working on his desk" />
+
+      <div className="flex items-center justify-center w-full lg:w-1/2 px-5 lg:px-8 ml-auto ">
+      <Card className="w-full max-w-md border-white">
         <CardHeader className="items-center" >
           <CardTitle>Register</CardTitle>
           <CardTitle></CardTitle>
         </CardHeader>
         <CardContent>
           <Form onSubmit={registerUser}>
-            <div className="grid w-full items-center">
+            <div className="grid w-full items-center text-nowrap">
             <div className="flex flex-col space-y-1.5">
                 <Label className="relative top-5 w-1/5 ml-4 bg-white p-2" htmlFor="name">Name</Label>
                 <Input className="rounded" id="name" type='text' placeholder='Enter name' onChange={(e)=>updateRegisterInfo({...registerInfo,name:e.target.value})} />
@@ -99,10 +102,11 @@ const Register = () => {
         </CardFooter>
         
         <CardFooter>
-                    <NavLink to='/login'><u className='text-xl'>Login Instead</u></NavLink>
+                    <NavLink to='/login'><u className='text-sm text-gray-700' >Login Instead</u></NavLink>
 
         </CardFooter>
       </Card>
+      </div>
     </div>
 
      );
