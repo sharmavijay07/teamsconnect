@@ -7,7 +7,8 @@ import moment from 'moment';
 import InputImoji from 'react-input-emoji';
 import PotentialChats from "./PotentialChats";
 import UserChat from "./UserChat";
-import FileDisplay from "../fileHandling/FileDisplay";
+// import FileDisplay from "../fileHandling/FileDisplay";
+// import FileUploads from "../fileHandling/FileUploads";
 import axios from 'axios'
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
@@ -363,10 +364,6 @@ const ChatBox = () => {
 
 
             </div>
-
-
-       
-
             
     
             </>
