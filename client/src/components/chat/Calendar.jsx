@@ -4,9 +4,8 @@ import "react-calendar/dist/Calendar.css";
 import Modal from "react-modal";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { gapi } from "gapi-script";
-import "material-icons/iconfont/material-icons.css";
+import "material-icons/iconfont/material-icons.css"; // Ensure this line is correct for your setup
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
 
 Modal.setAppElement("#root");
 
@@ -82,9 +81,7 @@ const CalendarComponent = () => {
         description: eventDescription,
         startTime: eventStartTime,
         endTime: eventEndTime,
-        participants: eventParticipants
-          .split(",")
-          .map((participant) => participant.trim()),
+        participants: eventParticipants.split(",").map((participant) => participant.trim()),
         link: eventLink,
         id: Date.now(),
         recurrence: eventRecurrence,
@@ -94,9 +91,7 @@ const CalendarComponent = () => {
       };
 
       if (!isConflict(dateString, newEvent)) {
-        setEvents((prevEvents) =>
-          addNewEvent(prevEvents, dateString, newEvent)
-        );
+        setEvents((prevEvents) => addNewEvent(prevEvents, dateString, newEvent));
         handleCloseModal();
       } else {
         alert("Event time conflict! Please choose a different time.");
@@ -109,8 +104,7 @@ const CalendarComponent = () => {
   const isConflict = (dateString, newEvent) => {
     const existingEvents = events[dateString] || [];
     return existingEvents.some(
-      (event) =>
-        newEvent.startTime < event.endTime && newEvent.endTime > event.startTime
+      (event) => newEvent.startTime < event.endTime && newEvent.endTime > event.startTime
     );
   };
 
@@ -162,9 +156,7 @@ const CalendarComponent = () => {
             description: eventDescription,
             startTime: eventStartTime,
             endTime: eventEndTime,
-            participants: eventParticipants
-              .split(",")
-              .map((participant) => participant.trim()),
+            participants: eventParticipants.split(",").map((participant) => participant.trim()),
             link: eventLink,
             recurrence: eventRecurrence,
             agenda: eventAgenda,
@@ -180,9 +172,7 @@ const CalendarComponent = () => {
 
   const handleDeleteEvent = (eventToDelete) => {
     const dateString = date.toDateString();
-    const updatedEvents = events[dateString].filter(
-      (event) => event.id !== eventToDelete.id
-    );
+    const updatedEvents = events[dateString].filter((event) => event.id !== eventToDelete.id);
     setEvents((prevEvents) => ({ ...prevEvents, [dateString]: updatedEvents }));
   };
 
@@ -193,9 +183,7 @@ const CalendarComponent = () => {
     const destinationDateString = result.destination.droppableId;
 
     const movedEvent = events[sourceDateString][result.source.index];
-    const updatedSourceEvents = events[sourceDateString].filter(
-      (_, index) => index !== result.source.index
-    );
+    const updatedSourceEvents = events[sourceDateString].filter((_, index) => index !== result.source.index);
 
     setEvents((prevEvents) => ({
       ...prevEvents,
@@ -217,14 +205,21 @@ const CalendarComponent = () => {
 
   return (
     <div className="calendar-container text-center p-8 bg-gray-100 rounded-2xl shadow-lg">
-      <div className="calendar-header bg-slate-500/50 m-2 rounded p-2 ">
-  <      CalendarTodayIcon style={{ verticalAlign: 'middle', marginRight: '5px' }} />
-         Calendar
+      <div className="calendar-header bg-slate-500/50 m-2 rounded p-2">
+        <CalendarTodayIcon style={{ verticalAlign: 'middle', marginRight: '5px' }} />
+        Calendar
       </div>
-      <Calendar className="border border-gray-300 rounded-lg mb-8 bg-blue-400/50 rounded"  onChange={handleDateChange} value={date} />
-      <div className="bg-slate-400 rounded bg-gradient-to-r from-slate-400/50  to-blue-400 text-black mb-4  text-left  max-w-80"><p ><CalendarTodayIcon style={{ verticalAlign: 'middle', marginRight: '0px' }} />
-      Selected Date: {date.toDateString()}</p></div>
-      
+      <Calendar
+        className="border border-gray-300 rounded-lg mb-8 bg-blue-400/50"
+        onChange={handleDateChange}
+        value={date}
+      />
+      <div className="bg-slate-400 rounded bg-gradient-to-r from-slate-400/50 to-blue-400 text-black mb-4 text-left max-w-80">
+        <p>
+          <CalendarTodayIcon style={{ verticalAlign: 'middle', marginRight: '0px' }} />
+          Selected Date: {date.toDateString()}
+        </p>
+      </div>
 
       <button className="add-event-btn flex items-center justify-start" onClick={() => handleOpenModal(null)}>
         <span className="material-icons" style={{ verticalAlign: 'middle', marginRight: '5px' }}>
@@ -237,16 +232,19 @@ const CalendarComponent = () => {
         <Droppable droppableId={date.toDateString()}>
           {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef} className="events-list mt-8">
-              <h3 className="mb-4 p-2 rounded bg-slate-500/30 inline-block px-2"> Your Scheduled Meetings:</h3>
+              <h3 className="mb-4 p-2 rounded bg-slate-500/30 inline-block px-2">
+                Your Scheduled Meetings:
+              </h3>
               <ul>
                 {(events[date.toDateString()] || []).map((event, index) => (
-                  <Draggable
-                    key={event.id}
-                    draggableId={event.id.toString()}
-                    index={index}
-                  >
+                  <Draggable key={event.id} draggableId={event.id.toString()} index={index}>
                     {(provided) => (
-                      <li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className="event-item bg-blue-100 rounded-md p-4 my-2 shadow-md flex flex-col transition-colors duration-300 hover:bg-blue-200">
+                      <li
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        className="event-item bg-blue-100 rounded-md p-4 my-2 shadow-md flex flex-col transition-colors duration-300 hover:bg-blue-200"
+                      >
                         <h4>
                           {event.input} ({event.startTime} - {event.endTime})
                           {event.recurrence !== "none" && <span>🔁</span>}
@@ -257,10 +255,10 @@ const CalendarComponent = () => {
                           <button onClick={() => handleJoinMeeting(event.link)}>
                             Join Meeting
                           </button>
-                          <button onClick={() => handleOpenModal(event)}>
+                          <button onClick={() => handleOpenModal(event)} style={{ fontSize: 'small' }}>
                             Edit
                           </button>
-                          <button onClick={() => handleDeleteEvent(event)}>
+                          <button onClick={() => handleDeleteEvent(event)} style={{ fontSize: 'small' }}>
                             Delete
                           </button>
                         </p>
@@ -336,7 +334,7 @@ const CalendarComponent = () => {
           <button onClick={currentEvent ? handleEditEvent : handleAddEvent} className="bg-green-500/50">
             {currentEvent ? 'Update Meeting' : 'Schedule Meeting'}
           </button>
-          <button onClick={handleCloseModal} className="bg-red-500/60">close</button>
+          <button onClick={handleCloseModal} className="bg-red-500/60">Close</button>
         </div>
       </Modal>
     </div>
