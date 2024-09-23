@@ -25,30 +25,8 @@ CREATE TABLE files (
     FOREIGN KEY (chatId) REFERENCES chat(id)
 );
 
--- 3. group_messages Table
-CREATE TABLE group_messages (
-    id INT NOT NULL AUTO_INCREMENT,
-    groupId INT NOT NULL,
-    messageId INT NOT NULL,
-    chatId INT,
-    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id),
-    FOREIGN KEY (groupId) REFERENCES grouptable(id),
-    FOREIGN KEY (messageId) REFERENCES messages(id),
-    FOREIGN KEY (chatId) REFERENCES chat(id)
-);
 
--- 4. grouptable Table
-CREATE TABLE grouptable (
-    id INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(255) NOT NULL,
-    organizationId INT,
-    description VARCHAR(255),
-    PRIMARY KEY (id),
-    FOREIGN KEY (organizationId) REFERENCES organizations(id)
-);
-
--- 5. messages Table
+-- 3. messages Table
 CREATE TABLE messages (
     id INT NOT NULL AUTO_INCREMENT,
     chatId INT NOT NULL,
@@ -60,7 +38,7 @@ CREATE TABLE messages (
     FOREIGN KEY (chatId) REFERENCES chat(id)
 );
 
--- 6. organizations Table
+-- 4. organizations Table
 CREATE TABLE organizations (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
@@ -69,16 +47,9 @@ CREATE TABLE organizations (
     PRIMARY KEY (id)
 );
 
--- 7. user_groups Table
-CREATE TABLE user_groups (
-    user_id INT NOT NULL,
-    group_id INT NOT NULL,
-    PRIMARY KEY (user_id, group_id),
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (group_id) REFERENCES grouptable(id)
-);
 
--- 8. users Table
+
+-- 5. users Table
 CREATE TABLE users (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(255),
@@ -89,7 +60,7 @@ CREATE TABLE users (
     FOREIGN KEY (organization_id) REFERENCES organizations(id)
 );
 
--- 9.user_info
+-- 6.user_info
 CREATE TABLE user_info (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
@@ -105,6 +76,40 @@ CREATE TABLE user_info (
     INDEX (user_id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+-- 7. grouptable Table
+CREATE TABLE grouptable (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    organizationId INT,
+    description VARCHAR(255),
+    PRIMARY KEY (id),
+    FOREIGN KEY (organizationId) REFERENCES organizations(id)
+);
+
+-- 8. user_groups Table
+CREATE TABLE user_groups (
+    user_id INT NOT NULL,
+    group_id INT NOT NULL,
+    PRIMARY KEY (user_id, group_id),
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (group_id) REFERENCES grouptable(id)
+);
+
+
+-- 9. group_messages Table
+CREATE TABLE group_messages (
+    id INT NOT NULL AUTO_INCREMENT,
+    groupId INT NOT NULL,
+    messageId INT NOT NULL,
+    chatId INT,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    FOREIGN KEY (groupId) REFERENCES grouptable(id),
+    FOREIGN KEY (messageId) REFERENCES messages(id),
+    FOREIGN KEY (chatId) REFERENCES chat(id)
+);
+
 
 
 Step 2 : create 3 terminals

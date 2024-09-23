@@ -6,6 +6,8 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { gapi } from "gapi-script";
 import "material-icons/iconfont/material-icons.css"; // Ensure this line is correct for your setup
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import TimeZoneSelect from "react-timezone-select"; 
+
 
 Modal.setAppElement("#root");
 
@@ -19,9 +21,10 @@ const CalendarComponent = () => {
   const [eventParticipants, setEventParticipants] = useState("");
   const [eventLink, setEventLink] = useState("");
   const [eventRecurrence, setEventRecurrence] = useState("none");
-  const [eventAgenda, setEventAgenda] = useState(""); // New state for agendas
-  const [eventNotes, setEventNotes] = useState(""); // New state for notes
-  const [eventAttachments, setEventAttachments] = useState([]); // New state for attachments
+  const [eventAgenda, setEventAgenda] = useState("");
+  const [eventNotes, setEventNotes] = useState("");
+  const [eventAttachments, setEventAttachments] = useState([]);
+  const [eventTimeZone, setEventTimeZone] = useState(""); // New state for time zone
   const [isOpen, setIsOpen] = useState(false);
   const [currentEvent, setCurrentEvent] = useState(null);
 
@@ -48,9 +51,10 @@ const CalendarComponent = () => {
     setEventParticipants(event ? event.participants.join(", ") : "");
     setEventLink(event ? event.link : "");
     setEventRecurrence(event ? event.recurrence : "none");
-    setEventAgenda(event ? event.agenda : ""); // Load agenda
-    setEventNotes(event ? event.notes : ""); // Load notes
-    setEventAttachments(event ? event.attachments : []); // Load attachments
+    setEventAgenda(event ? event.agenda : "");
+    setEventNotes(event ? event.notes : "");
+    setEventAttachments(event ? event.attachments : []);
+    setEventTimeZone(event ? event.timeZone : ""); // Load time zone
     setIsOpen(true);
   };
 
@@ -68,9 +72,10 @@ const CalendarComponent = () => {
     setEventParticipants("");
     setEventLink("");
     setEventRecurrence("none");
-    setEventAgenda(""); // Reset agenda
-    setEventNotes(""); // Reset notes
-    setEventAttachments([]); // Reset attachments
+    setEventAgenda("");
+    setEventNotes("");
+    setEventAttachments([]);
+    setEventTimeZone(""); // Reset time zone
   };
 
   const handleAddEvent = () => {
@@ -85,9 +90,10 @@ const CalendarComponent = () => {
         link: eventLink,
         id: Date.now(),
         recurrence: eventRecurrence,
-        agenda: eventAgenda, // Add agenda
-        notes: eventNotes, // Add notes
-        attachments: eventAttachments, // Add attachments
+        agenda: eventAgenda,
+        notes: eventNotes,
+        attachments: eventAttachments,
+        timeZone: eventTimeZone, // Add time zone to event
       };
 
       if (!isConflict(dateString, newEvent)) {
@@ -114,7 +120,6 @@ const CalendarComponent = () => {
       [dateString]: [...(prevEvents[dateString] || []), newEvent],
     };
 
-    // Handle recurrence
     let recurrenceDays = 0;
     switch (eventRecurrence) {
       case "daily":
@@ -162,6 +167,7 @@ const CalendarComponent = () => {
             agenda: eventAgenda,
             notes: eventNotes,
             attachments: eventAttachments,
+            timeZone: eventTimeZone, // Update time zone
           }
         : event
     );
@@ -239,14 +245,9 @@ const CalendarComponent = () => {
                 {(events[date.toDateString()] || []).map((event, index) => (
                   <Draggable key={event.id} draggableId={event.id.toString()} index={index}>
                     {(provided) => (
-                      <li
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        className="event-item bg-blue-100 rounded-md p-4 my-2 shadow-md flex flex-col transition-colors duration-300 hover:bg-blue-200"
-                      >
+                      <li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className="event-item bg-blue-100 rounded-md p-4 my-2 shadow-md flex flex-col transition-colors duration-300 hover:bg-blue-200">
                         <h4>
-                          {event.input} ({event.startTime} - {event.endTime})
+                          {event.input} ({event.startTime} - {event.endTime}, {event.timeZone})
                           {event.recurrence !== "none" && <span>🔁</span>}
                         </h4>
                         <p>{event.description}</p>
@@ -329,6 +330,11 @@ const CalendarComponent = () => {
             onChange={(e) => setEventNotes(e.target.value)}
           />
           <input type="file" multiple onChange={handleFileChange} />
+          <TimeZoneSelect
+            value={eventTimeZone}
+            onChange={(timezone) => setEventTimeZone(timezone.value)}
+            className="timezone-select"
+          />
         </div>
         <div className="modal-actions">
           <button onClick={currentEvent ? handleEditEvent : handleAddEvent} className="bg-green-500/50">
