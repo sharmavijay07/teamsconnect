@@ -216,26 +216,18 @@ const CalendarComponent = () => {
   };
 
   return (
-    <div className="calendar-container">
-      <div className="calendar-header">
-        <CalendarTodayIcon
-          style={{ verticalAlign: "middle", marginRight: "5px" }}
-        />
-        Calendar
+    <div className="calendar-container text-center p-8 bg-gray-100 rounded-2xl shadow-lg">
+      <div className="calendar-header bg-slate-500/50 m-2 rounded p-2 ">
+  <      CalendarTodayIcon style={{ verticalAlign: 'middle', marginRight: '5px' }} />
+         Calendar
       </div>
-      <Calendar onChange={handleDateChange} value={date} />
-      <p>
-        <CalendarTodayIcon
-          style={{ verticalAlign: "middle", marginRight: "5px" }}
-        />
-        Selected Date: {date.toDateString()}
-      </p>
+      <Calendar className="border border-gray-300 rounded-lg mb-8 bg-blue-400/50 rounded"  onChange={handleDateChange} value={date} />
+      <div className="bg-slate-400 rounded bg-gradient-to-r from-slate-400/50  to-blue-400 text-black mb-4  text-left  max-w-80"><p ><CalendarTodayIcon style={{ verticalAlign: 'middle', marginRight: '0px' }} />
+      Selected Date: {date.toDateString()}</p></div>
+      
 
-      <button className="add-event-btn" onClick={() => handleOpenModal(null)}>
-        <span
-          className="material-icons"
-          style={{ verticalAlign: "middle", marginRight: "5px" }}
-        >
+      <button className="add-event-btn flex items-center justify-start" onClick={() => handleOpenModal(null)}>
+        <span className="material-icons" style={{ verticalAlign: 'middle', marginRight: '5px' }}>
           add
         </span>
         Schedule Meeting
@@ -244,17 +236,8 @@ const CalendarComponent = () => {
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId={date.toDateString()}>
           {(provided) => (
-            <div
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-              className="events-list"
-            >
-              <h3>
-                <AccessAlarmIcon
-                  style={{ verticalAlign: "middle", marginRight: "5px" }}
-                />
-                My Meetings:
-              </h3>
+            <div {...provided.droppableProps} ref={provided.innerRef} className="events-list mt-8">
+              <h3 className="mb-4 p-2 rounded bg-slate-500/30 inline-block px-2"> Your Scheduled Meetings:</h3>
               <ul>
                 {(events[date.toDateString()] || []).map((event, index) => (
                   <Draggable
@@ -263,12 +246,7 @@ const CalendarComponent = () => {
                     index={index}
                   >
                     {(provided) => (
-                      <li
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        className="event-item"
-                      >
+                      <li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className="event-item bg-blue-100 rounded-md p-4 my-2 shadow-md flex flex-col transition-colors duration-300 hover:bg-blue-200">
                         <h4>
                           {event.input} ({event.startTime} - {event.endTime})
                           {event.recurrence !== "none" && <span>🔁</span>}
@@ -355,15 +333,10 @@ const CalendarComponent = () => {
           <input type="file" multiple onChange={handleFileChange} />
         </div>
         <div className="modal-actions">
-          <button
-            className="save"
-            onClick={currentEvent ? handleEditEvent : handleAddEvent}
-          >
-            {currentEvent ? "Save Changes" : "Add Event"}
+          <button onClick={currentEvent ? handleEditEvent : handleAddEvent} className="bg-green-500/50">
+            {currentEvent ? 'Update Meeting' : 'Schedule Meeting'}
           </button>
-          <button className="cancel" onClick={handleCloseModal}>
-            Cancel
-          </button>
+          <button onClick={handleCloseModal} className="bg-red-500/60">close</button>
         </div>
       </Modal>
     </div>
