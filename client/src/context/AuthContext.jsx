@@ -43,12 +43,12 @@ useEffect(() => {
 
   if (fileChatId) {
    axios
-      .get(`http://localhost:4500/api/upload/file/${fileChatId}`)
+      .get(`${baseUrl}/upload/file/${fileChatId}`)
       .then((resp) => {
-        console.log("Response:", resp);
+        // console.log("Response:", resp);
 
         if (resp.data && resp.data.file) {
-          console.log("Files:", resp.data.file);
+          // console.log("Files:", resp.data.file);
           setFile(resp.data.file); // Set the 'file' array to state
         } else {
           console.error("No file data found in the response");
@@ -120,18 +120,18 @@ useEffect(() => {
 
   
 
-  useEffect(() => {
-    const user = localStorage.getItem("User")
-    axios.post('http://localhost:3002/api/getUser',{user})
-    .then((resp) => {
-      console.log("successfully passed the user to port 3001",resp)
-    })
-    .catch((err) => {
-      console.log("Error",err)
-    })
-  },[])
+  // useEffect(() => {
+  //   const user = localStorage.getItem("User")
+  //   axios.post('http://localhost:3002/api/getUser',{user})
+  //   .then((resp) => {
+  //     console.log("successfully passed the user to port 3001",resp)
+  //   })
+  //   .catch((err) => {
+  //     console.log("Error",err)
+  //   })
+  // },[])
 
-  console.log("user in authcontext",user)
+  // console.log("user in authcontext",user)
 
 
 

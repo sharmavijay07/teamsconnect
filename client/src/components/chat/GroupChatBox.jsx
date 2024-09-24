@@ -7,6 +7,7 @@ import moment from "moment"; // Import moment.js for date formatting
 import SideBar from "./SideBar";
 import InputImoji from "react-input-emoji";
 import FileDisplay from "../fileHandling/FileDisplay";
+import { baseUrl } from "@/utils/services";
 
 // input statements above ^ ^ ^ 
 
@@ -55,7 +56,7 @@ const GroupChatBox = ({ group }) => {
       try {
         for (let id of senderIds) {
           const response = await axios.get(
-            `http://localhost:4500/api/users/find/${id}`
+            `${baseUrl}/users/find/${id}`
           );
           names[id] = response.data.name;
         }
@@ -93,7 +94,7 @@ const GroupChatBox = ({ group }) => {
         formData.append('chatId', currentChat?.id);
 
         try {
-            const response = await fetch('http://localhost:4500/api/upload', {
+            const response = await fetch(`${baseUrl}/upload`, {
                 method: 'POST',
                 body: formData,
             });

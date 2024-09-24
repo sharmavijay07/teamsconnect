@@ -15,8 +15,8 @@ const UserChat = ({ chat, user }) => {
   const isOnline = onlineUsers?.some(
     (user) => user?.userId === recipientUser?.id
   );
-  console.log("user is online", isOnline, onlineUsers);
-  console.log("Recipient User", recipientUser);
+  // console.log("user is online", isOnline, onlineUsers);
+  // console.log("Recipient User", recipientUser);
   return (
     <>
       <div
