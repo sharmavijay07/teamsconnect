@@ -39,6 +39,7 @@
     "react-input-emoji": "^5.9.0",
     "react-modal": "^3.16.1",
     "react-router-dom": "^6.26.1",
+    "react-timezone-select": "^3.2.8",
     "react-toastify": "^10.0.5",
     "react-transition-group": "^4.4.5",
     "react-webcam": "^7.2.0",
