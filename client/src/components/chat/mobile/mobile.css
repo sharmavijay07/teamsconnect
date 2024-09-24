@@ -1,0 +1,91 @@
+/* General styling */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Sidebar styling */
+.sidebar {
+    background-color: #333;
+    color: white;
+    width: 250px;
+    transition: width 0.3s ease;
+}
+
+.sidebar-header {
+    padding: 15px;
+    font-size: 20px;
+    background-color: #444;
+}
+
+.menu-button {
+    display: none;
+    background-color: #333;
+    color: white;
+    font-size: 18px;
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+    width: 100%;
+    text-align: left;
+}
+
+/* User chats styling */
+.user-chats {
+    background-color: #f4f4f4;
+    flex-grow: 1;
+    padding: 20px;
+    transition: width 0.3s ease;
+}
+
+.chat-button {
+    display: none;
+    background-color: #f4f4f4;
+    font-size: 18px;
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+    width: 100%;
+    text-align: left;
+}
+
+/* Responsive layout for smaller screens */
+@media screen and (max-width: 768px) {
+    .sidebar {
+        width: 0;
+        overflow: hidden;
+    }
+
+    .menu-button {
+        display: block;
+    }
+
+    .user-chats {
+        display: none;
+    }
+
+    .chat-button {
+        display: block;
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        z-index: 1000;
+    }
+}
+
+/* Show sidebar when menu button is clicked */
+.sidebar.show {
+    width: 250px;
+}
+
+/* Show user chats when chat button is clicked */
+.user-chats.show {
+    display: block;
+}

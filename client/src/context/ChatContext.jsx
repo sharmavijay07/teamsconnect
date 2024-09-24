@@ -1,5 +1,5 @@
-import { createContext, useCallback, useEffect, useState } from "react";
-import { getRequest,baseUrl ,postRequest} from "../utils/services";
+import { createContext, useCallback, useEffect, useState ,useMemo} from "react";
+import { getRequest,baseUrl ,postRequest, filebaseUrl} from "../utils/services";
 import {io} from 'socket.io-client'
 
 
@@ -25,6 +25,15 @@ export const ChatContextProvider = ({children,user}) => {
   const [loading, setLoading] = useState(true);
   const [messagesGroup, setMessagesGroup] = useState([]);
   const [error, setError] = useState(null);
+
+
+
+
+
+
+
+
+//   console.warn('getting refreshed')
 
   useEffect(() => {
     const fetchGroups = async () => {
@@ -85,15 +94,9 @@ const selectGroup = async (groupId) => {
   };
 
 
-    // console.log("currentChat",currentChat)
-
-    // console.log("messages",messages)
-    // console.log("onlineUsers",onlineUsers)
-    // console.log("notifications",notifications)
-
     //socket initialisation
     useEffect(() => {
-        const newSocket = io('http://localhost:3000')
+        const newSocket = io(`${filebaseUrl}`)
         setSocket(newSocket)
         
 
@@ -125,7 +128,7 @@ const selectGroup = async (groupId) => {
         
     
         const recipientId = currentChat?.members.find(id => id!=user?.id)
-        // console.log("recipient after message",recipientId)
+        console.log("recipient after message",recipientId)
 
         socket.emit("sendMessage",{...newMessage,recipientId})
     },[newMessage])
@@ -220,7 +223,7 @@ const selectGroup = async (groupId) => {
             // console.log('Current chat is null or undefined,skipping getMessages')
             return;
         }
-        console.log("fetching messages for chatId:",currentChat.id)
+        // console.log("fetching messages for chatId:",currentChat.id)
         const getMessages = async() => {
            
                 setMessagesLoading(true)
@@ -237,8 +240,9 @@ const selectGroup = async (groupId) => {
                     console.error("Invalid response format, expected an array:", response);
                     return;
                 }
-                console.log("Fetched messages",response)
-                setMessages(response)
+                if (JSON.stringify(response) !== JSON.stringify(messages)) {
+                    setMessages(response); // Only update if messages are different
+                }
             
         }
         getMessages()
@@ -258,10 +262,10 @@ const selectGroup = async (groupId) => {
             setMessages((prev)=>[...prev,response])
             setTextMessage("")
 
-    },[])
+    },[setMessages,setNewMessage])
 
     const updateCurrentChat = useCallback((chat) => {
-        console.log("updating current chat to:",chat)
+        // console.log("updating current chat to:",chat)
         setCurrentChat(chat)
     },[])
 
@@ -294,12 +298,12 @@ const selectGroup = async (groupId) => {
     },[])
 
 
-    
-
 
     
 
-    return <ChatContext.Provider value={{
+  
+
+    const contextValue = useMemo(() => ({
         userChats,
         isUserChatsLoading,
         userChatsError,
@@ -314,14 +318,28 @@ const selectGroup = async (groupId) => {
         onlineUsers,
         organizationId,
         setOrganizationId,
-        currentGroup, 
-      groups, 
-      loading, 
-      error, 
-      selectGroup, 
-      sendMessageToGroup, 
-      messagesGroup,
-      setMessagesGroup,
-      fetchGroupMessages
-    }}>{children}</ChatContext.Provider>
+        currentGroup,
+        groups,
+        loading,
+        error,
+        selectGroup,
+        sendMessageToGroup,
+        messagesGroup,
+        setMessagesGroup,
+        fetchGroupMessages
+    }), [
+        userChats, isUserChatsLoading, userChatsError, potentialChats, createChat, currentChat, 
+        updateCurrentChat, messages, isMessagesLoading, messagesError, sendTextMessage, onlineUsers,
+        organizationId, currentGroup, groups, loading, error, messagesGroup
+    ]);
+    
+
+    
+
+
+    
+
+    return <ChatContext.Provider value={contextValue}>
+        {children}
+        </ChatContext.Provider>
 }

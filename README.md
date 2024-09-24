@@ -110,6 +110,24 @@ CREATE TABLE group_messages (
     FOREIGN KEY (chatId) REFERENCES chat(id)
 );
 
+CREATE TABLE meeting_messages (
+    id INT NOT NULL AUTO_INCREMENT,
+    meeting_id VARCHAR(255) NOT NULL,
+    user_id VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+);
+
+
+CREATE TABLE meetings (
+    id INT NOT NULL AUTO_INCREMENT,
+    meeting_id VARCHAR(255) NOT NULL,
+    user_id VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+);
+
 
 
 Step 2 : create 3 terminals

@@ -9,6 +9,14 @@ export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  let [meetingId, setMeetingId] = useState('');
+
+     
+  const createMeetingId = useCallback(() => {
+    meetingId =  Math.floor(Math.random() * 100000000).toString();
+    return meetingId;
+},[])
+
 
   // Check if ChatContext exists before trying to destructure messages
   const chatContext = useContext(ChatContext);
@@ -203,7 +211,10 @@ const audioChunksRef = useRef([]);
         isRecording,
         audioURL,
         audioBlob,
-        setAudioBlob
+        setAudioBlob,
+        setMeetingId,
+        meetingId,
+        createMeetingId
         
       }}
     >
