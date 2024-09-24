@@ -12,22 +12,23 @@ import axios from 'axios'
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import { CommitOutlined } from "@mui/icons-material";
+import ZoomableImage from "../ZoomableImage";
 
-const notify = (message, type) => {
-    const toastId = `${type}-${Date.now()}`;
-    toast[type](message, {
-      toastId,
-    });
-    toast.error("error file uploading!", {
-        position: "top-right",
-        autoClose: 5000, // duration in milliseconds
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-  };
+// const notify = (message, type) => {
+//     const toastId = `${type}-${Date.now()}`;
+//     toast[type](message, {
+//       toastId,
+//     });
+//     toast.error("error file uploading!", {
+//         position: "top-right",
+//         autoClose: 5000, // duration in milliseconds
+//         hideProgressBar: false,
+//         closeOnClick: true,
+//         pauseOnHover: true,
+//         draggable: true,
+//         progress: undefined,
+//       });
+//   };
 
 const ChatBox = () => {
     const { user ,setFileChatId,file} = useContext(AuthContext);
@@ -40,19 +41,73 @@ const ChatBox = () => {
     const [previewURL, setPreviewURL] = useState(null);
 
     //--------------------------9/09/24-------------------------
-    const [allMessages,setAllMessages] = useState()
-    const [onlyMessages,setOnlyMessages] = useState([])
-    const [combinedMessages,setCombinedMessages] = useState()
 
-
-
-
-    
-    const scroll = useRef();
-
-   
-    
-    
+        const [allMessages,setAllMessages] = useState()
+        const [onlyMessages,setOnlyMessages] = useState([])
+        const [combinedMessages,setCombinedMessages] = useState()
+        const {isRecording,startRecording,stopRecording,audioURL,audioBlob,setAudioBlob} = useContext(AuthContext)
+      
+        const scroll = useRef();
+      
+        // Scroll to bottom when new messages arrive
+        useEffect(() => {
+          scroll.current?.scrollIntoView();
+        }, [messages]);
+      
+        useEffect(() => {
+          if (currentChat) {
+            setFileChatId(currentChat.id);
+          }
+        }, [currentChat]);
+      
+        // Handle file selection
+        const handleFileChange = (event) => {
+          const file = event.target.files[0];
+          console.log("Selected File:", file);
+          setSelectedFile(file);
+          setPreviewURL(URL.createObjectURL(file));
+        };
+      
+        // Handle file upload
+        const handleFileUpload = async () => {
+          if (selectedFile) {
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            formData.append('chatId', currentChat?.id);
+            formData.append('senderId', user.id);
+      
+            try {
+              const response = await fetch('http://localhost:4500/api/upload', {
+                method: 'POST',
+                body: formData,
+              });
+      
+              if (!response.ok) {
+                throw new Error("File upload failed");
+              }
+      
+              const result = await response.json();
+              if (result.success) {
+                const fileUrl = result.fileUrl;
+                notify("File uploaded successfully!", "success");
+      
+                sendTextMessage(fileUrl, user, currentChat.id, setTextMessage);
+                setSelectedFile(null);
+                setPreviewURL(null);
+              } else {
+                notify("File upload failed!", "error");
+              }
+            } catch (error) {
+              console.error('Error during file upload:', error);
+              notify("Error uploading file", "error");
+            }
+          }
+        };
+      
+        
+      
+        
+//-------------------------------------------------       
     useEffect(() => {
         scroll.current?.scrollIntoView();
     }, [messages]);
@@ -87,14 +142,8 @@ const ChatBox = () => {
             })
             .catch((err) => {
               console.warn("Error of allMessages",err)
-            })
-
-            
-    
-                
-               
+            })            
     }
-   
 
     useEffect(() => {
         const chatId = currentChat?.id
@@ -117,8 +166,6 @@ const ChatBox = () => {
         const fullPath = formattedPath.startsWith('uploads/') ? formattedPath.replace('uploads/', '') : formattedPath;
         return `http://localhost:4500/uploads/${fullPath}`;
       };
-    
-
 
     // Effect to update the time every minute
     useEffect(() => {
@@ -155,67 +202,6 @@ const ChatBox = () => {
     const monthName = currentTime.toLocaleDateString('en-US', { month: 'long' });
 
  ///----------------------------------------9/09/24--------------------------------------------
-
- useEffect(()=> {
-    if(currentChat) {
-    setFileChatId(currentChat.id)
-
-    }
- },[currentChat])
- const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    console.log("Selected File:", file);
-    setSelectedFile(file);
-    setPreviewURL(URL.createObjectURL(file));
-  };
-  
-
-  const handleFileUpload = async () => {
-    // console.log("filechatid")
-    if (selectedFile) {
-        const formData = new FormData();
-        formData.append('file', selectedFile);
-        formData.append('chatId', currentChat?.id);
-        formData.append('senderId',user.id);
-
-        try {
-            const response = await fetch('http://localhost:4500/api/upload', {
-                method: 'POST',
-                body: formData,
-            });
-
-            if (!response.ok) {
-                throw error
-            }
-
-            const result = await response.json();
-            if (result.success) {
-                const fileUrl = result.fileUrl; // Assume API response contains the uploaded file URL
-                notify("file uploaded successfully!", "success");
-                
-                // Send the file URL as a message
-                sendTextMessage(fileUrl, user, currentChat.id, setTextMessage);
-                
-                setSelectedFile(null);
-                setPreviewURL(null);
-            } else {
-                notify("file upload failed!", "error");
-            }   
-        } catch (error) {
-            console.error('Error during fetch:', error);
-            
-            alert('An error occurred during file upload: ' + error.message);
-        }
-    }
-};
-
-  
-
-
-
-///=---------------------------------------9/09/24------------------------------------------------------------
-
-
 
     if (!recipientUser) return (
         <>
@@ -285,8 +271,41 @@ const ChatBox = () => {
         }
     };
 
-    //---------------------------------------------------------//
-    //------------------------------------------------------//
+    const handleVoiceUpload = async () => {
+      console.warn('in handlevoice')
+    
+      if (audioBlob) {
+        console.warn('in audioBlob')
+        const formData = new FormData();
+        formData.append('file', audioBlob, 'voice_recording.wav');
+        formData.append('chatId', currentChat?.id);
+        formData.append('senderId', user.id);
+  
+        try {
+          const response = await fetch('http://localhost:4500/api/upload-voice', {
+            method: 'POST',
+            body: formData,
+          });
+  
+          if (!response.ok) {
+            throw new Error("Voice upload failed");
+          }
+  
+          const result = await response.json();
+          if (result.success) {
+            notify("Voice uploaded successfully!", "success");
+            // sendTextMessage(result.fileUrl, user, currentChat.id, setTextMessage);
+            setAudioBlob(null);
+          } else {
+            notify("Voice upload failed!", "error");
+          }
+        } catch (error) {
+          console.error('Error during voice upload:', error);
+          notify("Error uploading voice", "error");
+        }
+      }
+    };
+
 
     return (
         <>
@@ -319,7 +338,7 @@ const ChatBox = () => {
                             }`}
                             ref={scroll}   >
                     {message.filePath.endsWith('.png') || message.filePath.endsWith('.jpg') || message.filePath.endsWith('.gif') ? (
-              <img
+              <ZoomableImage
                 src={getFileUrl(message.filePath)}
                 alt={file-`${index}`}
                 style={{ width: '150px', height: '150px' }}
@@ -332,12 +351,6 @@ const ChatBox = () => {
             )}
             <p>Uploaded At: {new Date(message.uploadedAt).toLocaleString()}</p>
                     </div>:""}
-
-
-
-
-
-
                         <div key={index} className={
                             `${message?.senderId == user?.id
                                 ? "bg-gray-400/40 w-fit max-w-[70%] min-w-[15%] p-1  px-3 mr-2  rounded-[8px]  mt-2 ml-auto flex-grow-0  break-words  text-wrap  text-dark "
@@ -353,67 +366,68 @@ const ChatBox = () => {
                                 : " ml-auto"
                             }`}>{moment(message.createdAt).format('h:mm a')}</span></div>
                         </div>
-                    
-
-                   
                     </>
                 )}
-
-
-
-
             </div>
-
-
-       
-
-            
-    
             </>
-            
-                
-{/* Input area */}
-<div className="flex justify-between items-center bg-gray-400 rounded-[2px] flex-grow-0">
-        <InputImoji
-            value={textMessage}
-            onChange={setTextMessage}
-            className="border border-[rgba(72,255,200,0.4)] focus:outline-none focus:border-red-500 rounded-none px-4 py-2"
-            onKeyDown={handleKeyDown}
-        />
+                    
+                {/* Input area */}
+                <div className="flex justify-between items-center bg-gray-400 rounded-[2px] flex-grow-0">
+                {/* Voice Recording Section */}
+                <div>
+      <button onClick={isRecording ? stopRecording : startRecording}>
+        {isRecording ? "Stop Recording" : "Start Recording"}
+      </button>
+    {audioURL && (
+      <div>
+      <h2>Recorded Audio</h2>
+      <audio controls src={audioURL}></audio>
+      <button onClick={() => handleVoiceUpload()}>
+        Upload Voice
+      </button>
+    </div>
+    )}
+        
+      
+    </div>
+                <InputImoji
+                    value={textMessage}
+                    onChange={setTextMessage}
+                    className="border border-[rgba(72,255,200,0.4)] focus:outline-none focus:border-red-500 rounded-none px-4 py-2"
+                    onKeyDown={handleKeyDown}
+                />
 
-        {/* below is div for file click and upload  */}
-        <div>
-            <input
-                type="file"
-                id="fileInput"
-                style={{ display: "none" }}
-                onChange={handleFileChange}
-            />
-            <button onClick={() => document.getElementById('fileInput').click()}>
-                <span className="material-symbols-outlined text-gray-500 mt-1 mr-2 mb-1 hover:text-blue-500" style={{ fontSize: '4vh' }}>
-                    upload_file
-                </span>
-            </button>
-            {previewURL && (
-                <div className="file-preview mt-2">
-                    {selectedFile.type.startsWith('image/') ? (
-                        <img src={previewURL} alt="File preview" style={{ maxWidth: '100px', maxHeight: '100px' }} />
-                    ) : (
-                        <div className="file-info">
-                            <span>{selectedFile.name}</span>
+                {/* below is div for file click and upload  */}
+                <div>
+                    <input
+                        type="file"
+                        id="fileInput"
+                        style={{ display: "none" }}
+                        onChange={handleFileChange}
+                    />
+                    <button onClick={() => document.getElementById('fileInput').click()}>
+                        <span className="material-symbols-outlined text-gray-500 mt-1 mr-2 mb-1 hover:text-blue-500" style={{ fontSize: '4vh' }}>
+                            upload_file
+                        </span>
+                    </button>
+                    {previewURL && (
+                        <div className="file-preview mt-2">
+                            {selectedFile.type.startsWith('image/') ? (
+                                <img src={previewURL} alt="File preview" style={{ maxWidth: '100px', maxHeight: '100px' }} />
+                            ) : (
+                                <div className="file-info">
+                                    <span>{selectedFile.name}</span>
+                                </div>
+                            )}
+                            {/* <button onClick={handleFileUpload} className="send-file-btn text-black border border-gray-600 rounded px-2 py-1 mt-1">
+                                Send
+                            </button> */}
                         </div>
                     )}
-                    {/* <button onClick={handleFileUpload} className="send-file-btn text-black border border-gray-600 rounded px-2 py-1 mt-1">
-                        Send
-                    </button> */}
                 </div>
-            )}
-        </div>
-
-
                 <Button className="send-btn" onClick={() => {
                     sendTextMessage(textMessage, user, currentChat.id, setTextMessage)
-                    handleFileUpload()
+                    handleFileUpload() , handleVoiceUpload()
                     
                 }}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="cyan" className="bi bi-send-fill" viewBox="1 1 16 16">
@@ -423,8 +437,6 @@ const ChatBox = () => {
             </div>
         </div>
         </>
-        
-     
     );
 };
 
