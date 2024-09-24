@@ -6,7 +6,6 @@ const cors = require('cors')
 const exphbs = require("express-handlebars");
 const session = require('express-session')
 const bodyparser = require("body-parser");
-const {user} = require('./controllers/userController')
 
 const employeeController = require("./controllers/employeeController");
 const homeController = require("./controllers/homeController");
