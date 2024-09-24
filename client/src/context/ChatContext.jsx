@@ -93,7 +93,7 @@ const selectGroup = async (groupId) => {
 
     //socket initialisation
     useEffect(() => {
-        const newSocket = io('http://localhost:3000')
+        const newSocket = io('http://localhost:4500')
         setSocket(newSocket)
         
 
