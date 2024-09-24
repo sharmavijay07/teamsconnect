@@ -4,10 +4,10 @@ import "react-calendar/dist/Calendar.css";
 import Modal from "react-modal";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { gapi } from "gapi-script";
-import "material-icons/iconfont/material-icons.css"; // Ensure this line is correct for your setup
+import "material-icons/iconfont/material-icons.css"; 
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-// import TimeZoneSelect from "react-timezone-select"; 
-
+import TimeZoneSelect from "react-timezone-select"; 
+import ReminderIcon from "@mui/icons-material/Notifications";
 
 Modal.setAppElement("#root");
 
@@ -24,9 +24,11 @@ const CalendarComponent = () => {
   const [eventAgenda, setEventAgenda] = useState("");
   const [eventNotes, setEventNotes] = useState("");
   const [eventAttachments, setEventAttachments] = useState([]);
-  const [eventTimeZone, setEventTimeZone] = useState(""); // New state for time zone
+  const [eventTimeZone, setEventTimeZone] = useState(""); 
   const [isOpen, setIsOpen] = useState(false);
   const [currentEvent, setCurrentEvent] = useState(null);
+  const [reminderTime, setReminderTime] = useState(""); // New state for reminder time
+  const [reminders, setReminders] = useState({}); // State to store reminders
 
   useEffect(() => {
     const initClient = () => {
@@ -54,7 +56,8 @@ const CalendarComponent = () => {
     setEventAgenda(event ? event.agenda : "");
     setEventNotes(event ? event.notes : "");
     setEventAttachments(event ? event.attachments : []);
-    setEventTimeZone(event ? event.timeZone : ""); // Load time zone
+    setEventTimeZone(event ? event.timeZone : ""); 
+    setReminderTime(event ? event.reminderTime : ""); // Load reminder time
     setIsOpen(true);
   };
 
@@ -75,7 +78,8 @@ const CalendarComponent = () => {
     setEventAgenda("");
     setEventNotes("");
     setEventAttachments([]);
-    setEventTimeZone(""); // Reset time zone
+    setEventTimeZone(""); 
+    setReminderTime(""); // Reset reminder time
   };
 
   const handleAddEvent = () => {
@@ -93,7 +97,8 @@ const CalendarComponent = () => {
         agenda: eventAgenda,
         notes: eventNotes,
         attachments: eventAttachments,
-        timeZone: eventTimeZone, // Add time zone to event
+        timeZone: eventTimeZone, 
+        reminderTime: reminderTime, // Add reminder time to event
       };
 
       if (!isConflict(dateString, newEvent)) {
@@ -148,6 +153,20 @@ const CalendarComponent = () => {
       }
     }
 
+    // Add reminder to the reminders state
+    if (newEvent.reminderTime) {
+      const reminderKey = `${newEvent.id}-${newEvent.reminderTime}`;
+      setReminders((prevReminders) => ({
+        ...prevReminders,
+        [reminderKey]: {
+          eventId: newEvent.id,
+          reminderTime: newEvent.reminderTime,
+          eventTitle: newEvent.input,
+          eventDate: dateString, 
+        },
+      }));
+    }
+
     return updatedEvents;
   };
 
@@ -167,7 +186,8 @@ const CalendarComponent = () => {
             agenda: eventAgenda,
             notes: eventNotes,
             attachments: eventAttachments,
-            timeZone: eventTimeZone, // Update time zone
+            timeZone: eventTimeZone, 
+            reminderTime: reminderTime, // Update reminder time
           }
         : event
     );
@@ -180,6 +200,14 @@ const CalendarComponent = () => {
     const dateString = date.toDateString();
     const updatedEvents = events[dateString].filter((event) => event.id !== eventToDelete.id);
     setEvents((prevEvents) => ({ ...prevEvents, [dateString]: updatedEvents }));
+
+    // Remove reminder from the reminders state
+    const reminderKey = `${eventToDelete.id}-${eventToDelete.reminderTime}`;
+    setReminders((prevReminders) => {
+      const updatedReminders = { ...prevReminders };
+      delete updatedReminders[reminderKey];
+      return updatedReminders;
+    });
   };
 
   const handleDragEnd = (result) => {
@@ -199,6 +227,14 @@ const CalendarComponent = () => {
         movedEvent,
       ],
     }));
+
+    // Update reminder in the reminders state
+    const reminderKey = `${movedEvent.id}-${movedEvent.reminderTime}`;
+    setReminders((prevReminders) => {
+      const updatedReminders = { ...prevReminders };
+      updatedReminders[reminderKey].eventDate = destinationDateString;
+      return updatedReminders;
+    });
   };
 
   const handleJoinMeeting = (link) => {
@@ -335,6 +371,12 @@ const CalendarComponent = () => {
             onChange={(timezone) => setEventTimeZone(timezone.value)}
             className="timezone-select"
           />
+          <input
+            type="time"
+            placeholder="Reminder Time"
+            value={reminderTime}
+            onChange={(e) => setReminderTime(e.target.value)}
+          />
         </div>
         <div className="modal-actions">
           <button onClick={currentEvent ? handleEditEvent : handleAddEvent} className="bg-green-500/50">
@@ -343,6 +385,25 @@ const CalendarComponent = () => {
           <button onClick={handleCloseModal} className="bg-red-500/60">Close</button>
         </div>
       </Modal>
+
+      {/* Reminder Section (UI Improvement) */}
+      <div className="reminders-section mt-8">
+        <h3 className="mb-4 p-2 rounded bg-slate-500/30 inline-block px-2">
+          <ReminderIcon style={{ verticalAlign: 'middle', marginRight: '5px' }} />
+          Reminders:
+        </h3>
+        <ul>
+          {Object.values(reminders).map((reminder) => (
+            <li key={reminder.eventId} className="reminder-item bg-yellow-100 rounded-md p-4 my-2 shadow-md flex items-center justify-between">
+              <div>
+                <p className="font-bold">{reminder.eventTitle}</p>
+                <p>{reminder.eventDate} - {reminder.reminderTime}</p> 
+              </div>
+              <ReminderIcon style={{ color: 'orange' }} />
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
