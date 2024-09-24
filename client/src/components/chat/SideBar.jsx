@@ -1,8 +1,9 @@
-import { Group, Chat, CalendarToday, VideoCall, Folder, MoreHoriz, Report, Analytics, Settings } from '@mui/icons-material';
+import { Group, Chat, CalendarToday, VideoCall, Folder, MoreHoriz, Report, Analytics, Settings, FileUpload } from '@mui/icons-material';
 import './styles.css';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import UserGroups from './UserGroups';
+// import FileUploads from '../fileHandling/FileUploads';
 
 function Sidebar({ setActiveSection }) {
     return (
