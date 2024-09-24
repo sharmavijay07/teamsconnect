@@ -1,5 +1,8 @@
+import { useContext, useState, useRef, useEffect } from "react";
+
 const Chatbox1 = ()=>{
-   
+    const [currentTime, setCurrentTime] = useState(new Date());
+
     // Effect to update the time every minute
     useEffect(() => {
         const timer = setInterval(() => {

@@ -1,7 +1,7 @@
-export const baseUrl = 'http://172.23.60.135:4500/api'
+export const baseUrl = 'http://172.17.34.121:4500/api'
 
 // export const axiosbaseUrl = 'http://localhost:4500/api'
-export const filebaseUrl = 'http://172.23.60.135:4500'
+export const filebaseUrl = 'http://172.17.34.121:4500'
 
 export const postRequest = async(url,body) => {
 
