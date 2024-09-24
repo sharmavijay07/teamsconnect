@@ -9,16 +9,18 @@ const checkScreenSize = () => {
       document.body.style.fontSize = "16px";
     } else {
     //   Apply styles for larger screens
-      document.body.style.backgroundColor = "lightblue";
-      document.body.style.fontSize = "20px";
+      document.body.style.cssText = `
+
+      `;
     }
     checkScreenSize();
     window.addEventListener('resize', checkScreenSize);
 
     return(
         <div>
-        {/* <Chat/> */}
-        {/* <ChatBox/> */}
+  
+        <Chat/>
+        <ChatBox/>
         </div>
     )
   }
