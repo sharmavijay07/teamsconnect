@@ -61,13 +61,13 @@ const SearchGroups = ({ organizationId }) => {
     <div className="flex flex-col border-t-2 rounded-3 border-blue-200 p-3 mt-2 gap-x-1 ">
       {error && <p style={{ color: "red" }}>{error}</p>}
       <div className="flex p-1 gap-2">
-        <Input
-          className="border rounded-3 p-2 gap-2 bg-white border-gray-200"
-          type="text"
-          placeholder="Search Groups"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
+          <Input
+            className="border rounded-3 p-2 gap-2 bg-white border-gray-200"
+            type="text"
+            placeholder="Search Groups"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
         <Button
           className="rounded-3 bg-blue-600 text-white border-1 border-blue-400 transform h-50 transition duration-500 hover:bg-blue-400"
           variant="default"
