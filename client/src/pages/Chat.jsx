@@ -11,6 +11,7 @@ import Group from "@/components/chat/Group";
 import Calendar from "@/components/chat/Calendar";
 import GroupManagementPage from "@/components/chat/GroupManagementPage";
 import Video from "@/components/video/Video";
+// import '../components/chat/mobile/mobile.jsx'
 
 const Chat = () => {
     const { user } = useContext(AuthContext);

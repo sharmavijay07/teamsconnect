@@ -7,11 +7,11 @@ import { Content } from '@radix-ui/react-dialog';
 const NavBar = () => {
     const {user,logoutUser} = useContext(AuthContext)
     return ( 
-        <Navbar bg='dark' justify-content='space-around' className='' style={{height:'5vh'}}>
+        <div  className='sm:bg-white h-[5vh] w-screen bg-black md:grid justify-center hidden uppercase items-center gap-8 px-3'>
             <Container className='flex'>
                 <h2>
                     
-                <NavLink to='/' className="mr-6 link-light text-deco ration-none items-start">TeamsConnect</NavLink>
+                <NavLink to='/' className="mr-6  link-light text-deco ration-none items-center">TeamsConnect</NavLink>
                 </h2>
                 {user && <span className='text-warning ml-8'>Logged in as {user?.name}</span>}
                 <Nav>
@@ -25,7 +25,7 @@ const NavBar = () => {
                             </span>
                         </NavLink>
 
-                        <NavLink onClick={()=>logoutUser()} to='/login' className="link-light text-decoration-none">
+                        <NavLink onClick={()=>logoutUser()} to='/login' className="link-light items-center text-decoration-none">
                             <div><span class="material-symbols-outlined text-blue-400 text-2xl  "style= {{fontSize:'1rem'  }} >
                          directions_run</span>
                          <span class="material-symbols-outlined text-blue-400 mt-1 " style= {{fontSize:'1rem' }}>
@@ -50,7 +50,7 @@ const NavBar = () => {
                     </Stack>
                 </Nav>
             </Container>
-        </Navbar>
+        </div>
      );
 }
  

@@ -438,7 +438,7 @@ import Sidebar from '../admin/SideBar'
 import Home from '../admin/Home'
 
 
-function App() {
+function Profile() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false)
 
   const OpenSidebar = () => {
@@ -454,4 +454,4 @@ function App() {
   )
 }
 
-export default App
+export default Profile
