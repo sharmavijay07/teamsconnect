@@ -6,25 +6,14 @@ import { baseUrl } from '@/utils/services';
 import { AuthContext } from '@/context/AuthContext';
 
 const Sign = () => {
-    const [searchParams] = useSearchParams();
+    // const [searchParams] = useSearchParams();
     const [userId, setUserId] = useState('');
-    let {meetingId,setMeetingId} = useContext(AuthContext)
-    let {createMeetingId} = useContext(AuthContext)
+    const {meetingId,setMeetingId} = useContext(AuthContext)
+    const {createMeetingId} = useContext(AuthContext)
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const uid = searchParams.get('uid');
-        const userData = JSON.parse(localStorage.getItem('User'));
-
-        if (userData) {
-            setUserId(userData.name);
-        }
-
-        if (!userId) {
-            alert('User ID is missing');
-        }
-    }, [searchParams, userId]);
+   
  
  
     const handleHostMeeting = async () => {
@@ -35,15 +24,28 @@ const Sign = () => {
             userId: userId,
         });
 
-        navigate(`/videohome?meetingID=${eightDigitNumber}&uid=${userId}`);
+        navigate(`/videohome/${eightDigitNumber}/${userId}`);
     };
+
+    useEffect(() => {
+        const userData = JSON.parse(localStorage.getItem('User'));
+        setUserId(userData.name)
+
+        if (userData) {
+            setUserId(userData.name);
+        }
+
+        if (!userId) {
+            alert('User ID is missing');
+        }
+    }, [userId]);
 
     const handleJoinMeeting = async (event) => {
       event.preventDefault();
       if (meetingId) {
           await axios.post(`${baseUrl}/video/join`, { meetingId })
           .then((resp) => {
-              navigate(`/videohome?meetingID=${meetingId}&uid=${userId}`);
+              navigate(`/videohome/${meetingId}/${userId}`);
           })
           .catch((err) => {
               console.error("you got error:", err);
