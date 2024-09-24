@@ -16,6 +16,7 @@ import Profile from './components/profile/Profile'
 import {useState} from 'react'
 import { ToastContainer } from 'react-toastify';
 import Videohome from './components/chat/videohome'
+import VoiceRecorder from './components/Voice_message/Voice_messages'
 
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
           <Route path="/usergroups" element={<UserGroups />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/videohome" element={<Videohome />} />
+          <Route path="/voice_message" element={<VoiceRecorder/>}/>
 
          
 

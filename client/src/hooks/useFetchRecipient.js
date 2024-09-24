@@ -9,10 +9,10 @@ export const useFetchRecipientUser = (chat,user) => {
         
     
     const recipientId = chat?.members.find((id) =>id!=user?.id)
-    console.log("recipient id in useFetch",recipientId)
+    // console.log("recipient id in useFetch",recipientId)
     useEffect(() => {
         const getUser = async() => {
-            console.log("Fetching user with ID:", recipientId);
+            // console.log("Fetching user with ID:", recipientId);
             if(!recipientId) return null
 
             const response = await getRequest(`${baseUrl}/users/find/${recipientId}`)
@@ -23,7 +23,7 @@ export const useFetchRecipientUser = (chat,user) => {
                 return setError(response)
 
             }
-            console.log("fetched recipient user:",response)
+            // console.log("fetched recipient user:",response)
             setRecipientUser(response)
         }
         getUser()
