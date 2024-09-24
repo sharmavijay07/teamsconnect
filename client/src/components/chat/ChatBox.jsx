@@ -14,6 +14,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { CommitOutlined } from "@mui/icons-material";
 import ZoomableImage from "../ZoomableImage";
 import {  baseUrl, filebaseUrl } from "@/utils/services";
+import { NavLink } from "react-router-dom";
 
 // const notify = (message, type) => {
 //     const toastId = `${type}-${Date.now()}`;
@@ -34,7 +35,9 @@ import {  baseUrl, filebaseUrl } from "@/utils/services";
 const ChatBox = () => {
     const { user ,setFileChatId,file} = useContext(AuthContext);
     // console.log('file is',file)
-    const { currentChat, messages, isMessagesLoading, sendTextMessage, userChats, isUserChatsLoading } = useContext(ChatContext);
+    const { messages, isMessagesLoading, isUserChatsLoading } = useContext(ChatContext);
+    const { currentChat, sendTextMessage } = useContext(ChatContext);
+    const {  userChats} = useContext(ChatContext);
     const { recipientUser } = useFetchRecipientUser(currentChat, user);
     const [textMessage, setTextMessage] = useState('');
     const [currentTime, setCurrentTime] = useState(new Date());
@@ -324,9 +327,12 @@ const ChatBox = () => {
                 <span class="material-symbols-outlined mt-1 hover:text-blue-500 pointer " title="Audio Call">
                 wifi_calling_bar_2  
                 </span>
-                    <span class="material-symbols-outlined mt-1 ml-3 align-left hover:text-blue-500" title="Video Call">
+                  <NavLink to='/sign'>
+                  <span class="material-symbols-outlined mt-1 ml-3 align-left hover:text-blue-500" title="Video Call">
                 videocam
-                </span></div>
+                </span>
+                  </NavLink>
+                </div>
 
             </div>
 
