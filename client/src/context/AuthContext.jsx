@@ -1,9 +1,11 @@
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useState,useRef } from "react";
 import { baseUrl, postRequest } from "../utils/services";
 import axios from "axios";
 import { ChatContext } from "./ChatContext"; // Ensure this is being correctly imported
 
 export const AuthContext = createContext();
+
+
 
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -41,12 +43,12 @@ useEffect(() => {
 
   if (fileChatId) {
    axios
-      .get(`http://localhost:4500/api/upload/file/${fileChatId}`)
+      .get(`${baseUrl}/upload/file/${fileChatId}`)
       .then((resp) => {
-        console.log("Response:", resp);
+        // console.log("Response:", resp);
 
         if (resp.data && resp.data.file) {
-          console.log("Files:", resp.data.file);
+          // console.log("Files:", resp.data.file);
           setFile(resp.data.file); // Set the 'file' array to state
         } else {
           console.error("No file data found in the response");
@@ -118,18 +120,61 @@ useEffect(() => {
 
   
 
-  useEffect(() => {
-    const user = localStorage.getItem("User")
-    axios.post('http://localhost:3002/api/getUser',{user})
-    .then((resp) => {
-      console.log("successfully passed the user to port 3001",resp)
-    })
-    .catch((err) => {
-      console.log("Error",err)
-    })
-  },[])
+  // useEffect(() => {
+  //   const user = localStorage.getItem("User")
+  //   axios.post('http://localhost:3002/api/getUser',{user})
+  //   .then((resp) => {
+  //     console.log("successfully passed the user to port 3001",resp)
+  //   })
+  //   .catch((err) => {
+  //     console.log("Error",err)
+  //   })
+  // },[])
 
-  console.log("user in authcontext",user)
+  // console.log("user in authcontext",user)
+
+
+
+  //for audio
+
+const [isRecording, setIsRecording] = useState(false);
+const [audioURL, setAudioURL] = useState("");
+const [audioBlob, setAudioBlob] = useState(null);
+const mediaRecorderRef = useRef(null);
+const audioChunksRef = useRef([]);
+
+
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+
+      mediaRecorder.ondataavailable = (event) => {
+        audioChunksRef.current.push(event.data);
+      };
+
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: "audio/wav" });
+        const audioUrl = URL.createObjectURL(audioBlob);
+        setAudioURL(audioUrl);
+        setAudioBlob(audioBlob);
+        audioChunksRef.current = [];
+      };
+
+      mediaRecorder.start();
+      setIsRecording(true);
+    } catch (error) {
+      console.error("Error accessing microphone:", error);
+    }
+  };
+
+  const stopRecording = () => {
+    mediaRecorderRef.current.stop();
+    setIsRecording(false);
+  };
+  
 
 
   
@@ -153,6 +198,13 @@ useEffect(() => {
         setFileChatId,
         file,
         setUser,
+        startRecording,
+        stopRecording,
+        isRecording,
+        audioURL,
+        audioBlob,
+        setAudioBlob
+        
       }}
     >
       {children}

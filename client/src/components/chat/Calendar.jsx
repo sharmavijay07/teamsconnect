@@ -6,8 +6,8 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { gapi } from "gapi-script";
 import "material-icons/iconfont/material-icons.css"; 
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import TimeZoneSelect from "react-timezone-select"; 
-import ReminderIcon from "@mui/icons-material/Notifications";
+// import TimeZoneSelect from "react-timezone-select"; 
+
 
 Modal.setAppElement("#root");
 

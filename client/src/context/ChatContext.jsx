@@ -85,11 +85,11 @@ const selectGroup = async (groupId) => {
   };
 
 
-    console.log("currentChat",currentChat)
+    // console.log("currentChat",currentChat)
 
-    console.log("messages",messages)
-    console.log("onlineUsers",onlineUsers)
-    console.log("notifications",notifications)
+    // console.log("messages",messages)
+    // console.log("onlineUsers",onlineUsers)
+    // console.log("notifications",notifications)
 
     //socket initialisation
     useEffect(() => {
@@ -125,7 +125,7 @@ const selectGroup = async (groupId) => {
         
     
         const recipientId = currentChat?.members.find(id => id!=user?.id)
-        console.log("recipient after message",recipientId)
+        // console.log("recipient after message",recipientId)
 
         socket.emit("sendMessage",{...newMessage,recipientId})
     },[newMessage])
@@ -217,7 +217,7 @@ const selectGroup = async (groupId) => {
     
     useEffect(() => {
         if(!currentChat) {
-            console.log('Current chat is null or undefined,skipping getMessages')
+            // console.log('Current chat is null or undefined,skipping getMessages')
             return;
         }
         console.log("fetching messages for chatId:",currentChat.id)
