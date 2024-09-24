@@ -7,8 +7,8 @@ import { Content } from '@radix-ui/react-dialog';
 const NavBar = () => {
     const {user,logoutUser} = useContext(AuthContext)
     return ( 
-        <div  className='sm:bg-white h-[5vh] w-screen bg-black md:grid justify-center hidden uppercase items-center gap-8 px-3'>
-            <Container className='flex'>
+        <div  className=' h-[5vh] w-screen  md:grid justify-center uppercase items-center gap-8 px-3 bg-black'>
+            <div className='flex'>
                 <h2>
                     
                 <NavLink to='/' className="mr-6  link-light text-deco ration-none items-center">TeamsConnect</NavLink>
@@ -49,7 +49,7 @@ const NavBar = () => {
                     </>)}
                     </Stack>
                 </Nav>
-            </Container>
+            </div>
         </div>
      );
 }
