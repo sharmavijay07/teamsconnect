@@ -100,7 +100,7 @@ const ZoomableImage = ({ src, alt }) => {
             onWheel={handleScroll} // Handle zoom on scroll
             onMouseDown={handleMouseDown} // Handle drag start
           />
-        </div>
+        </div> 
       )}
     </>
   );
