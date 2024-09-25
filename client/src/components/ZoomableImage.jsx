@@ -2,10 +2,16 @@ import React, { useState } from 'react';
 
 const ZoomableImage = ({ src, alt }) => {
   const [isZoomed, setIsZoomed] = useState(false);
+  const [isFullZoom, setIsFullZoom] = useState(false);
 
   // Handler to toggle zoom state
   const handleZoomToggle = () => {
     setIsZoomed(!isZoomed);
+  };
+
+  // Handler for full zoom on double click
+  const handleFullZoomToggle = () => {
+    setIsFullZoom(!isFullZoom);
   };
 
   return (
@@ -14,22 +20,22 @@ const ZoomableImage = ({ src, alt }) => {
       <img
         src={src}
         alt={alt}
-        className="w-48 cursor-pointer transition-transform duration-300"
+        className=" w-48 border-3 border-blue-300  rounded cursor-pointer transition-transform duration-500 "
         onClick={handleZoomToggle}
       />
 
-      {/* Zoomed Image with blurred background */}
+      {/* Zoomed Image */}
       {isZoomed && (
         <div
-          className="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-70 flex items-center justify-center z-50"
-          onClick={handleZoomToggle}
+          className="fixed inset-0 bg-slate-500 bg-opacity-60 flex items-center justify-center z-50"
+          onClick={handleZoomToggle} // Close on click
         >
           <img
             src={src}
             alt={alt}
-            className="w-auto max-w-full h-auto max-h-full scale-150 transition-transform duration-300"
+            className={`w-auto border-3 border-blue-400 rounded transition-transform duration-500 ${isFullZoom ? 'w-full h-full' : 'max-w-full max-h-full'}`}
+            onDoubleClick={handleFullZoomToggle} // Toggle full zoom on double click
           />
-          
         </div>
       )}
     </>
