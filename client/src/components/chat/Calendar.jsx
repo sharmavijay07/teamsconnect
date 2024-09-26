@@ -6,8 +6,10 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { gapi } from "gapi-script";
 import "material-icons/iconfont/material-icons.css"; 
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-// import TimeZoneSelect from "react-timezone-select"; 
+import TimeZoneSelect from "react-timezone-select"; 
 import ReminderIcon from "@mui/icons-material/Notifications";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import EventNoteIcon from "@mui/icons-material/EventNote"; // Icon for Scheduled Meetings
 
 Modal.setAppElement("#root");
 
@@ -29,6 +31,26 @@ const CalendarComponent = () => {
   const [currentEvent, setCurrentEvent] = useState(null);
   const [reminderTime, setReminderTime] = useState(""); // New state for reminder time
   const [reminders, setReminders] = useState({}); // State to store reminders
+  const [participants, setParticipants] = useState([
+    // Can Add more dummy participants
+  ]);
+  const [newParticipantName, setNewParticipantName] = useState("");
+const [newParticipantStatus, setNewParticipantStatus] = useState("free");
+
+const handleAddParticipant = () => {
+    if (newParticipantName.trim() !== "") {
+        setParticipants([...participants, { name: newParticipantName, status: newParticipantStatus }]);
+        setNewParticipantName(""); // Reset input after adding
+    } else {
+        alert("Please enter a participant name.");
+    }
+};
+
+const handleDeleteParticipant = (index) => {
+    setParticipants(participants.filter((_, i) => i !== index));
+};
+
+  
 
   useEffect(() => {
     const initClient = () => {
@@ -348,8 +370,9 @@ const CalendarComponent = () => {
         <Droppable droppableId={date.toDateString()}>
           {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef} className="events-list mt-8">
-              <h3 className="mb-4 p-2 rounded bg-slate-500/30 inline-block px-2">
-                Your Scheduled Meetings:
+              <h3 className="mb-4 p-2 rounded bg-slate-500/30 inline-block px-2 flex items-center">
+                  <EventNoteIcon className="mr-2" />
+                    Your Scheduled Meetings:
               </h3>
               <ul>
                 {(events[date.toDateString()] || []).map((event, index) => (
@@ -478,6 +501,43 @@ const CalendarComponent = () => {
           ))}
         </ul>
       </div>
+      
+      <div className="participants-section mt-8">
+      <h3 className="mb-4 p-2 rounded bg-slate-500/30 inline-block px-2 flex items-center">
+      <AccessTimeIcon className="mr-2" />
+       Availability Status:
+      </h3>
+  
+  <ul className="availability-list">
+    {participants.map((participant, index) => (
+      <li key={index} className={`status-${participant.status} flex justify-between items-center bg-blue-100 rounded-md p-4 my-2 shadow-md`}>
+        <div>
+          <span>{participant.name}:</span>
+          <span>{participant.status === 'free' ? '🟢 Free' : '🔴 Busy'}</span>
+        </div>
+        <button onClick={() => handleDeleteParticipant(index)} className="bg-red-500 text-white rounded p-1">Delete</button>
+      </li>
+    ))}
+  </ul>
+
+  <div className="add-participant">
+    <input
+      type="text"
+      placeholder="Participant Name"
+      value={newParticipantName}
+      onChange={(e) => setNewParticipantName(e.target.value)}
+    />
+    <select
+      value={newParticipantStatus}
+      onChange={(e) => setNewParticipantStatus(e.target.value)}
+    >
+      <option value="free">Free</option>
+      <option value="busy">Busy</option>
+    </select>
+    <button onClick={handleAddParticipant} className="bg-green-500 text-white rounded p-1">Add Participant</button>
+  </div>
+</div>
+
     </div>
   );
 };
