@@ -67,7 +67,7 @@ const Chat = () => {
                             </div>
 
                             {/* Right div only for non-video sessions */}
-                            <div className="right-div basis-[20%] border-l-2 border-black">
+                            <div className="hidden sm:block  right-div basis-[20%] border-l-2 border-black">
                                 {activeSection === "chat" && (
                                     <>
                                         <div className="flex flex-col gap-2">

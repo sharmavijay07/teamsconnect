@@ -1,4 +1,46 @@
+import PotentialChats from "../PotentialChats";
+import UserChat from "../UserChat";
+
+import { useContext, useState, useRef, useEffect } from "react";
+
+
 const Chatbox0 = ()=>{
+    const [currentTime, setCurrentTime] = useState(new Date());
+
+    // Effect to update the time every minute
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentTime(new Date());
+        }, 1000); // Update every second for real-time effect
+
+        // Cleanup interval on component unmount
+        return () => clearInterval(timer);
+    }, []);
+
+    // Function to get the ordinal suffix (st, nd, rd, th)
+    function getOrdinalSuffix(day) {
+        if (day > 3 && day < 21) return 'th'; // For 11th to 19th
+        switch (day % 10) {
+            case 1: return 'st';
+            case 2: return 'nd';
+            case 3: return 'rd';
+            default: return 'th';
+        }
+    }
+
+    // Extract the date, time, and year
+    const hours = currentTime.getHours();
+    const minutes = currentTime.getMinutes();
+    const date = currentTime.getDate();
+    const year = currentTime.getFullYear();
+    
+    // Format time to 12-hour format with AM/PM
+    const formattedHours = hours % 12 || 12; // Convert 24-hour to 12-hour format
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const dayName = currentTime.toLocaleDateString('en-US', { weekday: 'long' });
+    const monthName = currentTime.toLocaleDateString('en-US', { month: 'long' });
+
     return(
         <>
          <div className="h-[95vh] w-screen bg-black flex" >
