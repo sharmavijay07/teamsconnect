@@ -17,7 +17,6 @@ import ZoomableImage from "../ZoomableImage";
 import { baseUrl, filebaseUrl } from "@/utils/services";
 import { NavLink } from "react-router-dom";
 
-// const notify = (message, type) => {
 //     const toastId = `${type}-${Date.now()}`;
 //     toast[type](message, {
 //       toastId,
@@ -122,8 +121,6 @@ const ChatBox = () => {
     }
   };
 
-  //-------------------------------------------------
-
   //all messages
 
   function getMessage() {
@@ -220,8 +217,6 @@ const ChatBox = () => {
   const formattedMinutes = minutes.toString().padStart(2, "0");
   const dayName = currentTime.toLocaleDateString("en-US", { weekday: "long" });
   const monthName = currentTime.toLocaleDateString("en-US", { month: "long" });
-
-  ///----------------------------------------9/09/24--------------------------------------------
 
   if (!recipientUser)
     return <>{userChats?.length < 1 ? <Chatbox0 /> : <Chatbox1 />}</>;
