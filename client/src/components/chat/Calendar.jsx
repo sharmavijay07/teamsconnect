@@ -6,7 +6,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { gapi } from "gapi-script";
 import "material-icons/iconfont/material-icons.css"; 
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import TimeZoneSelect from "react-timezone-select"; 
+// import TimeZoneSelect from "react-timezone-select"; 
 import ReminderIcon from "@mui/icons-material/Notifications";
 
 Modal.setAppElement("#root");
@@ -100,6 +100,10 @@ const CalendarComponent = () => {
         timeZone: eventTimeZone, 
         reminderTime: reminderTime, // Add reminder time to event
       };
+       
+      if (newEvent.reminderTime) {
+        scheduleNotification(newEvent, dateString);
+      }
 
       if (!isConflict(dateString, newEvent)) {
         setEvents((prevEvents) => addNewEvent(prevEvents, dateString, newEvent));
@@ -109,6 +113,76 @@ const CalendarComponent = () => {
       }
     } else {
       alert("Please fill in all fields.");
+    }
+  };
+  
+  const scheduleNotification = (event, dateString) => {
+    const eventDate = new Date(dateString);
+    const [hours, minutes] = event.reminderTime.split(":").map(Number);
+    eventDate.setHours(hours, minutes, 0, 0);
+  
+    const now = new Date();
+    const timeUntilEvent = eventDate.getTime() - now.getTime();
+  
+    if (timeUntilEvent > 0) {
+      setTimeout(() => {
+        // Show notification
+        if (Notification.permission === "granted") {
+          const notification = new Notification("Meeting Reminder", {
+            body: `Upcoming meeting: ${event.input} at ${event.startTime}`,
+            icon: "https://cdn-icons-png.flaticon.com/512/2534/2534500.png", // Custom icon
+            image: "https://img.freepik.com/free-vector/meeting-illustration_52683-39753.jpg", // Custom image
+            badge: "https://cdn-icons-png.flaticon.com/512/3246/3246216.png", // Custom badge
+            vibrate: [200, 100, 200],
+            requireInteraction: true,
+            actions: [
+              {
+                action: "open-meeting",
+                title: "Open Meeting",
+                icon: "https://cdn-icons-png.flaticon.com/512/748/748234.png" 
+              }
+            ]
+          });
+  
+          // Add event listener for button clicks
+          notification.addEventListener('click', (event) => {
+            if (event.action === 'open-meeting') {
+              // Code to open the meeting link (e.g., event.link) in a new tab
+              window.open(event.link, '_blank'); 
+            }
+          });
+  
+        } else if (Notification.permission !== "denied") {
+          Notification.requestPermission().then((permission) => {
+            if (permission === "granted") {
+              // Show notification with permission granted
+              const notification = new Notification("Meeting Reminder", {
+                body: `Upcoming meeting: ${event.input} at ${event.startTime}`,
+                icon: "https://cdn-icons-png.flaticon.com/512/2534/2534500.png", // Custom icon
+                image: "https://img.freepik.com/free-vector/meeting-illustration_52683-39753.jpg", // Custom image
+                badge: "https://cdn-icons-png.flaticon.com/512/3246/3246216.png", // Custom badge
+                vibrate: [200, 100, 200],
+                requireInteraction: true,
+                actions: [
+                  {
+                    action: "open-meeting",
+                    title: "Open Meeting",
+                    icon: "https://cdn-icons-png.flaticon.com/512/748/748234.png" 
+                  }
+                ]
+              });
+  
+              // Add event listener for button clicks
+              notification.addEventListener('click', (event) => {
+                if (event.action === 'open-meeting') {
+                  // Code to open the meeting link (e.g., event.link) in a new tab
+                  window.open(event.link, '_blank'); 
+                }
+              });
+            }
+          });
+        }
+      }, timeUntilEvent);
     }
   };
 

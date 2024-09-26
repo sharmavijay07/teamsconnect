@@ -18,6 +18,7 @@ import { ToastContainer } from 'react-toastify';
 import Videohome from './components/video/videohome'
 import Sign from './components/video/sign'
 import VoiceRecorder from './components/Voice_message/Voice_messages'
+// import './components/chat/mobile/mobile'
 
 
 function App() {
@@ -40,6 +41,8 @@ function App() {
           <Route path="/usergroups" element={<UserGroups />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/videohome" element={<Videohome />} />
+          <Route path="/videohome/:meetingId/:uid" element={<Videohome />} />
+
           <Route path="/voice_message" element={<VoiceRecorder/>}/>
           {/* <Route path="/videohome" element={<Video />} /> */}
           <Route path="/sign" element={<Sign />} />

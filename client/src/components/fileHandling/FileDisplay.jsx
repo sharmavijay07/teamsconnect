@@ -64,7 +64,7 @@ const FileDisplay = ({chatId}) => {
               <img
                 src={getFileUrl(test.filePath)}
                 alt={`file-${index}`}
-                style={{ width: '150px', height: '150px' }}
+                style={{ width: '150px', height: '150px'  }}
               />
             ) : (
               // Download link for non-image files
