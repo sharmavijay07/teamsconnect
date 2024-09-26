@@ -1,13 +1,7 @@
-<<<<<<< HEAD
-export const baseUrl = "http://localhost:4500/api";
-
-export const filebaseUrl = "http://localhost:4500";
-=======
-export const baseUrl = 'http://192.168.90.184:4500/api'
+export const baseUrl = 'http://localhost:4500/api'
 
 // export const axiosbaseUrl = 'http://localhost:4500/api'
-export const filebaseUrl = 'http://192.168.90.184:4500'
->>>>>>> 9ed2c6c325706fdd5d6f236b72258bcd92bf3a5f
+export const filebaseUrl = 'http://localhost:4500'
 
 export const postRequest = async (url, body) => {
   const response = await fetch(url, {
