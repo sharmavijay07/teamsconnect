@@ -11,11 +11,15 @@ import Chatbox0 from "./chatBoxComponent/Chatbox0";
 import Chatbox1 from "./chatBoxComponent/Chatbox1";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer, toast } from "react-toastify";
-import { CommitOutlined } from "@mui/icons-material";
+import {  toast } from "react-toastify";
+import { CommitOutlined, Height } from "@mui/icons-material";
 import ZoomableImage from "../ZoomableImage";
 import { baseUrl, filebaseUrl } from "@/utils/services";
 import { NavLink } from "react-router-dom";
+import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
+
+
+
 
 //     const toastId = `${type}-${Date.now()}`;
 //     toast[type](message, {
@@ -278,6 +282,7 @@ const ChatBox = () => {
         className="h-[95vh] w-[76vw] flex flex-col justify-between bg-b-30 text-center"
         style={{ color: "white" }}
       >
+        
         <div className="bg-gray-400 rounded-[5px] border-1 border-black flex justify-between w-[76vw]">
           <strong class="text-black mr-80  p-1  ml-3   " title="user Name">
             {recipientUser.map((user) => user.name).join(",")}
@@ -320,7 +325,7 @@ const ChatBox = () => {
                           : " w-fit max-w-[70%] min-w-[15%] p-1s ml-2  rounded-[8px]  mt-2 flex flex-col flex-grow-0   break-words  text-dark"
                       }`}
                       ref={scroll}
-                    >
+                    ><div>
                       {message.filePath.endsWith(".png") ||
                       message.filePath.endsWith(".jpg") ||
                       message.filePath.endsWith(".gif") ? (
@@ -329,18 +334,20 @@ const ChatBox = () => {
                           alt={file - `${index}`}
                           style={{ width: "150px", height: "150px" }}
                         />
+
                       ) : (
                         // Download link for non-image files
                         <a href={getFileUrl(message.filePath)} download>
                           Download {message.filePath.split("/").pop()}
                         </a>
                       )}
-                      <p>
-                        Uploaded At:{" "}
-                        {new Date(message.uploadedAt).toLocaleString()}
+                      
+                      <p className="bg-slate-300 rounded">
+                          {" "}
+                        <div className="bg-blue-300 rounded">{new Date(message.uploadedAt).toLocaleString()}</div>
                       </p>
-                    </div>
-                  ) : (
+                    </div></div>
+                  ) : (   
                     ""
                   )}
                   <div

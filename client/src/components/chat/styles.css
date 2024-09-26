@@ -267,3 +267,34 @@
     padding: 8px; /* Adjust padding for reminder items */
   }
 }
+
+.participants-section {
+    margin-top: 2rem;
+}
+
+.availability-list {
+    list-style: none;
+    padding: 0;
+}
+
+.availability-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #e0f7fa; /* light cyan background */
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    transition: background-color 0.3s;
+}
+
+.availability-list li:hover {
+    background-color: #b2ebf2; /* darker cyan on hover */
+}
+
+.add-participant {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
