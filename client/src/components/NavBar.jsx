@@ -9,7 +9,7 @@ const NavBar = () => {
     const {user,logoutUser,setBarOpen,isBarOpen} = useContext(AuthContext)
     
     return ( 
-        <div  className=' h-[5vh] sm:w-full w-auto sm:flex flex sm:justify-between justify-around items-center uppercase  gap-8 px-3 py-3 bg-black'>
+        <div  className='  h-[5vh] sm:w-full w-auto sm:flex flex sm:justify-between justify-around items-center uppercase  gap-8 px-3 py-3 bg-black'>
             <div className='flex sm:w-screen  w-fit justify-between items-center sm:p-2 p-3 sm:text-nowrap text-nowrap sm:text-sm text-xl'>
                 <div className='flex sm:hidden items-center mr-6'>
                 <button className='sm:hidden text-white m-0' >

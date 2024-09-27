@@ -10,7 +10,7 @@ export const AuthContext = createContext();
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   let [meetingId, setMeetingId] = useState('');
-  const [isBarOpen,setBarOpen] = useState(false)
+  const [isBarOpen,setBarOpen] = useState(true)
 
 
      
