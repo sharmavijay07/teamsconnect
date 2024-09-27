@@ -1,4 +1,4 @@
-import { useContext, useState, useRef, useEffect } from "react";
+import { useContext, useState, useRef, useEffect ,memo} from "react";
 import { AuthContext } from "@/context/AuthContext";
 import { ChatContext } from "@/context/ChatContext";
 import { useFetchRecipientUser } from "@/hooks/useFetchRecipient";
@@ -11,13 +11,17 @@ import Chatbox0 from "./chatBoxComponent/Chatbox0";
 import Chatbox1 from "./chatBoxComponent/Chatbox1";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
-import { toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import { CommitOutlined, Height } from "@mui/icons-material";
 import ZoomableImage from "../ZoomableImage";
 import { baseUrl, filebaseUrl } from "@/utils/services";
 import { NavLink } from "react-router-dom";
 import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
 
+
+
+
+// const notify = (message, type) => {
 //     const toastId = `${type}-${Date.now()}`;
 //     toast[type](message, {
 //       toastId,
@@ -34,6 +38,14 @@ import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
 //   };
 
 const ChatBox = () => {
+
+  const bottomRef = useRef(null);
+
+// Function to scroll to the bottom
+  const scrollToBottom = () => {
+    bottomRef.current.scrollIntoView({  });
+  };
+
   const { user, setFileChatId, file } = useContext(AuthContext);
   // console.log('file is',file)
   const { messages, isMessagesLoading, isUserChatsLoading } =
@@ -65,12 +77,12 @@ const ChatBox = () => {
     });
   };
 
-  const scroll = useRef( useEffect(() => {
-    scroll.current?.scrollIntoView();
-  }, [messages]));
+  const scroll = useRef();
 
   // Scroll to bottom when new messages arrive
- 
+  useEffect(() => {
+    scroll.current?.scrollIntoView();
+  }, [messages]);
 
   useEffect(() => {
     if (currentChat) {
@@ -122,7 +134,27 @@ const ChatBox = () => {
     }
   };
 
+  //-------------------------------------------------
+
   //all messages
+
+
+  const sortMessages = (file,onlyMessages) => {
+    const combinedMessage = [...(file || []), ...(onlyMessages || [])];
+
+  // Sort the combined array based on the createdAt timestamp
+  //   combinedMessages.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+  combinedMessage.sort((a, b) => {
+    const aTime = a.createdAt
+      ? new Date(a.createdAt)
+      : new Date(a.uploadedAt);
+    const bTime = b.createdAt
+      ? new Date(b.createdAt)
+      : new Date(b.uploadedAt);
+    return aTime - bTime;
+  });
+  setCombinedMessages(combinedMessage);
+  }
 
   function getMessage() {
     const chatId = currentChat?.id;
@@ -133,20 +165,7 @@ const ChatBox = () => {
         setOnlyMessages(resp.data);
         // console.log("onlu=y messages",onlyMessages)
 
-        const combinedMessage = [...(file || []), ...(onlyMessages || [])];
-
-        // Sort the combined array based on the createdAt timestamp
-        //   combinedMessages.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-        combinedMessage.sort((a, b) => {
-          const aTime = a.createdAt
-            ? new Date(a.createdAt)
-            : new Date(a.uploadedAt);
-          const bTime = b.createdAt
-            ? new Date(b.createdAt)
-            : new Date(b.uploadedAt);
-          return aTime - bTime;
-        });
-        setCombinedMessages(combinedMessage);
+       sortMessages(file,onlyMessages)
 
         // console.log("combinedMessages",combinedMessages)
         // console.log("files in combined",file)
@@ -219,6 +238,8 @@ const ChatBox = () => {
   const dayName = currentTime.toLocaleDateString("en-US", { weekday: "long" });
   const monthName = currentTime.toLocaleDateString("en-US", { month: "long" });
 
+  ///----------------------------------------9/09/24--------------------------------------------
+
   if (!recipientUser)
     return <>{userChats?.length < 1 ? <Chatbox0 /> : <Chatbox1 />}</>;
 
@@ -279,6 +300,7 @@ const ChatBox = () => {
         className="h-[95vh] w-[76vw] flex flex-col justify-between bg-b-30 text-center"
         style={{ color: "white" }}
       >
+        
         <div className="bg-gray-400 rounded-[5px] border-1 border-black flex justify-between w-[76vw]">
           <strong class="text-black mr-80  p-1  ml-3   " title="user Name">
             {recipientUser.map((user) => user.name).join(",")}
@@ -308,14 +330,6 @@ const ChatBox = () => {
                   "
             style={{ color: "black" }}
           >
-            <div className=" rounded bottom-0 mb-12 ml-2  absolute z-50 bg-slate-500/50 ">
-              <button className="p-1 text-sky-600" onCLick={scroll}>
-                <span class="material-symbols-outlined">
-                  keyboard_double_arrow_down
-                </span>
-              </button>
-            </div>
-
             {/* <FileDisplay /> */}
             {combinedMessages &&
               combinedMessages?.map((message, index) => (
@@ -329,24 +343,24 @@ const ChatBox = () => {
                           : " w-fit max-w-[70%] min-w-[15%] p-1s ml-2  rounded-[8px]  mt-2 flex flex-col flex-grow-0   break-words  text-dark"
                       }`}
                       ref={scroll}
-                    >
-                      <div>
-                        {message.filePath.endsWith(".png") ||
-                        message.filePath.endsWith(".jpg") ||
-                        message.filePath.endsWith(".gif") ? (
-                          <ZoomableImage
-                            src={getFileUrl(message.filePath)}
-                            alt={file - `${index}`}
-                            style={{ width: "150px", height: "150px" }}
-                          />
-                        ) : (
-                          // Download link for non-image files
-                          <a href={getFileUrl(message.filePath)} download>
-                            Download {message.filePath.split("/").pop()}
-                          </a>
-                        )}
+                    ><div>
+                      {message.filePath.endsWith(".png") ||
+                      message.filePath.endsWith(".jpg") ||
+                      message.filePath.endsWith(".gif") ? (
+                        <ZoomableImage
+                          src={getFileUrl(message.filePath)}
+                          alt={file - `${index}`}
+                          style={{ width: "150px", height: "150px" }}
+                        />
 
-                        <p className="bg-slate-300 rounded">
+                      ) : (
+                        // Download link for non-image files
+                        <a href={getFileUrl(message.filePath)} download>
+                          Download {message.filePath.split("/").pop()}
+                        </a>
+                      )}
+                      
+                      <p className="bg-slate-300 rounded">
                           {" "}
                           <div className="bg-blue-300 rounded">
                             {new Date(message.uploadedAt).toLocaleString()}
@@ -354,6 +368,7 @@ const ChatBox = () => {
                         </p>
                       </div>
                     </div>
+                    
                   ) : (
                     ""
                   )}
@@ -364,10 +379,10 @@ const ChatBox = () => {
                         ? "bg-gray-400/40 w-fit max-w-[70%] min-w-[15%] p-1  px-3 mr-2  rounded-[8px]  mt-2 ml-auto flex-grow-0  break-words  text-wrap  text-dark "
                         : "bg-blue-300/70 w-fit max-w-[70%] min-w-[15%] p-1 px-3 ml-2  rounded-[8px]  mt-1 flex-grow-0   break-words  text-dark"
                     }`}
-                    ref={scroll}
+                    
                   >
                     <span>{message.text}</span>
-                    <div className="">
+                    <div className="" >
                       <span
                         className={` ${
                           message?.senderId == user?.id
@@ -378,9 +393,14 @@ const ChatBox = () => {
                         {moment(message.createdAt).format("h:mm a")}
                       </span>
                     </div>
-                  </div>
+                  </div >
+                  <div  
+                  ></div>
                 </>
               ))}
+                  <div ref={bottomRef} />
+                  
+
           </div>
         </>
 
