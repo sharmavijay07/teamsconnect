@@ -10,6 +10,8 @@ export const AuthContext = createContext();
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   let [meetingId, setMeetingId] = useState('');
+  const [isBarOpen,setBarOpen] = useState(true)
+
 
      
   const createMeetingId = useCallback(() => {
@@ -214,7 +216,9 @@ const audioChunksRef = useRef([]);
         setAudioBlob,
         setMeetingId,
         meetingId,
-        createMeetingId
+        createMeetingId,
+        isBarOpen,
+        setBarOpen
         
       }}
     >

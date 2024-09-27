@@ -36,7 +36,7 @@ const io = new Server(app.listen(PORT, () => {
     console.log(`Server is running on port: ${PORT}`);
 }), {
     cors: {
-        origin: "http://localhost:5173", // Change this to your frontend's URL
+        origin: ["http://localhost:5173","http://192.168.90.184:5173"], 
         methods: ["GET", "POST"]
     }
 });

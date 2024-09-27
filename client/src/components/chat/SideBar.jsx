@@ -3,13 +3,24 @@ import './styles.css';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import UserGroups from './UserGroups';
+import { useContext } from 'react';
+import { AuthContext } from '@/context/AuthContext';
 // import FileUploads from '../fileHandling/FileUploads';
 
 function Sidebar({ setActiveSection }) {
+    const {isBarOpen} = useContext(AuthContext)
     return (
-        <div className="sidebar closed border-r-2 border-black bg-blue-300">
+        <div 
+        className={isBarOpen?
+            "sidebar closed border-r-2 border-black bg-blue-300 sm:block hidden"
+            :
+            "sidebar absolute h-[85vh] w-[50vw] backdrop-blur-lg bg-black/20 open border-r-2 border-black  block"
+        }
+        >
             <div className="sidebar-icons visible">
-                <a href="#group"  title="Group" onClick={() => setActiveSection('group')}><Group /></a>
+                <a className='group' href="#group"   onClick={() => setActiveSection('group')}><Group />
+                <span className='absolute left-[80px] scale-0 group-hover:scale-100 transition-all bg-black  text-white p-2 rounded '> Group </span>
+                </a>
                 <a href="#chat" title="chat" onClick={() => setActiveSection('chat')}><Chat /></a>
                 <a href="#calendar"  title="Calendar" onClick={() => setActiveSection('calendar')}><CalendarToday /></a>
                 <a href="#video" title="Video" onClick={() => setActiveSection('video')}><VideoCall /></a>
