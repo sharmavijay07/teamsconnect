@@ -4,9 +4,9 @@ import "react-calendar/dist/Calendar.css";
 import Modal from "react-modal";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { gapi } from "gapi-script";
-import "material-icons/iconfont/material-icons.css"; 
+import "material-icons/iconfont/material-icons.css";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import TimeZoneSelect from "react-timezone-select"; 
+import TimeZoneSelect from "react-timezone-select";
 import ReminderIcon from "@mui/icons-material/Notifications";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import EventNoteIcon from "@mui/icons-material/EventNote"; // Icon for Scheduled Meetings
@@ -26,7 +26,7 @@ const CalendarComponent = () => {
   const [eventAgenda, setEventAgenda] = useState("");
   const [eventNotes, setEventNotes] = useState("");
   const [eventAttachments, setEventAttachments] = useState([]);
-  const [eventTimeZone, setEventTimeZone] = useState(""); 
+  const [eventTimeZone, setEventTimeZone] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [currentEvent, setCurrentEvent] = useState(null);
   const [reminderTime, setReminderTime] = useState(""); // New state for reminder time
@@ -35,22 +35,23 @@ const CalendarComponent = () => {
     // Can Add more dummy participants
   ]);
   const [newParticipantName, setNewParticipantName] = useState("");
-const [newParticipantStatus, setNewParticipantStatus] = useState("free");
+  const [newParticipantStatus, setNewParticipantStatus] = useState("free");
 
-const handleAddParticipant = () => {
+  const handleAddParticipant = () => {
     if (newParticipantName.trim() !== "") {
-        setParticipants([...participants, { name: newParticipantName, status: newParticipantStatus }]);
-        setNewParticipantName(""); // Reset input after adding
+      setParticipants([
+        ...participants,
+        { name: newParticipantName, status: newParticipantStatus },
+      ]);
+      setNewParticipantName(""); // Reset input after adding
     } else {
-        alert("Please enter a participant name.");
+      alert("Please enter a participant name.");
     }
-};
+  };
 
-const handleDeleteParticipant = (index) => {
+  const handleDeleteParticipant = (index) => {
     setParticipants(participants.filter((_, i) => i !== index));
-};
-
-  
+  };
 
   useEffect(() => {
     const initClient = () => {
@@ -78,7 +79,7 @@ const handleDeleteParticipant = (index) => {
     setEventAgenda(event ? event.agenda : "");
     setEventNotes(event ? event.notes : "");
     setEventAttachments(event ? event.attachments : []);
-    setEventTimeZone(event ? event.timeZone : ""); 
+    setEventTimeZone(event ? event.timeZone : "");
     setReminderTime(event ? event.reminderTime : ""); // Load reminder time
     setIsOpen(true);
   };
@@ -100,7 +101,7 @@ const handleDeleteParticipant = (index) => {
     setEventAgenda("");
     setEventNotes("");
     setEventAttachments([]);
-    setEventTimeZone(""); 
+    setEventTimeZone("");
     setReminderTime(""); // Reset reminder time
   };
 
@@ -112,23 +113,27 @@ const handleDeleteParticipant = (index) => {
         description: eventDescription,
         startTime: eventStartTime,
         endTime: eventEndTime,
-        participants: eventParticipants.split(",").map((participant) => participant.trim()),
+        participants: eventParticipants
+          .split(",")
+          .map((participant) => participant.trim()),
         link: eventLink,
         id: Date.now(),
         recurrence: eventRecurrence,
         agenda: eventAgenda,
         notes: eventNotes,
         attachments: eventAttachments,
-        timeZone: eventTimeZone, 
+        timeZone: eventTimeZone,
         reminderTime: reminderTime, // Add reminder time to event
       };
-       
+
       if (newEvent.reminderTime) {
         scheduleNotification(newEvent, dateString);
       }
 
       if (!isConflict(dateString, newEvent)) {
-        setEvents((prevEvents) => addNewEvent(prevEvents, dateString, newEvent));
+        setEvents((prevEvents) =>
+          addNewEvent(prevEvents, dateString, newEvent)
+        );
         handleCloseModal();
       } else {
         alert("Event time conflict! Please choose a different time.");
@@ -137,15 +142,15 @@ const handleDeleteParticipant = (index) => {
       alert("Please fill in all fields.");
     }
   };
-  
+
   const scheduleNotification = (event, dateString) => {
     const eventDate = new Date(dateString);
     const [hours, minutes] = event.reminderTime.split(":").map(Number);
     eventDate.setHours(hours, minutes, 0, 0);
-  
+
     const now = new Date();
     const timeUntilEvent = eventDate.getTime() - now.getTime();
-  
+
     if (timeUntilEvent > 0) {
       setTimeout(() => {
         // Show notification
@@ -153,7 +158,8 @@ const handleDeleteParticipant = (index) => {
           const notification = new Notification("Meeting Reminder", {
             body: `Upcoming meeting: ${event.input} at ${event.startTime}`,
             icon: "https://cdn-icons-png.flaticon.com/512/2534/2534500.png", // Custom icon
-            image: "https://img.freepik.com/free-vector/meeting-illustration_52683-39753.jpg", // Custom image
+            image:
+              "https://img.freepik.com/free-vector/meeting-illustration_52683-39753.jpg", // Custom image
             badge: "https://cdn-icons-png.flaticon.com/512/3246/3246216.png", // Custom badge
             vibrate: [200, 100, 200],
             requireInteraction: true,
@@ -161,19 +167,18 @@ const handleDeleteParticipant = (index) => {
               {
                 action: "open-meeting",
                 title: "Open Meeting",
-                icon: "https://cdn-icons-png.flaticon.com/512/748/748234.png" 
-              }
-            ]
+                icon: "https://cdn-icons-png.flaticon.com/512/748/748234.png",
+              },
+            ],
           });
-  
+
           // Add event listener for button clicks
-          notification.addEventListener('click', (event) => {
-            if (event.action === 'open-meeting') {
+          notification.addEventListener("click", (event) => {
+            if (event.action === "open-meeting") {
               // Code to open the meeting link (e.g., event.link) in a new tab
-              window.open(event.link, '_blank'); 
+              window.open(event.link, "_blank");
             }
           });
-  
         } else if (Notification.permission !== "denied") {
           Notification.requestPermission().then((permission) => {
             if (permission === "granted") {
@@ -181,24 +186,26 @@ const handleDeleteParticipant = (index) => {
               const notification = new Notification("Meeting Reminder", {
                 body: `Upcoming meeting: ${event.input} at ${event.startTime}`,
                 icon: "https://cdn-icons-png.flaticon.com/512/2534/2534500.png", // Custom icon
-                image: "https://img.freepik.com/free-vector/meeting-illustration_52683-39753.jpg", // Custom image
-                badge: "https://cdn-icons-png.flaticon.com/512/3246/3246216.png", // Custom badge
+                image:
+                  "https://img.freepik.com/free-vector/meeting-illustration_52683-39753.jpg", // Custom image
+                badge:
+                  "https://cdn-icons-png.flaticon.com/512/3246/3246216.png", // Custom badge
                 vibrate: [200, 100, 200],
                 requireInteraction: true,
                 actions: [
                   {
                     action: "open-meeting",
                     title: "Open Meeting",
-                    icon: "https://cdn-icons-png.flaticon.com/512/748/748234.png" 
-                  }
-                ]
+                    icon: "https://cdn-icons-png.flaticon.com/512/748/748234.png",
+                  },
+                ],
               });
-  
+
               // Add event listener for button clicks
-              notification.addEventListener('click', (event) => {
-                if (event.action === 'open-meeting') {
+              notification.addEventListener("click", (event) => {
+                if (event.action === "open-meeting") {
                   // Code to open the meeting link (e.g., event.link) in a new tab
-                  window.open(event.link, '_blank'); 
+                  window.open(event.link, "_blank");
                 }
               });
             }
@@ -211,7 +218,8 @@ const handleDeleteParticipant = (index) => {
   const isConflict = (dateString, newEvent) => {
     const existingEvents = events[dateString] || [];
     return existingEvents.some(
-      (event) => newEvent.startTime < event.endTime && newEvent.endTime > event.startTime
+      (event) =>
+        newEvent.startTime < event.endTime && newEvent.endTime > event.startTime
     );
   };
 
@@ -258,7 +266,7 @@ const handleDeleteParticipant = (index) => {
           eventId: newEvent.id,
           reminderTime: newEvent.reminderTime,
           eventTitle: newEvent.input,
-          eventDate: dateString, 
+          eventDate: dateString,
         },
       }));
     }
@@ -276,13 +284,15 @@ const handleDeleteParticipant = (index) => {
             description: eventDescription,
             startTime: eventStartTime,
             endTime: eventEndTime,
-            participants: eventParticipants.split(",").map((participant) => participant.trim()),
+            participants: eventParticipants
+              .split(",")
+              .map((participant) => participant.trim()),
             link: eventLink,
             recurrence: eventRecurrence,
             agenda: eventAgenda,
             notes: eventNotes,
             attachments: eventAttachments,
-            timeZone: eventTimeZone, 
+            timeZone: eventTimeZone,
             reminderTime: reminderTime, // Update reminder time
           }
         : event
@@ -294,7 +304,9 @@ const handleDeleteParticipant = (index) => {
 
   const handleDeleteEvent = (eventToDelete) => {
     const dateString = date.toDateString();
-    const updatedEvents = events[dateString].filter((event) => event.id !== eventToDelete.id);
+    const updatedEvents = events[dateString].filter(
+      (event) => event.id !== eventToDelete.id
+    );
     setEvents((prevEvents) => ({ ...prevEvents, [dateString]: updatedEvents }));
 
     // Remove reminder from the reminders state
@@ -313,7 +325,9 @@ const handleDeleteParticipant = (index) => {
     const destinationDateString = result.destination.droppableId;
 
     const movedEvent = events[sourceDateString][result.source.index];
-    const updatedSourceEvents = events[sourceDateString].filter((_, index) => index !== result.source.index);
+    const updatedSourceEvents = events[sourceDateString].filter(
+      (_, index) => index !== result.source.index
+    );
 
     setEvents((prevEvents) => ({
       ...prevEvents,
@@ -344,7 +358,9 @@ const handleDeleteParticipant = (index) => {
   return (
     <div className="calendar-container text-center p-8 bg-gray-100 rounded-2xl shadow-lg">
       <div className="calendar-header bg-slate-500/50 m-2 rounded p-2">
-        <CalendarTodayIcon style={{ verticalAlign: 'middle', marginRight: '5px' }} />
+        <CalendarTodayIcon
+          style={{ verticalAlign: "middle", marginRight: "5px" }}
+        />
         Calendar
       </div>
       <Calendar
@@ -354,13 +370,21 @@ const handleDeleteParticipant = (index) => {
       />
       <div className="bg-slate-400 rounded bg-gradient-to-r from-slate-400/50 to-blue-400 text-black mb-4 text-left max-w-80">
         <p>
-          <CalendarTodayIcon style={{ verticalAlign: 'middle', marginRight: '0px' }} />
+          <CalendarTodayIcon
+            style={{ verticalAlign: "middle", marginRight: "0px" }}
+          />
           Selected Date: {date.toDateString()}
         </p>
       </div>
 
-      <button className="add-event-btn flex items-center justify-start" onClick={() => handleOpenModal(null)}>
-        <span className="material-icons" style={{ verticalAlign: 'middle', marginRight: '5px' }}>
+      <button
+        className="add-event-btn flex items-center justify-start"
+        onClick={() => handleOpenModal(null)}
+      >
+        <span
+          className="material-icons"
+          style={{ verticalAlign: "middle", marginRight: "5px" }}
+        >
           add
         </span>
         Schedule Meeting
@@ -369,18 +393,32 @@ const handleDeleteParticipant = (index) => {
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId={date.toDateString()}>
           {(provided) => (
-            <div {...provided.droppableProps} ref={provided.innerRef} className="events-list mt-8">
+            <div
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              className="events-list mt-8"
+            >
               <h3 className="mb-4 p-2 rounded bg-slate-500/30 inline-block px-2 flex items-center">
-                  <EventNoteIcon className="mr-2" />
-                    Your Scheduled Meetings:
+                <EventNoteIcon className="mr-2" />
+                Your Scheduled Meetings:
               </h3>
               <ul>
                 {(events[date.toDateString()] || []).map((event, index) => (
-                  <Draggable key={event.id} draggableId={event.id.toString()} index={index}>
+                  <Draggable
+                    key={event.id}
+                    draggableId={event.id.toString()}
+                    index={index}
+                  >
                     {(provided) => (
-                      <li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className="event-item bg-blue-100 rounded-md p-4 my-2 shadow-md flex flex-col transition-colors duration-300 hover:bg-blue-200">
+                      <li
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        className="event-item bg-blue-100 rounded-md p-4 my-2 shadow-md flex flex-col transition-colors duration-300 hover:bg-blue-200"
+                      >
                         <h4>
-                          {event.input} ({event.startTime} - {event.endTime}, {event.timeZone})
+                          {event.input} ({event.startTime} - {event.endTime},{" "}
+                          {event.timeZone})
                           {event.recurrence !== "none" && <span>🔁</span>}
                         </h4>
                         <p>{event.description}</p>
@@ -389,10 +427,16 @@ const handleDeleteParticipant = (index) => {
                           <button onClick={() => handleJoinMeeting(event.link)}>
                             Join Meeting
                           </button>
-                          <button onClick={() => handleOpenModal(event)} style={{ fontSize: 'small' }}>
+                          <button
+                            onClick={() => handleOpenModal(event)}
+                            style={{ fontSize: "small" }}
+                          >
                             Edit
                           </button>
-                          <button onClick={() => handleDeleteEvent(event)} style={{ fontSize: 'small' }}>
+                          <button
+                            onClick={() => handleDeleteEvent(event)}
+                            style={{ fontSize: "small" }}
+                          >
                             Delete
                           </button>
                         </p>
@@ -476,68 +520,94 @@ const handleDeleteParticipant = (index) => {
           />
         </div>
         <div className="modal-actions">
-          <button onClick={currentEvent ? handleEditEvent : handleAddEvent} className="bg-green-500/50">
-            {currentEvent ? 'Update Meeting' : 'Schedule Meeting'}
+          <button
+            onClick={currentEvent ? handleEditEvent : handleAddEvent}
+            className="bg-green-500/50"
+          >
+            {currentEvent ? "Update Meeting" : "Schedule Meeting"}
           </button>
-          <button onClick={handleCloseModal} className="bg-red-500/60">Close</button>
+          <button onClick={handleCloseModal} className="bg-red-500/60">
+            Close
+          </button>
         </div>
       </Modal>
 
       {/* Reminder Section (UI Improvement) */}
       <div className="reminders-section mt-8">
         <h3 className="mb-4 p-2 rounded bg-slate-500/30 inline-block px-2">
-          <ReminderIcon style={{ verticalAlign: 'middle', marginRight: '5px' }} />
+          <ReminderIcon
+            style={{ verticalAlign: "middle", marginRight: "5px" }}
+          />
           Reminders:
         </h3>
         <ul>
           {Object.values(reminders).map((reminder) => (
-            <li key={reminder.eventId} className="reminder-item bg-yellow-100 rounded-md p-4 my-2 shadow-md flex items-center justify-between">
+            <li
+              key={reminder.eventId}
+              className="reminder-item bg-yellow-100 rounded-md p-4 my-2 shadow-md flex items-center justify-between"
+            >
               <div>
                 <p className="font-bold">{reminder.eventTitle}</p>
-                <p>{reminder.eventDate} - {reminder.reminderTime}</p> 
+                <p>
+                  {reminder.eventDate} - {reminder.reminderTime}
+                </p>
               </div>
-              <ReminderIcon style={{ color: 'orange' }} />
+              <ReminderIcon style={{ color: "orange" }} />
             </li>
           ))}
         </ul>
       </div>
-      
+
       <div className="participants-section mt-8">
-      <h3 className="mb-4 p-2 rounded bg-slate-500/30 inline-block px-2 flex items-center">
-      <AccessTimeIcon className="mr-2" />
-       Availability Status:
-      </h3>
-  
-  <ul className="availability-list">
-    {participants.map((participant, index) => (
-      <li key={index} className={`status-${participant.status} flex justify-between items-center bg-blue-100 rounded-md p-4 my-2 shadow-md`}>
-        <div>
-          <span>{participant.name}:</span>
-          <span>{participant.status === 'free' ? '🟢 Free' : '🔴 Busy'}</span>
+        <h3 className="mb-4 p-2 rounded bg-slate-500/30 inline-block px-2 flex items-center">
+          <AccessTimeIcon className="mr-2" />
+          Availability Status:
+        </h3>
+
+        <ul className="availability-list">
+          {participants.map((participant, index) => (
+            <li
+              key={index}
+              className={`status-${participant.status} flex justify-between items-center bg-blue-100 rounded-md p-4 my-2 shadow-md`}
+            >
+              <div>
+                <span>{participant.name}:</span>
+                <span>
+                  {participant.status === "free" ? "🟢 Free" : "🔴 Busy"}
+                </span>
+              </div>
+              <button
+                onClick={() => handleDeleteParticipant(index)}
+                className="bg-red-500 text-white rounded p-1"
+              >
+                Delete
+              </button>
+            </li>
+          ))}
+        </ul>
+
+        <div className="add-participant">
+          <input
+            type="text"
+            placeholder="Participant Name"
+            value={newParticipantName}
+            onChange={(e) => setNewParticipantName(e.target.value)}
+          />
+          <select
+            value={newParticipantStatus}
+            onChange={(e) => setNewParticipantStatus(e.target.value)}
+          >
+            <option value="free">Free</option>
+            <option value="busy">Busy</option>
+          </select>
+          <button
+            onClick={handleAddParticipant}
+            className="bg-green-500 text-white rounded p-1"
+          >
+            Add Participant
+          </button>
         </div>
-        <button onClick={() => handleDeleteParticipant(index)} className="bg-red-500 text-white rounded p-1">Delete</button>
-      </li>
-    ))}
-  </ul>
-
-  <div className="add-participant">
-    <input
-      type="text"
-      placeholder="Participant Name"
-      value={newParticipantName}
-      onChange={(e) => setNewParticipantName(e.target.value)}
-    />
-    <select
-      value={newParticipantStatus}
-      onChange={(e) => setNewParticipantStatus(e.target.value)}
-    >
-      <option value="free">Free</option>
-      <option value="busy">Busy</option>
-    </select>
-    <button onClick={handleAddParticipant} className="bg-green-500 text-white rounded p-1">Add Participant</button>
-  </div>
-</div>
-
+      </div>
     </div>
   );
 };

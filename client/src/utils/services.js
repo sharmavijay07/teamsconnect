@@ -1,6 +1,6 @@
 export const baseUrl = 'http://localhost:4500/api'
 
-// export const axiosbaseUrl = 'http://localhost:4500/api'
+
 export const filebaseUrl = 'http://localhost:4500'
 
 export const postRequest = async (url, body) => {

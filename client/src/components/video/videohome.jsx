@@ -14,8 +14,7 @@ const Videohome = () => {
     const socketRef = useRef();
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
-    const location = useLocation();
-    const { meetingId ,uid } = useParams();
+    const { meetingId } = useParams();
 
     useEffect(() => {
         if (!meetingId) {
@@ -36,6 +35,7 @@ const Videohome = () => {
             setMessages((prev) => [...prev, msg]);
         });
 
+        // Listen for incoming offers
         socketRef.current.on('offer', handleReceiveOffer);
         socketRef.current.on('answer', handleReceiveAnswer);
         socketRef.current.on('candidate', handleReceiveCandidate);
@@ -53,15 +53,20 @@ const Videohome = () => {
         setLocalStream(stream);
 
         // Add local stream to the video element
-        document.getElementById('local-video').srcObject = stream;
+        const localVideo = document.getElementById('local-video');
+        if (localVideo) {
+            localVideo.srcObject = stream;
+        }
 
         // Notify others that you are broadcasting
+        socketRef.current.emit('broadcaster', meetingId);
+
+        // Broadcast your local stream to all other participants
         socketRef.current.emit('broadcaster', meetingId);
     };
 
     const handleReceiveOffer = async (offer, fromId) => {
         const peerConnection = createPeerConnection(fromId);
-
         await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
         const answer = await peerConnection.createAnswer();
         await peerConnection.setLocalDescription(answer);
@@ -123,17 +128,17 @@ const Videohome = () => {
             const msg = { from: user.id, text: message };
             socketRef.current.emit('sendMessageMeeting', msg);
             await axios.post(`${baseUrl}/video/sendMessage`, { 
-                meetingId: meetingId, 
+                meetingId, 
                 userId: user.id, 
-                message: message 
+                message 
             })
             .then((resp) => {
                 setMessages((prev) => [...prev, msg]);
                 setMessage('');
             })
             .catch((err) => {
-                console.log("you got error",err)
-            })
+                console.log("Error:", err);
+            });
         }
     };
 
@@ -145,7 +150,12 @@ const Videohome = () => {
             <div className="video-container">
                 <video id="local-video" autoPlay muted></video>
                 {Object.keys(remoteStreams).map((userId, index) => (
-                    <video key={index} autoPlay ref={video => { if (video) video.srcObject = remoteStreams[userId]; }} />
+                    <video key={index} autoPlay ref={video =>
+                         { if(video)
+                            video.srcObject = remoteStreams[userId]; 
+                            
+
+                         }} />
                 ))}
             </div>
             <div className="message-box">
