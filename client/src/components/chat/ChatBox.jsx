@@ -18,6 +18,14 @@ import { baseUrl, filebaseUrl } from "@/utils/services";
 import { NavLink } from "react-router-dom";
 import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
 
+
+// ------------------------------------------------------------------------------
+
+
+
+// ------------------------------------------------------------------------------
+
+
 //     const toastId = `${type}-${Date.now()}`;
 //     toast[type](message, {
 //       toastId,
@@ -34,6 +42,14 @@ import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
 //   };
 
 const ChatBox = () => {
+
+  const bottomRef = useRef(null);
+
+// Function to scroll to the bottom
+  const scrollToBottom = () => {
+    bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+  };
+
   const { user, setFileChatId, file } = useContext(AuthContext);
   // console.log('file is',file)
   const { messages, isMessagesLoading, isUserChatsLoading } =
@@ -309,7 +325,7 @@ const ChatBox = () => {
             style={{ color: "black" }}
           >
             <div className=" rounded bottom-0 mb-12 ml-2  absolute z-50 bg-slate-500/50 ">
-              <button className="p-1 text-sky-600" onCLick={scroll}>
+              <button className="p-1 text-sky-600"  onClick={scrollToBottom}>
                 <span class="material-symbols-outlined">
                   keyboard_double_arrow_down
                 </span>
@@ -328,7 +344,7 @@ const ChatBox = () => {
                           ? " w-auto max-w-[90%] min-w-[15%] p-1 rounded-[8px]  mt-2 ml-auto flex flex-col flex-grow-0 items-end  break-words  text-wrap  text-dark "
                           : " w-fit max-w-[70%] min-w-[15%] p-1s ml-2  rounded-[8px]  mt-2 flex flex-col flex-grow-0   break-words  text-dark"
                       }`}
-                      ref={scroll}
+                      
                     >
                       <div>
                         {message.filePath.endsWith(".png") ||
@@ -352,8 +368,9 @@ const ChatBox = () => {
                             {new Date(message.uploadedAt).toLocaleString()}
                           </div>
                         </p>
-                      </div>
+                      </div><div ref={bottomRef} />
                     </div>
+                    
                   ) : (
                     ""
                   )}
