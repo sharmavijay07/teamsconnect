@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const { Server } = require('socket.io');
+const db = require('./config/db')
 
 const app = express();
 const PORT = process.env.PORT || 4500;
@@ -73,6 +74,7 @@ io.on("connection", (socket) => {
         if (!onlineUsers.some(user => user.userId === userId)) {
             onlineUsers.push({ userId, socketId: socket.id });
         }
+
         console.log("OnlineUsers", onlineUsers);
         io.emit("getOnlineUsers", onlineUsers);
     });
@@ -93,11 +95,33 @@ io.on("connection", (socket) => {
 
     // Socket.io server code
 
+     // Handle WebRTC signaling (offers, answers, and ICE candidates)
+     socket.on("offer", (data) => {
+        console.log("Offer received from:", data.fromId);
+        socket.to(data.toId).emit("offer", data.offer, data.fromId);
+    });
+
+    socket.on("answer", (data) => {
+        console.log("Answer received from:", data.fromId);
+        socket.to(data.toId).emit("answer", data.answer, data.fromId);
+    });
+
+    socket.on("candidate", (data) => {
+        console.log("ICE candidate received from:", data.fromId);
+        socket.to(data.toId).emit("candidate", data.candidate, data.fromId);
+    });
+
 
     socket.on("sendMessageMeeting", (msg) => {
         const { from, text } = msg;
         // Broadcast the message to all users in the meeting
         socket.to(msg.meetingId).emit("showChatMessage", { from, text });
+
+        const messageQuery = "INSERT INTO meeting_messages (meeting_id, user_id, message) VALUES (?, ?, ?)";
+        db.query(messageQuery, [msg.meetingId, from, text], (err, result) => {
+            if (err) console.error("Error inserting message:", err);
+            else console.log("Message added to meeting_messages:", result);
+        });
     });
 
     
@@ -109,28 +133,31 @@ io.on("connection", (socket) => {
     socket.on("userconnect", (data) => {
         console.log("userconnect", data.dsiplayName, data.meetingid);
 
-        var other_users = _userConnections.filter(
-            (p) => p.meeting_id == data.meetingid
-        );
 
-        _userConnections.push({
-            connectionId: socket.id,
-            user_id: data.dsiplayName,
-            meeting_id: data.meetingid,
+        
+        const query = "INSERT INTO meeting_members (meeting_id, user_id) VALUES (?, ?)";
+        db.query(query, [data.meetingid, data.displayName], (err, result) => {
+            if (err) console.error("Error inserting into meeting_members:", err);
+            else console.log("User added to meeting_members:", result);
         });
-        var userCount = _userConnections.length;
-        console.log(userCount);
-        other_users.forEach((v) => {
+
+
+        const other_users = _userConnections.filter(p => p.meeting_id == data.meetingid);
+        _userConnections.push({ connectionId: socket.id, user_id: data.displayName, meeting_id: data.meetingid });
+        
+        const userCount = _userConnections.length;
+        other_users.forEach(v => {
             socket.to(v.connectionId).emit("informAboutNewConnection", {
-                other_user_id: data.dsiplayName,
+                other_user_id: data.displayName,
                 connId: socket.id,
                 userNumber: userCount,
             });
         });
 
         socket.emit("userconnected", other_users);
-        //return other_users;
-    }); //end of userconnect
+    });
+
+         //end of userconnect
 
     socket.on("exchangeSDP", (data) => {
         socket.to(data.to_connid).emit("exchangeSDP", {

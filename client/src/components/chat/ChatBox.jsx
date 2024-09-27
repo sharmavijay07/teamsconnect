@@ -38,6 +38,14 @@ import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
 //   };
 
 const ChatBox = () => {
+
+  const bottomRef = useRef(null);
+
+// Function to scroll to the bottom
+  const scrollToBottom = () => {
+    bottomRef.current.scrollIntoView({  });
+  };
+
   const { user, setFileChatId, file } = useContext(AuthContext);
   // console.log('file is',file)
   const { messages, isMessagesLoading, isUserChatsLoading } =
@@ -354,10 +362,14 @@ const ChatBox = () => {
                       
                       <p className="bg-slate-300 rounded">
                           {" "}
-                        <div className="bg-blue-300 rounded">{new Date(message.uploadedAt).toLocaleString()}</div>
-                      </p>
-                    </div></div>
-                  ) : (   
+                          <div className="bg-blue-300 rounded">
+                            {new Date(message.uploadedAt).toLocaleString()}
+                          </div>
+                        </p>
+                      </div>
+                    </div>
+                    
+                  ) : (
                     ""
                   )}
                   <div
@@ -367,10 +379,10 @@ const ChatBox = () => {
                         ? "bg-gray-400/40 w-fit max-w-[70%] min-w-[15%] p-1  px-3 mr-2  rounded-[8px]  mt-2 ml-auto flex-grow-0  break-words  text-wrap  text-dark "
                         : "bg-blue-300/70 w-fit max-w-[70%] min-w-[15%] p-1 px-3 ml-2  rounded-[8px]  mt-1 flex-grow-0   break-words  text-dark"
                     }`}
-                    ref={scroll}
+                    
                   >
                     <span>{message.text}</span>
-                    <div className="">
+                    <div className="" >
                       <span
                         className={` ${
                           message?.senderId == user?.id
@@ -381,9 +393,14 @@ const ChatBox = () => {
                         {moment(message.createdAt).format("h:mm a")}
                       </span>
                     </div>
-                  </div>
+                  </div >
+                  <div  
+                  ></div>
                 </>
               ))}
+                  <div ref={bottomRef} />
+                  
+
           </div>
         </>
 
