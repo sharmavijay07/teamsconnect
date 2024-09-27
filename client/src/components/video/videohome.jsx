@@ -145,7 +145,12 @@ const Videohome = () => {
             <div className="video-container">
                 <video id="local-video" autoPlay muted></video>
                 {Object.keys(remoteStreams).map((userId, index) => (
-                    <video key={index} autoPlay ref={video => { if (video) video.srcObject = remoteStreams[userId]; }} />
+                    <video key={index} autoPlay ref={video =>
+                         { if(video)
+                            video.srcObject = remoteStreams[userId]; 
+                            
+
+                         }} />
                 ))}
             </div>
             <div className="message-box">
