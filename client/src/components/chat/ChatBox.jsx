@@ -11,7 +11,7 @@ import Chatbox0 from "./chatBoxComponent/Chatbox0";
 import Chatbox1 from "./chatBoxComponent/Chatbox1";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
-import { toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import { CommitOutlined, Height } from "@mui/icons-material";
 import ZoomableImage from "../ZoomableImage";
 import { baseUrl, filebaseUrl } from "@/utils/services";
@@ -19,13 +19,9 @@ import { NavLink } from "react-router-dom";
 import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
 
 
-// ------------------------------------------------------------------------------
 
 
-
-// ------------------------------------------------------------------------------
-
-
+// const notify = (message, type) => {
 //     const toastId = `${type}-${Date.now()}`;
 //     toast[type](message, {
 //       toastId,
@@ -42,14 +38,6 @@ import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
 //   };
 
 const ChatBox = () => {
-
-  const bottomRef = useRef(null);
-
-// Function to scroll to the bottom
-  const scrollToBottom = () => {
-    bottomRef.current.scrollIntoView({ behavior: 'smooth' });
-  };
-
   const { user, setFileChatId, file } = useContext(AuthContext);
   // console.log('file is',file)
   const { messages, isMessagesLoading, isUserChatsLoading } =
@@ -81,12 +69,12 @@ const ChatBox = () => {
     });
   };
 
-  const scroll = useRef( useEffect(() => {
-    scroll.current?.scrollIntoView();
-  }, [messages]));
+  const scroll = useRef();
 
   // Scroll to bottom when new messages arrive
- 
+  useEffect(() => {
+    scroll.current?.scrollIntoView();
+  }, [messages]);
 
   useEffect(() => {
     if (currentChat) {
@@ -137,6 +125,8 @@ const ChatBox = () => {
       }
     }
   };
+
+  //-------------------------------------------------
 
   //all messages
 
@@ -240,6 +230,8 @@ const ChatBox = () => {
   const dayName = currentTime.toLocaleDateString("en-US", { weekday: "long" });
   const monthName = currentTime.toLocaleDateString("en-US", { month: "long" });
 
+  ///----------------------------------------9/09/24--------------------------------------------
+
   if (!recipientUser)
     return <>{userChats?.length < 1 ? <Chatbox0 /> : <Chatbox1 />}</>;
 
@@ -300,6 +292,7 @@ const ChatBox = () => {
         className="h-[95vh] w-[76vw] flex flex-col justify-between bg-b-30 text-center"
         style={{ color: "white" }}
       >
+        
         <div className="bg-gray-400 rounded-[5px] border-1 border-black flex justify-between w-[76vw]">
           <strong class="text-black mr-80  p-1  ml-3   " title="user Name">
             {recipientUser.map((user) => user.name).join(",")}
@@ -329,14 +322,6 @@ const ChatBox = () => {
                   "
             style={{ color: "black" }}
           >
-            <div className=" rounded bottom-0 mb-12 ml-2  absolute z-50 bg-slate-500/50 ">
-              <button className="p-1 text-sky-600"  onClick={scrollToBottom}>
-                <span class="material-symbols-outlined">
-                  keyboard_double_arrow_down
-                </span>
-              </button>
-            </div>
-
             {/* <FileDisplay /> */}
             {combinedMessages &&
               combinedMessages?.map((message, index) => (
@@ -349,34 +334,30 @@ const ChatBox = () => {
                           ? " w-auto max-w-[90%] min-w-[15%] p-1 rounded-[8px]  mt-2 ml-auto flex flex-col flex-grow-0 items-end  break-words  text-wrap  text-dark "
                           : " w-fit max-w-[70%] min-w-[15%] p-1s ml-2  rounded-[8px]  mt-2 flex flex-col flex-grow-0   break-words  text-dark"
                       }`}
-                      
-                    >
-                      <div>
-                        {message.filePath.endsWith(".png") ||
-                        message.filePath.endsWith(".jpg") ||
-                        message.filePath.endsWith(".gif") ? (
-                          <ZoomableImage
-                            src={getFileUrl(message.filePath)}
-                            alt={file - `${index}`}
-                            style={{ width: "150px", height: "150px" }}
-                          />
-                        ) : (
-                          // Download link for non-image files
-                          <a href={getFileUrl(message.filePath)} download>
-                            Download {message.filePath.split("/").pop()}
-                          </a>
-                        )}
+                      ref={scroll}
+                    ><div>
+                      {message.filePath.endsWith(".png") ||
+                      message.filePath.endsWith(".jpg") ||
+                      message.filePath.endsWith(".gif") ? (
+                        <ZoomableImage
+                          src={getFileUrl(message.filePath)}
+                          alt={file - `${index}`}
+                          style={{ width: "150px", height: "150px" }}
+                        />
 
-                        <p className="bg-slate-300 rounded">
+                      ) : (
+                        // Download link for non-image files
+                        <a href={getFileUrl(message.filePath)} download>
+                          Download {message.filePath.split("/").pop()}
+                        </a>
+                      )}
+                      
+                      <p className="bg-slate-300 rounded">
                           {" "}
-                          <div className="bg-blue-300 rounded">
-                            {new Date(message.uploadedAt).toLocaleString()}
-                          </div>
-                        </p>
-                      </div><div ref={bottomRef} />
-                    </div>
-                    
-                  ) : (
+                        <div className="bg-blue-300 rounded">{new Date(message.uploadedAt).toLocaleString()}</div>
+                      </p>
+                    </div></div>
+                  ) : (   
                     ""
                   )}
                   <div
