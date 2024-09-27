@@ -4,9 +4,9 @@ import "react-calendar/dist/Calendar.css";
 import Modal from "react-modal";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { gapi } from "gapi-script";
-import "material-icons/iconfont/material-icons.css"; 
+import "material-icons/iconfont/material-icons.css";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import TimeZoneSelect from "react-timezone-select"; 
+import TimeZoneSelect from "react-timezone-select";
 import ReminderIcon from "@mui/icons-material/Notifications";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import EventNoteIcon from "@mui/icons-material/EventNote"; // Icon for Scheduled Meetings
@@ -26,7 +26,7 @@ const CalendarComponent = () => {
   const [eventAgenda, setEventAgenda] = useState("");
   const [eventNotes, setEventNotes] = useState("");
   const [eventAttachments, setEventAttachments] = useState([]);
-  const [eventTimeZone, setEventTimeZone] = useState(""); 
+  const [eventTimeZone, setEventTimeZone] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [currentEvent, setCurrentEvent] = useState(null);
   const [reminderTime, setReminderTime] = useState(""); // New state for reminder time
@@ -35,22 +35,22 @@ const CalendarComponent = () => {
     // Can Add more dummy participants
   ]);
   const [newParticipantName, setNewParticipantName] = useState("");
-const [newParticipantStatus, setNewParticipantStatus] = useState("free");
+  const [newParticipantStatus, setNewParticipantStatus] = useState("free");
 
-const handleAddParticipant = () => {
+  const handleAddParticipant = () => {
     if (newParticipantName.trim() !== "") {
-        setParticipants([...participants, { name: newParticipantName, status: newParticipantStatus }]);
-        setNewParticipantName(""); // Reset input after adding
+      setParticipants([...participants, { name: newParticipantName, status: newParticipantStatus }]);
+      setNewParticipantName(""); // Reset input after adding
     } else {
-        alert("Please enter a participant name.");
+      alert("Please enter a participant name.");
     }
-};
+  };
 
-const handleDeleteParticipant = (index) => {
+  const handleDeleteParticipant = (index) => {
     setParticipants(participants.filter((_, i) => i !== index));
-};
+  };
 
-  
+
 
   useEffect(() => {
     const initClient = () => {
@@ -78,7 +78,7 @@ const handleDeleteParticipant = (index) => {
     setEventAgenda(event ? event.agenda : "");
     setEventNotes(event ? event.notes : "");
     setEventAttachments(event ? event.attachments : []);
-    setEventTimeZone(event ? event.timeZone : ""); 
+    setEventTimeZone(event ? event.timeZone : "");
     setReminderTime(event ? event.reminderTime : ""); // Load reminder time
     setIsOpen(true);
   };
@@ -100,7 +100,7 @@ const handleDeleteParticipant = (index) => {
     setEventAgenda("");
     setEventNotes("");
     setEventAttachments([]);
-    setEventTimeZone(""); 
+    setEventTimeZone("");
     setReminderTime(""); // Reset reminder time
   };
 
@@ -119,10 +119,10 @@ const handleDeleteParticipant = (index) => {
         agenda: eventAgenda,
         notes: eventNotes,
         attachments: eventAttachments,
-        timeZone: eventTimeZone, 
+        timeZone: eventTimeZone,
         reminderTime: reminderTime, // Add reminder time to event
       };
-       
+
       if (newEvent.reminderTime) {
         scheduleNotification(newEvent, dateString);
       }
@@ -137,15 +137,15 @@ const handleDeleteParticipant = (index) => {
       alert("Please fill in all fields.");
     }
   };
-  
+
   const scheduleNotification = (event, dateString) => {
     const eventDate = new Date(dateString);
     const [hours, minutes] = event.reminderTime.split(":").map(Number);
     eventDate.setHours(hours, minutes, 0, 0);
-  
+
     const now = new Date();
     const timeUntilEvent = eventDate.getTime() - now.getTime();
-  
+
     if (timeUntilEvent > 0) {
       setTimeout(() => {
         // Show notification
@@ -161,19 +161,19 @@ const handleDeleteParticipant = (index) => {
               {
                 action: "open-meeting",
                 title: "Open Meeting",
-                icon: "https://cdn-icons-png.flaticon.com/512/748/748234.png" 
+                icon: "https://cdn-icons-png.flaticon.com/512/748/748234.png"
               }
             ]
           });
-  
+
           // Add event listener for button clicks
           notification.addEventListener('click', (event) => {
             if (event.action === 'open-meeting') {
               // Code to open the meeting link (e.g., event.link) in a new tab
-              window.open(event.link, '_blank'); 
+              window.open(event.link, '_blank');
             }
           });
-  
+
         } else if (Notification.permission !== "denied") {
           Notification.requestPermission().then((permission) => {
             if (permission === "granted") {
@@ -189,16 +189,16 @@ const handleDeleteParticipant = (index) => {
                   {
                     action: "open-meeting",
                     title: "Open Meeting",
-                    icon: "https://cdn-icons-png.flaticon.com/512/748/748234.png" 
+                    icon: "https://cdn-icons-png.flaticon.com/512/748/748234.png"
                   }
                 ]
               });
-  
+
               // Add event listener for button clicks
               notification.addEventListener('click', (event) => {
                 if (event.action === 'open-meeting') {
                   // Code to open the meeting link (e.g., event.link) in a new tab
-                  window.open(event.link, '_blank'); 
+                  window.open(event.link, '_blank');
                 }
               });
             }
@@ -258,7 +258,7 @@ const handleDeleteParticipant = (index) => {
           eventId: newEvent.id,
           reminderTime: newEvent.reminderTime,
           eventTitle: newEvent.input,
-          eventDate: dateString, 
+          eventDate: dateString,
         },
       }));
     }
@@ -271,20 +271,20 @@ const handleDeleteParticipant = (index) => {
     const updatedEvents = events[dateString].map((event) =>
       event.id === currentEvent.id
         ? {
-            ...event,
-            input: eventInput,
-            description: eventDescription,
-            startTime: eventStartTime,
-            endTime: eventEndTime,
-            participants: eventParticipants.split(",").map((participant) => participant.trim()),
-            link: eventLink,
-            recurrence: eventRecurrence,
-            agenda: eventAgenda,
-            notes: eventNotes,
-            attachments: eventAttachments,
-            timeZone: eventTimeZone, 
-            reminderTime: reminderTime, // Update reminder time
-          }
+          ...event,
+          input: eventInput,
+          description: eventDescription,
+          startTime: eventStartTime,
+          endTime: eventEndTime,
+          participants: eventParticipants.split(",").map((participant) => participant.trim()),
+          link: eventLink,
+          recurrence: eventRecurrence,
+          agenda: eventAgenda,
+          notes: eventNotes,
+          attachments: eventAttachments,
+          timeZone: eventTimeZone,
+          reminderTime: reminderTime, // Update reminder time
+        }
         : event
     );
 
@@ -371,8 +371,8 @@ const handleDeleteParticipant = (index) => {
           {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef} className="events-list mt-8">
               <h3 className="mb-4 p-2 rounded bg-slate-500/30 inline-block px-2 flex items-center">
-                  <EventNoteIcon className="mr-2" />
-                    Your Scheduled Meetings:
+                <EventNoteIcon className="mr-2" />
+                Your Scheduled Meetings:
               </h3>
               <ul>
                 {(events[date.toDateString()] || []).map((event, index) => (
@@ -408,80 +408,168 @@ const handleDeleteParticipant = (index) => {
       </DragDropContext>
 
       <Modal isOpen={isOpen} onRequestClose={handleCloseModal}>
-        <h2>{currentEvent ? "Edit Meeting" : "Schedule Meeting"}</h2>
-        <div className="modal-inputs">
-          <input
-            type="text"
-            placeholder="Meeting Title"
-            value={eventInput}
-            onChange={(e) => setEventInput(e.target.value)}
-          />
-          <textarea
-            placeholder="Description"
-            value={eventDescription}
-            onChange={(e) => setEventDescription(e.target.value)}
-          />
-          <input
-            type="time"
-            value={eventStartTime}
-            onChange={(e) => setEventStartTime(e.target.value)}
-          />
-          <input
-            type="time"
-            value={eventEndTime}
-            onChange={(e) => setEventEndTime(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Participants (comma separated)"
-            value={eventParticipants}
-            onChange={(e) => setEventParticipants(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Meeting Link"
-            value={eventLink}
-            onChange={(e) => setEventLink(e.target.value)}
-          />
-          <select
-            value={eventRecurrence}
-            onChange={(e) => setEventRecurrence(e.target.value)}
-          >
-            <option value="none">No Recurrence</option>
-            <option value="daily">Daily</option>
-            <option value="weekly">Weekly</option>
-            <option value="monthly">Monthly</option>
-          </select>
-          <textarea
-            placeholder="Agenda"
-            value={eventAgenda}
-            onChange={(e) => setEventAgenda(e.target.value)}
-          />
-          <textarea
-            placeholder="Notes"
-            value={eventNotes}
-            onChange={(e) => setEventNotes(e.target.value)}
-          />
-          <input type="file" multiple onChange={handleFileChange} />
-          <TimeZoneSelect
-            value={eventTimeZone}
-            onChange={(timezone) => setEventTimeZone(timezone.value)}
-            className="timezone-select"
-          />
-          <input
-            type="time"
-            placeholder="Reminder Time"
-            value={reminderTime}
-            onChange={(e) => setReminderTime(e.target.value)}
-          />
-        </div>
-        <div className="modal-actions">
-          <button onClick={currentEvent ? handleEditEvent : handleAddEvent} className="bg-green-500/50">
-            {currentEvent ? 'Update Meeting' : 'Schedule Meeting'}
-          </button>
-          <button onClick={handleCloseModal} className="bg-red-500/60">Close</button>
+        <div className="modal-container">
+          <h2 className="modal-title">
+            {currentEvent ? "Edit Meeting" : "Schedule Meeting"}
+          </h2>
+          <div className="modal-inputs space-y-4">
+            {/* Meeting Title */}
+            <div>
+              <label className="block font-medium">Meeting Title</label>
+              <input
+                type="text"
+                placeholder="Enter meeting title"
+                value={eventInput}
+                onChange={(e) => setEventInput(e.target.value)}
+                className="input-field"
+              />
+            </div>
+
+            {/* Description */}
+            <div>
+              <label className="block font-medium">Description</label>
+              <textarea
+                placeholder="Enter meeting description"
+                value={eventDescription}
+                onChange={(e) => setEventDescription(e.target.value)}
+                className="input-field"
+              />
+            </div>
+
+            {/* Start and End Time */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block font-medium">Start Time</label>
+                <input
+                  type="time"
+                  value={eventStartTime}
+                  onChange={(e) => setEventStartTime(e.target.value)}
+                  className="input-field"
+                />
+              </div>
+              <div>
+                <label className="block font-medium">End Time</label>
+                <input
+                  type="time"
+                  value={eventEndTime}
+                  onChange={(e) => setEventEndTime(e.target.value)}
+                  className="input-field"
+                />
+              </div>
+            </div>
+
+            {/* Participants */}
+            <div>
+              <label className="block font-medium">Participants</label>
+              <input
+                type="text"
+                placeholder="Enter participants (comma separated)"
+                value={eventParticipants}
+                onChange={(e) => setEventParticipants(e.target.value)}
+                className="input-field"
+              />
+            </div>
+
+            {/* Meeting Link */}
+            <div>
+              <label className="block font-medium">Meeting Link</label>
+              <input
+                type="text"
+                placeholder="Enter meeting link"
+                value={eventLink}
+                onChange={(e) => setEventLink(e.target.value)}
+                className="input-field"
+              />
+            </div>
+
+            {/* Recurrence */}
+            <div>
+              <label className="block font-medium">Recurrence</label>
+              <select
+                value={eventRecurrence}
+                onChange={(e) => setEventRecurrence(e.target.value)}
+                className="input-field"
+              >
+                <option value="none">No Recurrence</option>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+              </select>
+            </div>
+
+            {/* Agenda */}
+            <div>
+              <label className="block font-medium">Agenda</label>
+              <textarea
+                placeholder="Enter meeting agenda"
+                value={eventAgenda}
+                onChange={(e) => setEventAgenda(e.target.value)}
+                className="input-field"
+              />
+            </div>
+
+            {/* Notes */}
+            <div>
+              <label className="block font-medium">Notes</label>
+              <textarea
+                placeholder="Enter additional notes"
+                value={eventNotes}
+                onChange={(e) => setEventNotes(e.target.value)}
+                className="input-field"
+              />
+            </div>
+
+            {/* File Upload */}
+            <div>
+              <label className="block font-medium">Attach Files</label>
+              <input
+                type="file"
+                multiple
+                onChange={handleFileChange}
+                className="input-field"
+              />
+            </div>
+
+            {/* Timezone */}
+            <div>
+              <label className="block font-medium">Time Zone</label>
+              <TimeZoneSelect
+                value={eventTimeZone}
+                onChange={(timezone) => setEventTimeZone(timezone.value)}
+                className="input-field"
+              />
+            </div>
+
+            {/* Reminder Time */}
+            <div>
+              <label className="block font-medium">Reminder Time</label>
+              <input
+                type="time"
+                placeholder="Set reminder time"
+                value={reminderTime}
+                onChange={(e) => setReminderTime(e.target.value)}
+                className="input-field"
+              />
+            </div>
+          </div>
+
+          <div className="modal-actions mt-6 space-x-4">
+            <button
+              onClick={currentEvent ? handleEditEvent : handleAddEvent}
+              className="bg-green-500/80 hover:bg-green-600 text-white px-4 py-2 rounded-md"
+            >
+              {currentEvent ? 'Update Meeting' : 'Schedule Meeting'}
+            </button>
+            <button
+              onClick={handleCloseModal}
+              className="bg-red-500/80 hover:bg-red-600 text-white px-4 py-2 rounded-md"
+            >
+              Close
+            </button>
+          </div>
         </div>
       </Modal>
+
 
       {/* Reminder Section (UI Improvement) */}
       <div className="reminders-section mt-8">
@@ -494,49 +582,49 @@ const handleDeleteParticipant = (index) => {
             <li key={reminder.eventId} className="reminder-item bg-yellow-100 rounded-md p-4 my-2 shadow-md flex items-center justify-between">
               <div>
                 <p className="font-bold">{reminder.eventTitle}</p>
-                <p>{reminder.eventDate} - {reminder.reminderTime}</p> 
+                <p>{reminder.eventDate} - {reminder.reminderTime}</p>
               </div>
               <ReminderIcon style={{ color: 'orange' }} />
             </li>
           ))}
         </ul>
       </div>
-      
-      <div className="participants-section mt-8">
-      <h3 className="mb-4 p-2 rounded bg-slate-500/30 inline-block px-2 flex items-center">
-      <AccessTimeIcon className="mr-2" />
-       Availability Status:
-      </h3>
-  
-  <ul className="availability-list">
-    {participants.map((participant, index) => (
-      <li key={index} className={`status-${participant.status} flex justify-between items-center bg-blue-100 rounded-md p-4 my-2 shadow-md`}>
-        <div>
-          <span>{participant.name}:</span>
-          <span>{participant.status === 'free' ? '🟢 Free' : '🔴 Busy'}</span>
-        </div>
-        <button onClick={() => handleDeleteParticipant(index)} className="bg-red-500 text-white rounded p-1">Delete</button>
-      </li>
-    ))}
-  </ul>
 
-  <div className="add-participant">
-    <input
-      type="text"
-      placeholder="Participant Name"
-      value={newParticipantName}
-      onChange={(e) => setNewParticipantName(e.target.value)}
-    />
-    <select
-      value={newParticipantStatus}
-      onChange={(e) => setNewParticipantStatus(e.target.value)}
-    >
-      <option value="free">Free</option>
-      <option value="busy">Busy</option>
-    </select>
-    <button onClick={handleAddParticipant} className="bg-green-500 text-white rounded p-1">Add Participant</button>
-  </div>
-</div>
+      <div className="participants-section mt-8">
+        <h3 className="mb-4 p-2 rounded bg-slate-500/30 inline-block px-2 flex items-center">
+          <AccessTimeIcon className="mr-2" />
+          Availability Status:
+        </h3>
+
+        <ul className="availability-list">
+          {participants.map((participant, index) => (
+            <li key={index} className={`status-${participant.status} flex justify-between items-center bg-blue-100 rounded-md p-4 my-2 shadow-md`}>
+              <div>
+                <span>{participant.name}:</span>
+                <span>{participant.status === 'free' ? '🟢 Online' : '🔴 Offline'}</span>
+              </div>
+              <button onClick={() => handleDeleteParticipant(index)} className="bg-red-500 text-white rounded p-1">Delete</button>
+            </li>
+          ))}
+        </ul>
+
+        <div className="add-participant">
+          <input
+            type="text"
+            placeholder="Participant Name"
+            value={newParticipantName}
+            onChange={(e) => setNewParticipantName(e.target.value)}
+          />
+          <select
+            value={newParticipantStatus}
+            onChange={(e) => setNewParticipantStatus(e.target.value)}
+          >
+            <option value="free">Free</option>
+            <option value="busy">Busy</option>
+          </select>
+          <button onClick={handleAddParticipant} className="bg-green-500 text-white rounded p-1">Add Participant</button>
+        </div>
+      </div>
 
     </div>
   );

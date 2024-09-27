@@ -10,6 +10,16 @@
   height: 95vh;
 }
 
+.sidebar.collapsed {
+  width: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.sidebar {
+  transition: width 0.3s ease-in-out;
+}
+
 .sidebar-icons a {
   display: flex;
   justify-content: center;
@@ -24,6 +34,12 @@
 
 .sidebar-icons svg {
   font-size: 24px;
+}
+
+:root {
+  --primary-blue: #3b82f6;
+  --light-blue: #e0f7fa;
+  --hover-blue: #b2ebf2;
 }
 
 /* Calendar container */
@@ -52,7 +68,8 @@
 .events-list h3 {
   margin-bottom: 15px;
   display: flex;
-  align-items: center; /* Center icon vertically */
+  align-items: center;
+  /* Center icon vertically */
 }
 
 /* Event Item Styling */
@@ -67,8 +84,19 @@
   transition: background 0.3s;
 }
 
+.event-item.collapsed {
+  max-height: 50px;
+  overflow: hidden;
+}
+
+.event-item.expanded {
+  max-height: 100%;
+  transition: max-height 0.5s ease-in-out;
+}
+
 .event-item:hover {
-  background: #bbdefb; /* Lighten on hover */
+  background: #bbdefb;
+  /* Lighten on hover */
 }
 
 .event-item h4 {
@@ -83,7 +111,8 @@
 
 /* Reminder Item Styling */
 .reminder-item {
-  background: #fff3cd; /* Light yellow for reminders */
+  background: #fff3cd;
+  /* Light yellow for reminders */
   border-radius: 5px;
   padding: 10px;
   margin: 10px 0;
@@ -125,18 +154,29 @@
   transform: scale(1.05);
 }
 
+.add-event-btn:focus,
+.event-item button:focus {
+  outline: 2px solid #3b82f6;
+  /* Add a visible focus ring */
+}
+
+
 /* Smaller Edit/Delete Buttons */
 .event-item button {
-  font-size: 12px; /* Adjust the font size */
-  padding: 4px 8px; /* Adjust the padding */
-  margin: 2px; /* Add some margin for spacing */
+  font-size: 12px;
+  /* Adjust the font size */
+  padding: 4px 8px;
+  /* Adjust the padding */
+  margin: 2px;
+  /* Add some margin for spacing */
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 .event-item button:hover {
-  background-color: #0056b3; /* Darker shade on hover */
+  background-color: #0056b3;
+  /* Darker shade on hover */
 }
 
 /* Modal Styles */
@@ -208,6 +248,7 @@
     transform: translateY(-20px);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -242,7 +283,8 @@
 .reminders-section h3 {
   margin-bottom: 15px;
   display: flex;
-  align-items: center; /* Center icon vertically */
+  align-items: center;
+  /* Center icon vertically */
 }
 
 .reminders-section .material-icons {
@@ -254,47 +296,52 @@
   .calendar-container {
     padding: 20px;
   }
-  
+
   .add-event-btn {
-    width: 100%; /* Full width on smaller screens */
+    width: 100%;
+    /* Full width on smaller screens */
   }
 
   .event-item {
-    padding: 10px; /* Adjust padding for smaller screens */
+    padding: 10px;
+    /* Adjust padding for smaller screens */
   }
 
   .reminder-item {
-    padding: 8px; /* Adjust padding for reminder items */
+    padding: 8px;
+    /* Adjust padding for reminder items */
   }
 }
 
 .participants-section {
-    margin-top: 2rem;
+  margin-top: 2rem;
 }
 
 .availability-list {
-    list-style: none;
-    padding: 0;
+  list-style: none;
+  padding: 0;
 }
 
 .availability-list li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #e0f7fa; /* light cyan background */
-    border-radius: 0.5rem;
-    padding: 1rem;
-    margin-bottom: 0.5rem;
-    transition: background-color 0.3s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #e0f7fa;
+  /* light cyan background */
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  transition: background-color 0.3s;
 }
 
 .availability-list li:hover {
-    background-color: #b2ebf2; /* darker cyan on hover */
+  background-color: #b2ebf2;
+  /* darker cyan on hover */
 }
 
 .add-participant {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
 }
