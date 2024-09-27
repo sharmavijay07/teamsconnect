@@ -26,14 +26,20 @@ export const ChatContextProvider = ({children,user}) => {
   const [messagesGroup, setMessagesGroup] = useState([]);
   const [error, setError] = useState(null);
 
+ // Memoize user ID to avoid recalculating it on every render
+ const userId = useMemo(() => user?.id, [user]);
 
+ // Socket initialization (memoized to avoid re-renders)
+ useEffect(() => {
+   if (!userId) return;
 
+   const newSocket = io(`http://localhost:4500`);
+   setSocket(newSocket);
 
-
-
-
-
-//   console.warn('getting refreshed')
+   return () => {
+     newSocket.disconnect();
+   };
+ }, [userId]);
 
   useEffect(() => {
     const fetchGroups = async () => {
@@ -94,16 +100,7 @@ const selectGroup = async (groupId) => {
   };
 
 
-    //socket initialisation
-    useEffect(() => {
-        const newSocket = io(`${filebaseUrl}`)
-        setSocket(newSocket)
-        
-
-        return () => {
-            newSocket.disconnect()
-        }
-    },[user])
+  
 
 
     //add online users
@@ -119,7 +116,7 @@ const selectGroup = async (groupId) => {
         return () => {
             socket.off("getOnlineUsers")
         }
-    },[socket])
+    },[socket,userId])
 
     //send messages
     useEffect(() => {

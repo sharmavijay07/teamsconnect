@@ -1,4 +1,4 @@
-import { useContext, useState, useRef, useEffect } from "react";
+import { useContext, useState, useRef, useEffect ,memo} from "react";
 import { AuthContext } from "@/context/AuthContext";
 import { ChatContext } from "@/context/ChatContext";
 import { useFetchRecipientUser } from "@/hooks/useFetchRecipient";
@@ -130,6 +130,24 @@ const ChatBox = () => {
 
   //all messages
 
+
+  const sortMessages = (file,onlyMessages) => {
+    const combinedMessage = [...(file || []), ...(onlyMessages || [])];
+
+  // Sort the combined array based on the createdAt timestamp
+  //   combinedMessages.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+  combinedMessage.sort((a, b) => {
+    const aTime = a.createdAt
+      ? new Date(a.createdAt)
+      : new Date(a.uploadedAt);
+    const bTime = b.createdAt
+      ? new Date(b.createdAt)
+      : new Date(b.uploadedAt);
+    return aTime - bTime;
+  });
+  setCombinedMessages(combinedMessage);
+  }
+
   function getMessage() {
     const chatId = currentChat?.id;
     axios
@@ -139,20 +157,7 @@ const ChatBox = () => {
         setOnlyMessages(resp.data);
         // console.log("onlu=y messages",onlyMessages)
 
-        const combinedMessage = [...(file || []), ...(onlyMessages || [])];
-
-        // Sort the combined array based on the createdAt timestamp
-        //   combinedMessages.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-        combinedMessage.sort((a, b) => {
-          const aTime = a.createdAt
-            ? new Date(a.createdAt)
-            : new Date(a.uploadedAt);
-          const bTime = b.createdAt
-            ? new Date(b.createdAt)
-            : new Date(b.uploadedAt);
-          return aTime - bTime;
-        });
-        setCombinedMessages(combinedMessage);
+       sortMessages(file,onlyMessages)
 
         // console.log("combinedMessages",combinedMessages)
         // console.log("files in combined",file)

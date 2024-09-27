@@ -12,7 +12,7 @@ const UserChat = ({ chat, user }) => {
   const { recipientUser } = useFetchRecipientUser(chat, user);
   const { onlineUsers } = useContext(ChatContext);
 
-  console.warn('userchat refreshes chatcontext')
+  // console.warn('userchat refreshes chatcontext')
 
   const isOnline = onlineUsers?.some(
     (user) => user?.userId === recipientUser?.id
