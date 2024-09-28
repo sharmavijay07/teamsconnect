@@ -3,12 +3,7 @@ const mysql = require('mysql2')
 const db = mysql.createConnection({
     host:'localhost',
     user:'root',
-<<<<<<< HEAD
     // password:'123456', 
-=======
-    // password:'123456',
-    password:'123456', 
->>>>>>> 2cfaddd59e10ffda94f04f36273151ebf74ae145
     // nipun ka password:
     // password:'12345678', 
     
