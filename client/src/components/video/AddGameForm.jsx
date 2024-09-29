@@ -12,6 +12,7 @@ const AddGameForm = () => {
 
     const formData = new FormData();
     formData.append('imagefile', selectedFile);
+    
 
     fetch('/addgame', {
       method: 'POST',
