@@ -3,14 +3,22 @@ import React from 'react'
 import 
 {BsCart3, BsGrid1X2Fill, BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, 
   BsListCheck, BsMenuButtonWideFill, BsFillGearFill,
-  BsFillSkipBackwardBtnFill}
+  BsFillSkipBackwardBtnFill,
+  BsBackspace,
+  BsBack,
+  BsBackpack,
+  BsSkipBackwardBtn}
  from 'react-icons/bs'
+ import { SlArrowLeftCircle } from "react-icons/sl";
 
 function Sidebar({openSidebarToggle, OpenSidebar}) {
   return (
    
     <aside id="sidebar" className={openSidebarToggle ? "sidebar-responsive": "bg-blue-200 w-auto"}>
-        <div className='sidebar-title'>
+        <div className='sidebar-title flex items-center'>
+        <a onClick={()=>setActiveSection('chat')} href='/chat'>
+                <SlArrowLeftCircle className='icons flex mt-3 mr-3 cursor-pointer'><Chat/></SlArrowLeftCircle>
+                </a>
             <div className='sidebar-brand'>
                 {/* <Button href="#chat" title="chat" onClick={() => setActiveSection('chat')}/><Chat/> */}
                 Profile DashBoard
