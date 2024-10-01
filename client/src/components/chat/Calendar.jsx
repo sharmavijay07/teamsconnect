@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
+import 'react-calendar/dist/Calendar.css';
+import './CalendarStyles.css';
 import Modal from "react-modal";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { gapi } from "gapi-script";
@@ -59,6 +60,10 @@ const CalendarComponent = () => {
         gapi.client.init({
           clientId: "YOUR_CLIENT_ID",
           scope: "https://www.googleapis.com/auth/calendar",
+        }).then(() => {
+          console.log("Google API initialized successfully.");
+        }).catch((error) => {
+          console.error("Error initializing Google API:", error);
         });
       });
     };
