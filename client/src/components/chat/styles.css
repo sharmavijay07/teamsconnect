@@ -297,6 +297,7 @@
     padding: 20px;
   }
 
+
   .add-event-btn {
     width: 100%;
     /* Full width on smaller screens */
@@ -315,9 +316,12 @@
 
 .participants-section {
   margin-top: 2rem;
+  margin-top: 2rem;
 }
 
 .availability-list {
+  list-style: none;
+  padding: 0;
   list-style: none;
   padding: 0;
 }
@@ -340,6 +344,10 @@
 }
 
 .add-participant {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;

@@ -5,7 +5,9 @@ import Modal from "react-modal";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { gapi } from "gapi-script";
 import "material-icons/iconfont/material-icons.css";
+import "material-icons/iconfont/material-icons.css";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import TimeZoneSelect from "react-timezone-select";
 import TimeZoneSelect from "react-timezone-select";
 import ReminderIcon from "@mui/icons-material/Notifications";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -84,7 +86,9 @@ const CalendarComponent = () => {
   return (
     <div className="calendar-container text-center p-8 bg-gray-100 rounded-2xl shadow-lg">
       <div className="calendar-header bg-slate-500/50 m-2 rounded p-2">
-        <CalendarTodayIcon style={{ verticalAlign: 'middle', marginRight: '5px' }} />
+        <CalendarTodayIcon
+          style={{ verticalAlign: "middle", marginRight: "5px" }}
+        />
         Calendar
       </div>
       <Calendar
@@ -94,13 +98,21 @@ const CalendarComponent = () => {
       />
       <div className="bg-slate-400 rounded bg-gradient-to-r from-slate-400/50 to-blue-400 text-black mb-4 text-left max-w-80">
         <p>
-          <CalendarTodayIcon style={{ verticalAlign: 'middle', marginRight: '0px' }} />
+          <CalendarTodayIcon
+            style={{ verticalAlign: "middle", marginRight: "0px" }}
+          />
           Selected Date: {date.toDateString()}
         </p>
       </div>
 
-      <button className="add-event-btn flex items-center justify-start" onClick={() => handleOpenModal(null)}>
-        <span className="material-icons" style={{ verticalAlign: 'middle', marginRight: '5px' }}>
+      <button
+        className="add-event-btn flex items-center justify-start"
+        onClick={() => handleOpenModal(null)}
+      >
+        <span
+          className="material-icons"
+          style={{ verticalAlign: "middle", marginRight: "5px" }}
+        >
           add
         </span>
         Schedule Meeting
@@ -109,18 +121,34 @@ const CalendarComponent = () => {
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId={date.toDateString()}>
           {(provided) => (
-            <div {...provided.droppableProps} ref={provided.innerRef} className="events-list mt-8">
+            <div
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              className="events-list mt-8"
+            >
               <h3 className="mb-4 p-2 rounded bg-slate-500/30 inline-block px-2 flex items-center">
+                <EventNoteIcon className="mr-2" />
+                Your Scheduled Meetings:
                 <EventNoteIcon className="mr-2" />
                 Your Scheduled Meetings:
               </h3>
               <ul>
                 {(events[date.toDateString()] || []).map((event, index) => (
-                  <Draggable key={event.id} draggableId={event.id.toString()} index={index}>
+                  <Draggable
+                    key={event.id}
+                    draggableId={event.id.toString()}
+                    index={index}
+                  >
                     {(provided) => (
-                      <li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className="event-item bg-blue-100 rounded-md p-4 my-2 shadow-md flex flex-col transition-colors duration-300 hover:bg-blue-200">
+                      <li
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        className="event-item bg-blue-100 rounded-md p-4 my-2 shadow-md flex flex-col transition-colors duration-300 hover:bg-blue-200"
+                      >
                         <h4>
-                          {event.input} ({event.startTime} - {event.endTime}, {event.timeZone})
+                          {event.input} ({event.startTime} - {event.endTime},{" "}
+                          {event.timeZone})
                           {event.recurrence !== "none" && <span>🔁</span>}
                         </h4>
                         <p>{event.description}</p>
@@ -129,10 +157,16 @@ const CalendarComponent = () => {
                           <button onClick={() => handleJoinMeeting(event.link)}>
                             Join Meeting
                           </button>
-                          <button onClick={() => handleOpenModal(event)} style={{ fontSize: 'small' }}>
+                          <button
+                            onClick={() => handleOpenModal(event)}
+                            style={{ fontSize: "small" }}
+                          >
                             Edit
                           </button>
-                          <button onClick={() => handleDeleteEvent(event)} style={{ fontSize: 'small' }}>
+                          <button
+                            onClick={() => handleDeleteEvent(event)}
+                            style={{ fontSize: "small" }}
+                          >
                             Delete
                           </button>
                         </p>
@@ -303,21 +337,27 @@ const CalendarComponent = () => {
       {/* Reminder Section (UI Improvement) */}
       <div className="reminders-section mt-8">
         <h3 className="mb-4 p-2 rounded bg-slate-500/30 inline-block px-2">
-          <ReminderIcon style={{ verticalAlign: 'middle', marginRight: '5px' }} />
+          <ReminderIcon
+            style={{ verticalAlign: "middle", marginRight: "5px" }}
+          />
           Reminders:
         </h3>
         <ul>
           {Object.values(reminders).map((reminder) => (
-            <li key={reminder.eventId} className="reminder-item bg-yellow-100 rounded-md p-4 my-2 shadow-md flex items-center justify-between">
+            <li
+              key={reminder.eventId}
+              className="reminder-item bg-yellow-100 rounded-md p-4 my-2 shadow-md flex items-center justify-between"
+            >
               <div>
                 <p className="font-bold">{reminder.eventTitle}</p>
                 <p>{reminder.eventDate} - {reminder.reminderTime}</p>
               </div>
-              <ReminderIcon style={{ color: 'orange' }} />
+              <ReminderIcon style={{ color: "orange" }} />
             </li>
           ))}
         </ul>
       </div>
+
 
       <div className="participants-section mt-8">
         <h3 className="mb-4 p-2 rounded bg-slate-500/30 inline-block px-2 flex items-center">

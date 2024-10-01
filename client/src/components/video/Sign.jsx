@@ -67,7 +67,6 @@ const Sign = () => {
       }
   };
   
-
     return (
         <div className="main-wrap">
             <div className="call-wrap card" style={{ zIndex: 99, backgroundColor: '#60a5fa' }}>

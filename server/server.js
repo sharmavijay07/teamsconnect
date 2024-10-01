@@ -71,6 +71,7 @@ function getCurrDateTime() {
 io.on("connection", (socket) => {
     console.log("new connection", socket.id);
 
+
     // Listen for a new user
     socket.on("addNewUser", (userId) => {
         if (!onlineUsers.some(user => user.userId === userId)) {
