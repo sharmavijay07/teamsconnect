@@ -11,10 +11,11 @@ import Group from "@/components/chat/Group";
 import Calendar from "@/components/chat/Calendar";
 import GroupManagementPage from "@/components/chat/GroupManagementPage";
 import Video from "@/components/video/Video";
+import HomePage from "@/components/chat/OriginalVideo/HomePage";
 // import '../components/chat/mobile/mobile.jsx'
 
 const Chat = () => {
-    const { user } = useContext(AuthContext);
+    const { user ,isRightBarOpen} = useContext(AuthContext);
     const { userChats, isUserChatsLoading, updateCurrentChat } = useContext(ChatContext);
     const [activeSection, setActiveSection] = useState("chat"); // State to track active section
 
@@ -63,11 +64,15 @@ const Chat = () => {
                                 )}
                                 {activeSection === "group" && <Group />}
                                 {activeSection === "calendar" && <Calendar />}
+                                {activeSection === "video" && <HomePage />}
                                 {/* Add more sections as needed */}
                             </div>
 
                             {/* Right div only for non-video sessions */}
-                            <div className="hidden sm:block  right-div basis-[20%] border-l-2 border-black">
+                            <div 
+                            className={isRightBarOpen?"hidden sm:block  right-div basis-[20%] border-l-2 border-black":
+                                " absolute z-50  right-div basis-[20%] border-l-2 border-black"
+                             }>
                                 {activeSection === "chat" && (
                                     <>
                                         <div className="flex flex-col gap-2">

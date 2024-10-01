@@ -18,6 +18,14 @@ import { ToastContainer } from 'react-toastify';
 import Videohome from './components/video/videohome'
 import Sign from './components/video/sign'
 import VoiceRecorder from './components/Voice_message/Voice_messages'
+import Room from './components/chat/OriginalVideo/Room'
+import HomePage from './components/chat/OriginalVideo/HomePage'
+import Audiohome from './components/chat/OriginalVideo/Audiohome'
+import AudioRoom from './components/chat/OriginalVideo/AudioRoom'
+import { Calendar } from 'lucide-react'
+import { CalendarContextProvider } from './context/CalendarContext'
+import IdleTracker from './components/IdleTracker'
+
 // import './components/chat/mobile/mobile'
 
 
@@ -28,8 +36,10 @@ function App() {
   return (
     
     <ChatContextProvider user={user}>
+      <IdleTracker/>
       <GroupProvider>
-      <Routes>
+      <CalendarContextProvider>
+        <Routes>
           <Route path='/' element={user?<Chat />:<Login />} />
           <Route path='/login' element={user?<Chat />:<Login />} />
           <Route path='/register' element={user?<Chat />:<Register />} />
@@ -46,6 +56,13 @@ function App() {
           <Route path="/voice_message" element={<VoiceRecorder/>}/>
           {/* <Route path="/videohome" element={<Video />} /> */}
           <Route path="/sign" element={<Sign />} />
+          <Route path="/video" element={<HomePage />} />
+          <Route path="/room/:roomId" element={<Room />} />
+          <Route path="/audio" element={< Audiohome/>} />
+          <Route path="/audio/:roomId" element={<AudioRoom />} />
+          <Route path="/tracker" element={<IdleTracker />} />
+
+          
 
 
          
@@ -63,6 +80,7 @@ function App() {
           pauseOnHover
           theme="colored"
           />
+      </CalendarContextProvider>
       </GroupProvider>
     
     </ChatContextProvider>

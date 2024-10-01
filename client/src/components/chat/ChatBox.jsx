@@ -330,6 +330,13 @@ const ChatBox = () => {
                   "
             style={{ color: "black" }}
           >
+            <div className=" rounded bottom-0 mb-12 ml-2  absolute z-50 bg-slate-500/50 ">
+              <button className="p-1 text-sky-600"  onClick={scrollToBottom}>
+                <span class="material-symbols-outlined">
+                  keyboard_double_arrow_down
+                </span>
+              </button>
+            </div>
             {/* <FileDisplay /> */}
             {combinedMessages &&
               combinedMessages?.map((message, index) => (

@@ -11,6 +11,7 @@ export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   let [meetingId, setMeetingId] = useState('');
   const [isBarOpen,setBarOpen] = useState(true)
+  const [isRightBarOpen,setRightBarOpen] = useState(false)
 
 
      
@@ -218,7 +219,9 @@ const audioChunksRef = useRef([]);
         meetingId,
         createMeetingId,
         isBarOpen,
-        setBarOpen
+        setBarOpen,
+        isRightBarOpen,
+        setRightBarOpen,
         
       }}
     >
