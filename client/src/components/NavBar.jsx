@@ -5,6 +5,7 @@ import { AuthContext } from '../context/AuthContext';
 import { Content } from '@radix-ui/react-dialog';
 import { Sidebar } from 'lucide-react';
 import IdleTracker from './IdleTracker';
+import { BsPersonBadge, BsPersonCircle } from 'react-icons/bs';
 
 const NavBar = () => {
     const {user,logoutUser,setBarOpen,isBarOpen} = useContext(AuthContext)
@@ -32,8 +33,8 @@ const NavBar = () => {
                     {
                         user && (
                         <div className='flex sm:flex-row flex-col  sm:items-center items-end sm-right-auto right-0 justify-around mr-5 p-2 gap-3'>
-                             <NavLink to='/profile' className="flex items-center justify-center p-2  ml-[7vw] sm:mr-auto mr-0 w-[25px] h-[20px] bg-gray-300 rounded-full overflow-hidden">
-                         <span class="material-symbols-outlined">
+                             <NavLink to='/profile' className="flex items-center justify-center ml-[7vw] sm:mr-auto mr-0 w-[25px] h-[25px] bg-white rounded-full overflow-hidden">
+                         <BsPersonCircle>
                             person
                             
                             </span>
