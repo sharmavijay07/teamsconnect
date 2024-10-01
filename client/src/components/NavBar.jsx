@@ -4,6 +4,7 @@ import {NavLink} from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext';
 import { Content } from '@radix-ui/react-dialog';
 import { Sidebar } from 'lucide-react';
+import IdleTracker from './IdleTracker';
 
 const NavBar = () => {
     const {user,logoutUser,setBarOpen,isBarOpen} = useContext(AuthContext)
@@ -34,6 +35,7 @@ const NavBar = () => {
                              <NavLink to='/profile' className="flex items-center justify-center p-2  ml-[7vw] sm:mr-auto mr-0 w-[25px] h-[20px] bg-gray-300 rounded-full overflow-hidden">
                          <span class="material-symbols-outlined">
                             person
+                            
                             </span>
                         </NavLink>
 

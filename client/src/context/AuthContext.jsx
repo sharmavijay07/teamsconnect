@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useState,useRef } fr
 import { baseUrl, postRequest } from "../utils/services";
 import axios from "axios";
 import { ChatContext } from "./ChatContext"; // Ensure this is being correctly imported
+import { ConstructionTwoTone } from "@mui/icons-material";
 
 export const AuthContext = createContext();
 

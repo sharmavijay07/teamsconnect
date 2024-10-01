@@ -25,64 +25,70 @@ import AudioRoom from './components/chat/OriginalVideo/AudioRoom'
 import { Calendar } from 'lucide-react'
 import { CalendarContextProvider } from './context/CalendarContext'
 import IdleTracker from './components/IdleTracker'
+import { PurposeContextProvider } from './context/PurposeContext'
 
 // import './components/chat/mobile/mobile'
 
 
 function App() {
   const {user} = useContext(AuthContext)
+ 
 
 
   return (
     
     <ChatContextProvider user={user}>
+      
       <IdleTracker/>
-      <GroupProvider>
-      <CalendarContextProvider>
-        <Routes>
-          <Route path='/' element={user?<Chat />:<Login />} />
-          <Route path='/login' element={user?<Chat />:<Login />} />
-          <Route path='/register' element={user?<Chat />:<Register />} />
-          <Route path='*' element={<Navigate to='/'/>} />
-          <Route path='/form' element={<CardWithForm />} />
-          <Route path='/group' element={<Group />} />
-          <Route path="/room" element={<GroupVideoConference />} />
-          {/* <Route path="/grouppage" element={<GroupPage />} /> */}
-          <Route path="/usergroups" element={<UserGroups />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/videohome" element={<Videohome />} />
-          <Route path="/videohome/:meetingId/:uid" element={<Videohome />} />
+  <GroupProvider>
+  <CalendarContextProvider>
+   <PurposeContextProvider>
+   <Routes>
+      <Route path='/' element={user?<Chat />:<Login />} />
+      <Route path='/login' element={user?<Chat />:<Login />} />
+      <Route path='/register' element={user?<Chat />:<Register />} />
+      <Route path='*' element={<Navigate to='/'/>} />
+      <Route path='/form' element={<CardWithForm />} />
+      <Route path='/group' element={<Group />} />
+      <Route path="/room" element={<GroupVideoConference />} />
+      {/* <Route path="/grouppage" element={<GroupPage />} /> */}
+      <Route path="/usergroups" element={<UserGroups />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/videohome" element={<Videohome />} />
+      <Route path="/videohome/:meetingId/:uid" element={<Videohome />} />
 
-          <Route path="/voice_message" element={<VoiceRecorder/>}/>
-          {/* <Route path="/videohome" element={<Video />} /> */}
-          <Route path="/sign" element={<Sign />} />
-          <Route path="/video" element={<HomePage />} />
-          <Route path="/room/:roomId" element={<Room />} />
-          <Route path="/audio" element={< Audiohome/>} />
-          <Route path="/audio/:roomId" element={<AudioRoom />} />
-          <Route path="/tracker" element={<IdleTracker />} />
+      <Route path="/voice_message" element={<VoiceRecorder/>}/>
+      {/* <Route path="/videohome" element={<Video />} /> */}
+      <Route path="/sign" element={<Sign />} />
+      <Route path="/video" element={<HomePage />} />
+      <Route path="/room/:roomId" element={<Room />} />
+      <Route path="/audio" element={< Audiohome/>} />
+      <Route path="/audio/:roomId" element={<AudioRoom />} />
+      <Route path="/tracker" element={<IdleTracker />} />
 
-          
+      
 
 
-         
+     
 
-      </Routes>
-      <ToastContainer
-          position="top-center"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-          />
-      </CalendarContextProvider>
-      </GroupProvider>
-    
+  </Routes>
+  <ToastContainer
+      position="top-center"
+      autoClose={3000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="colored"
+      />
+   </PurposeContextProvider>
+  </CalendarContextProvider>
+  </GroupProvider>
+
+      
     </ChatContextProvider>
     
   )

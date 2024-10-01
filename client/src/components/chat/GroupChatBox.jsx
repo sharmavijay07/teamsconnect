@@ -17,7 +17,7 @@ const GroupChatBox = ({ group }) => {
   const { user ,setFileChatId,file} = useContext(AuthContext);
     console.log('file is',file)
   const { groupMessages, sendGroupMessage ,currentChat} = useContext(GroupContext);
-  const { messages } = useContext(ChatContext);
+  const { messages } = useContext(ChatContext2);
   const [selectedFile, setSelectedFile] = useState(null);
 
   const [textMessage, setTextMessage] = useState("");
