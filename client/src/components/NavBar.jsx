@@ -11,6 +11,7 @@ const NavBar = () => {
     return ( 
         <div  className='  h-[5vh] sm:w-full w-auto sm:flex flex sm:justify-between justify-around items-center uppercase  gap-8 px-3 py-3 bg-black'>
             <div className='flex sm:w-screen  w-fit justify-between items-center sm:p-2 p-3 sm:text-nowrap text-nowrap sm:text-sm text-xl'>
+                
                 <div className='flex sm:hidden items-center mr-6'>
                 <button className='sm:hidden text-white m-0' >
                     <NavLink onClick={()=>setBarOpen(!isBarOpen)} to='/'>
@@ -20,8 +21,9 @@ const NavBar = () => {
                     </NavLink>
                 </button>
                 </div>
-                <h2>    
-                <NavLink to='/' className="  link-light text-decoration-none items-center sm:mr-auto mr-8 sm:ml-auto ml-8 p-1">TeamsConnect</NavLink>
+                <h2 className='flex'>    
+                
+                <NavLink to='/' className="  link-light text-decoration-none items-center sm:mr-auto mr-8 sm:ml-auto ml-8 p-1"> TeamsConnect</NavLink>
                 </h2>
                 {user && <span className='text-warning sm:block hidden'>Logged in as {user?.name}</span>}
                 <Nav>
