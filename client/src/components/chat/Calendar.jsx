@@ -8,7 +8,6 @@ import "material-icons/iconfont/material-icons.css";
 import "material-icons/iconfont/material-icons.css";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import TimeZoneSelect from "react-timezone-select";
-import TimeZoneSelect from "react-timezone-select";
 import ReminderIcon from "@mui/icons-material/Notifications";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import EventNoteIcon from "@mui/icons-material/EventNote"; // Icon for Scheduled Meetings
