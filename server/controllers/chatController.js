@@ -68,7 +68,7 @@ const findUserChats = (req, res) => {
 
     // Use a LIKE query to find chats where the user is part of the members list
     const findUserChatsQuery = `
-        SELECT id, members, created_at, updated_at
+        SELECT id, members, created_at
         FROM chat
         WHERE members LIKE ? OR members LIKE ?
     `;
@@ -101,7 +101,7 @@ const findChat = (req, res) => {
 
     // Check if the chat exists with members in either order
     const findChatQuery = `
-        SELECT id, members, created_at, updated_at
+        SELECT id, members, created_at
         FROM chat
         WHERE members = ? OR members = ?
     `;
