@@ -38,7 +38,7 @@ const io = new Server(app.listen(PORT, () => {
     console.log(`Server is running on port: ${PORT}`);
 }), {
     cors: {
-        origin: ["http://localhost:5173","http://192.168.90.184:5173"], 
+        origin: ["http://localhost:5173","http://192.168.90.184:5173","https://teamsconnect.netlify.app"], 
         methods: ["GET", "POST"]
     }
 });
