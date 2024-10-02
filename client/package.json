@@ -21,7 +21,7 @@
     "@radix-ui/react-select": "^2.1.1",
     "@radix-ui/react-slot": "^1.1.0",
     "@shadcn/ui": "^0.0.4",
-    "@zegocloud/zego-uikit-prebuilt": "^2.9.3",
+    "@zegocloud/zego-uikit-prebuilt": "^2.10.0",
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "class-variance-authority": "^0.7.0",
