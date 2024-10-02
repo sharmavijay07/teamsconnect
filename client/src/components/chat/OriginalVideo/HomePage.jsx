@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './Homepage.css'
-import { baseUrl } from "@/utils/services";
 
 const HomePage = () => {
     const [roomId,setRoomId] = useState()
@@ -18,7 +17,7 @@ const HomePage = () => {
             alert('Please generate roomId')
             return;
         }
-        navigate(`${baseUrl}/room/${roomId}?type=one-one`)
+        navigate(`/room/${roomId}?type=one-one`)
     }
 
     const handleGroupCall = () => {
@@ -26,7 +25,7 @@ const HomePage = () => {
             alert('Please generate roomId')
             return;
         }
-        navigate(`${baseUrl}/room/${roomId}?type=group`)
+        navigate(`/room/${roomId}?type=group`)
     }
     return ( 
         <div className="homepage-container">
