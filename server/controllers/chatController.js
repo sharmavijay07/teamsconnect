@@ -9,8 +9,8 @@ const createChat = (req, res) => {
     const members2 = JSON.stringify([secondId, firstId]);
 
     const existingChatQuery = `
-        SELECT * FROM chat
-        WHERE JSON_CONTAINS(members, ?) OR JSON_CONTAINS(members, ?)
+       SELECT * FROM chat
+        WHERE members = ? OR members = ?
     `;
 
     db.query(existingChatQuery, [members1, members2], (err, existingChatResult) => {
