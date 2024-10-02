@@ -9,8 +9,8 @@ const createChat = (req, res) => {
     const members2 = JSON.stringify([secondId, firstId]);
 
     const existingChatQuery = `
-       SELECT * FROM chat
-        WHERE members = ? OR members = ?
+        SELECT * FROM chat
+        WHERE members OR JSON_CONTAINS(members, ?)
     `;
 
     db.query(existingChatQuery, [members1, members2], (err, existingChatResult) => {
@@ -27,8 +27,8 @@ const createChat = (req, res) => {
         } else {
             const newMembers = JSON.stringify([firstId, secondId]);
             const newChatQuery = `
-                INSERT INTO chat (members, created_at)
-                VALUES (?, CURRENT_TIMESTAMP)
+                INSERT INTO chat (members, created_at, updated_at)
+                VALUES (?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
             `;
             
             db.query(newChatQuery, [newMembers], (err, newChatResult) => {
