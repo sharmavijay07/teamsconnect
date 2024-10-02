@@ -27,8 +27,8 @@ const createChat = (req, res) => {
         } else {
             const newMembers = JSON.stringify([firstId, secondId]);
             const newChatQuery = `
-                INSERT INTO chat (members, created_at, updated_at)
-                VALUES (?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+                INSERT INTO chat (members, created_at)
+                VALUES (?, CURRENT_TIMESTAMP)
             `;
             
             db.query(newChatQuery, [newMembers], (err, newChatResult) => {
