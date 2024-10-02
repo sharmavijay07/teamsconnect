@@ -602,8 +602,7 @@ const CalendarComponent = () => {
           </select>
           <button
             onClick={handleAddParticipant}
-            className="bg-green-500 text-white rounded p-1"
-          >
+            className="bg-green-500 text-white rounded p-1"          >
             Add Participant
           </button>
         </div>
