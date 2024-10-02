@@ -33,7 +33,7 @@ export const ChatContextProvider = ({children,user}) => {
  useEffect(() => {
    if (!userId) return;
 
-   const newSocket = io(`http://localhost:4500`);
+   const newSocket = io(`${filebaseUrl}`);
    setSocket(newSocket);
 
    return () => {
