@@ -4,9 +4,9 @@ const createChat = (req, res) => {
     const { firstId, secondId } = req.body;
     console.log("Request to create chat with:", { firstId, secondId });
 
-    // Prepare JSON stringified member arrays
-    const members1 = JSON.stringify([firstId, secondId]);
-    const members2 = JSON.stringify([secondId, firstId]);
+    // Prepare text member arrays
+    const members1 = `[${firstId},${secondId}]`;
+    const members2 = `[${secondId},${firstId}]`;
 
     const existingChatQuery = `
        SELECT * FROM chat
@@ -25,7 +25,7 @@ const createChat = (req, res) => {
             console.log("Chat already exists with id:", existingChatResult[0].id);
             return res.status(200).json(existingChatResult[0]); // Return the complete existing chat object
         } else {
-            const newMembers = JSON.stringify([firstId, secondId]);
+            const newMembers = `[${firstId},${secondId}]`;
             const newChatQuery = `
                 INSERT INTO chat (members, created_at)
                 VALUES (?, CURRENT_TIMESTAMP)
@@ -60,7 +60,6 @@ const createChat = (req, res) => {
         }
     });
 };
-
 
 const findUserChats = (req, res) => {
     const { userId } = req.params;
