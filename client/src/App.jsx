@@ -15,8 +15,6 @@ import UserGroups from './components/chat/UserGroups'
 import Profile from './components/profile/Profile'
 import {useState} from 'react'
 import { ToastContainer } from 'react-toastify';
-import Videohome from './components/video/videohome'
-import Sign from './components/video/sign'
 import VoiceRecorder from './components/Voice_message/Voice_messages'
 import Room from './components/chat/OriginalVideo/Room'
 import HomePage from './components/chat/OriginalVideo/HomePage'
@@ -54,12 +52,9 @@ function App() {
       {/* <Route path="/grouppage" element={<GroupPage />} /> */}
       <Route path="/usergroups" element={<UserGroups />} />
       <Route path="/profile" element={<Profile />} />
-      <Route path="/videohome" element={<Videohome />} />
-      <Route path="/videohome/:meetingId/:uid" element={<Videohome />} />
 
       <Route path="/voice_message" element={<VoiceRecorder/>}/>
       {/* <Route path="/videohome" element={<Video />} /> */}
-      <Route path="/sign" element={<Sign />} />
       <Route path="/video" element={<HomePage />} />
       <Route path="/room/:roomId" element={<Room />} />
       <Route path="/audio" element={< Audiohome/>} />
