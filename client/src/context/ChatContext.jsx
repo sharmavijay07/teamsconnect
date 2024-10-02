@@ -124,8 +124,11 @@ const selectGroup = async (groupId) => {
         if(socket === null) return
         
     
-        const recipientId = currentChat?.members.find(id => id!=user?.id)
-        console.log("recipient after message",recipientId)
+        // const recipientId = currentChat?.members.find(id => id!=user?.id)
+        const membersArray = typeof currentChat?.members === "string" ? JSON.parse(currentChat.members) : currentChat?.members;
+    
+    const recipientId = membersArray?.find(id => id != user?.id);
+        // console.log("recipient after message",recipientId)
 
         socket.emit("sendMessage",{...newMessage,recipientId})
     },[newMessage])

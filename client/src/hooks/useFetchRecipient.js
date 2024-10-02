@@ -7,8 +7,12 @@ export const useFetchRecipientUser = (chat,user) => {
     
         
         
-    
-    const recipientId = chat?.members.find((id) =>id!=user?.id)
+    // console.log('chat in useFetch',chat,user.id)
+
+    // const recipientId = chat?.members.find((id) =>id!=user?.id)
+    const membersArray = typeof chat?.members === "string" ? JSON.parse(chat.members) : chat?.members;
+    const recipientId = membersArray?.find((id) => id != user?.id);
+
     // console.log("recipient id in useFetch",recipientId)
     useEffect(() => {
         const getUser = async() => {
