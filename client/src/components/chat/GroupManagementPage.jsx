@@ -12,7 +12,7 @@ import UserGroups from './UserGroups';
 const GroupManagementPage = () => {
   const [currentGroupId, setCurrentGroupId] = useState(null);
   const {setOrganizationId,organizationId} = useContext(ChatContext)
-  console.log("organization",organizationId)
+  // console.log("organization",organizationId)
   
 
   const handleGroupCreated = (group) => {

@@ -4,6 +4,8 @@ import {NavLink} from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext';
 import { Content } from '@radix-ui/react-dialog';
 import { Sidebar } from 'lucide-react';
+import IdleTracker from './IdleTracker';
+import { BsPersonBadge, BsPersonCircle } from 'react-icons/bs';
 
 const NavBar = () => {
     const {user,logoutUser,setBarOpen,isBarOpen} = useContext(AuthContext)
@@ -11,6 +13,7 @@ const NavBar = () => {
     return ( 
         <div  className='  h-[5vh] sm:w-full w-auto sm:flex flex sm:justify-between justify-around items-center uppercase  gap-8 px-3 py-3 bg-black'>
             <div className='flex sm:w-screen  w-fit justify-between items-center sm:p-2 p-3 sm:text-nowrap text-nowrap sm:text-sm text-xl'>
+                
                 <div className='flex sm:hidden items-center mr-6'>
                 <button className='sm:hidden text-white m-0' >
                     <NavLink onClick={()=>setBarOpen(!isBarOpen)} to='/'>
@@ -20,8 +23,9 @@ const NavBar = () => {
                     </NavLink>
                 </button>
                 </div>
-                <h2>    
-                <NavLink to='/' className="  link-light text-decoration-none items-center sm:mr-auto mr-8 sm:ml-auto ml-8 p-1">TeamsConnect</NavLink>
+                <h2 className='flex'>    
+                
+                <NavLink to='/' className="  link-light text-decoration-none items-center sm:mr-auto mr-8 sm:ml-auto ml-8 p-1"> TeamsConnect</NavLink>
                 </h2>
                 {user && <span className='text-warning sm:block hidden'>Logged in as {user?.name}</span>}
                 <Nav>
@@ -29,9 +33,10 @@ const NavBar = () => {
                     {
                         user && (
                         <div className='flex sm:flex-row flex-col  sm:items-center items-end sm-right-auto right-0 justify-around mr-5 p-2 gap-3'>
-                             <NavLink to='/profile' className="flex items-center justify-center p-2  ml-[7vw] sm:mr-auto mr-0 w-[25px] h-[20px] bg-gray-300 rounded-full overflow-hidden">
-                         <span class="material-symbols-outlined">
+                             <NavLink to='/profile' className="flex items-center justify-center ml-[7vw] sm:mr-auto mr-0 w-[25px] h-[25px] bg-white rounded-full overflow-hidden">
+                         <BsPersonCircle>
                             person
+                            
                             </span>
                         </NavLink>
 

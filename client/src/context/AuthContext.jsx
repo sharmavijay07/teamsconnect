@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useState,useRef } fr
 import { baseUrl, postRequest } from "../utils/services";
 import axios from "axios";
 import { ChatContext } from "./ChatContext"; // Ensure this is being correctly imported
+import { ConstructionTwoTone } from "@mui/icons-material";
 
 export const AuthContext = createContext();
 
@@ -11,6 +12,7 @@ export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   let [meetingId, setMeetingId] = useState('');
   const [isBarOpen,setBarOpen] = useState(true)
+  const [isRightBarOpen,setRightBarOpen] = useState(false)
 
 
      
@@ -218,7 +220,9 @@ const audioChunksRef = useRef([]);
         meetingId,
         createMeetingId,
         isBarOpen,
-        setBarOpen
+        setBarOpen,
+        isRightBarOpen,
+        setRightBarOpen,
         
       }}
     >

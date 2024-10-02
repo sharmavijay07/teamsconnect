@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ChatContext } from "../context/ChatContext";
 import { Container } from "react-bootstrap";
 import UserChat from "../components/chat/UserChat";
@@ -11,12 +11,16 @@ import Group from "@/components/chat/Group";
 import Calendar from "@/components/chat/Calendar";
 import GroupManagementPage from "@/components/chat/GroupManagementPage";
 import Video from "@/components/video/Video";
+import HomePage from "@/components/chat/OriginalVideo/HomePage";
+import { PurposeContext } from "@/context/PurposeContext";
 // import '../components/chat/mobile/mobile.jsx'
 
 const Chat = () => {
-    const { user } = useContext(AuthContext);
-    const { userChats, isUserChatsLoading, updateCurrentChat } = useContext(ChatContext);
-    const [activeSection, setActiveSection] = useState("chat"); // State to track active section
+    const { user ,isRightBarOpen} = useContext(AuthContext);
+    const { isUserChatsLoading, userChats } = useContext(ChatContext);
+    const {updateCurrentChat} = useContext(ChatContext)
+    const {activeSection,setActiveSection} = useContext(PurposeContext)
+    
 
     return (
         <div className="w-screen bg-blue-300 h-screen">
@@ -63,14 +67,18 @@ const Chat = () => {
                                 )}
                                 {activeSection === "group" && <Group />}
                                 {activeSection === "calendar" && <Calendar />}
+                                {activeSection === "video" && <HomePage />}
                                 {/* Add more sections as needed */}
                             </div>
 
                             {/* Right div only for non-video sessions */}
-                            <div className="hidden sm:block  right-div basis-[20%] border-l-2 border-black">
+                            <div 
+                            className={isRightBarOpen?"hidden sm:block  right-div basis-[20%] border-l-2 border-black":
+                                "   right-div basis-[20%] border-l-2 border-black"
+                             }>
                                 {activeSection === "chat" && (
                                     <>
-                                        <div className="flex flex-col gap-2">
+                                        <div className="flex flex-col gap-2 ">
                                             <PotentialChats />
                                             {isUserChatsLoading && <p>Loading chats....</p>}
                                             {userChats?.map((chat, index) => (

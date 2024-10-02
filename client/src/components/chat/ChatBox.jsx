@@ -48,10 +48,11 @@ const ChatBox = () => {
 
   const { user, setFileChatId, file } = useContext(AuthContext);
   // console.log('file is',file)
-  const { messages, isMessagesLoading, isUserChatsLoading } =
-    useContext(ChatContext);
+  // const { messages, isMessagesLoading, isUserChatsLoading } =
+  //   useContext(ChatContext);
+  
   const { currentChat, sendTextMessage } = useContext(ChatContext);
-  const { userChats } = useContext(ChatContext);
+  const { userChats ,isMessagesLoading} = useContext(ChatContext);
   const { recipientUser } = useFetchRecipientUser(currentChat, user);
   const [textMessage, setTextMessage] = useState("");
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -80,9 +81,9 @@ const ChatBox = () => {
   const scroll = useRef();
 
   // Scroll to bottom when new messages arrive
-  useEffect(() => {
-    scroll.current?.scrollIntoView();
-  }, [messages]);
+  // useEffect(() => {
+  //   scroll.current?.scrollIntoView();
+  // }, [messages]);
 
   useEffect(() => {
     if (currentChat) {
@@ -330,6 +331,13 @@ const ChatBox = () => {
                   "
             style={{ color: "black" }}
           >
+            <div className=" rounded bottom-0 mb-12 ml-2  absolute z-50 bg-slate-500/50 ">
+              <button className="p-1 text-sky-600"  onClick={scrollToBottom}>
+                <span class="material-symbols-outlined">
+                  keyboard_double_arrow_down
+                </span>
+              </button>
+            </div>
             {/* <FileDisplay /> */}
             {combinedMessages &&
               combinedMessages?.map((message, index) => (

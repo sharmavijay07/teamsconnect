@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
+import 'react-calendar/dist/Calendar.css';
+import './CalendarStyles.css';
 import Modal from "react-modal";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { gapi } from "gapi-script";
@@ -59,6 +60,10 @@ const CalendarComponent = () => {
         gapi.client.init({
           clientId: "YOUR_CLIENT_ID",
           scope: "https://www.googleapis.com/auth/calendar",
+        }).then(() => {
+          console.log("Google API initialized successfully.");
+        }).catch((error) => {
+          console.error("Error initializing Google API:", error);
         });
       });
     };
@@ -452,83 +457,154 @@ const CalendarComponent = () => {
       </DragDropContext>
 
       <Modal isOpen={isOpen} onRequestClose={handleCloseModal}>
-        <h2>{currentEvent ? "Edit Meeting" : "Schedule Meeting"}</h2>
-        <div className="modal-inputs">
-          <input
-            type="text"
-            placeholder="Meeting Title"
-            value={eventInput}
-            onChange={(e) => setEventInput(e.target.value)}
-          />
-          <textarea
-            placeholder="Description"
-            value={eventDescription}
-            onChange={(e) => setEventDescription(e.target.value)}
-          />
-          <input
-            type="time"
-            value={eventStartTime}
-            onChange={(e) => setEventStartTime(e.target.value)}
-          />
-          <input
-            type="time"
-            value={eventEndTime}
-            onChange={(e) => setEventEndTime(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Participants (comma separated)"
-            value={eventParticipants}
-            onChange={(e) => setEventParticipants(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Meeting Link"
-            value={eventLink}
-            onChange={(e) => setEventLink(e.target.value)}
-          />
-          <select
-            value={eventRecurrence}
-            onChange={(e) => setEventRecurrence(e.target.value)}
-          >
-            <option value="none">No Recurrence</option>
-            <option value="daily">Daily</option>
-            <option value="weekly">Weekly</option>
-            <option value="monthly">Monthly</option>
-          </select>
-          <textarea
-            placeholder="Agenda"
-            value={eventAgenda}
-            onChange={(e) => setEventAgenda(e.target.value)}
-          />
-          <textarea
-            placeholder="Notes"
-            value={eventNotes}
-            onChange={(e) => setEventNotes(e.target.value)}
-          />
-          <input type="file" multiple onChange={handleFileChange} />
-          <TimeZoneSelect
-            value={eventTimeZone}
-            onChange={(timezone) => setEventTimeZone(timezone.value)}
-            className="timezone-select"
-          />
-          <input
-            type="time"
-            placeholder="Reminder Time"
-            value={reminderTime}
-            onChange={(e) => setReminderTime(e.target.value)}
-          />
-        </div>
-        <div className="modal-actions">
-          <button
-            onClick={currentEvent ? handleEditEvent : handleAddEvent}
-            className="bg-green-500/50"
-          >
-            {currentEvent ? "Update Meeting" : "Schedule Meeting"}
-          </button>
-          <button onClick={handleCloseModal} className="bg-red-500/60">
-            Close
-          </button>
+        <div className="modal-container">
+          <h2 className="modal-title">
+            {currentEvent ? "Edit Meeting" : "Schedule Meeting"}
+          </h2>
+          <div className="modal-inputs space-y-4">
+            {/* Meeting Title */}
+            <div>
+              <label className="block font-medium">Meeting Title</label>
+              <input
+                type="text"
+                placeholder="Enter meeting title"
+                value={eventInput}
+                onChange={(e) => setEventInput(e.target.value)}
+                className="input-field"
+              />
+            </div>
+
+            {/* Description */}
+            <div>
+              <label className="block font-medium">Description</label>
+              <textarea
+                placeholder="Enter meeting description"
+                value={eventDescription}
+                onChange={(e) => setEventDescription(e.target.value)}
+                className="input-field"
+              />
+            </div>
+
+            {/* Start and End Time */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block font-medium">Start Time</label>
+                <input
+                  type="time"
+                  value={eventStartTime}
+                  onChange={(e) => setEventStartTime(e.target.value)}
+                  className="input-field"
+                />
+              </div>
+              <div>
+                <label className="block font-medium">End Time</label>
+                <input
+                  type="time"
+                  value={eventEndTime}
+                  onChange={(e) => setEventEndTime(e.target.value)}
+                  className="input-field"
+                />
+              </div>
+            </div>
+
+            {/* Participants */}
+            <div>
+              <label className="block font-medium">Participants</label>
+              <input
+                type="text"
+                placeholder="Enter participants (comma separated)"
+                value={eventParticipants}
+                onChange={(e) => setEventParticipants(e.target.value)}
+                className="input-field"
+              />
+            </div>
+
+            {/* Meeting Link */}
+            <div>
+              <label className="block font-medium">Meeting Link</label>
+              <input
+                type="text"
+                placeholder="Enter meeting link"
+                value={eventLink}
+                onChange={(e) => setEventLink(e.target.value)}
+                className="input-field"
+              />
+            </div>
+
+            {/* Recurrence */}
+            <div>
+              <label className="block font-medium">Recurrence</label>
+              <select
+                value={eventRecurrence}
+                onChange={(e) => setEventRecurrence(e.target.value)}
+                className="input-field"
+              >
+                <option value="none">No Recurrence</option>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+              </select>
+            </div>
+
+            {/* Notes */}
+            <div>
+              <label className="block font-medium">Notes</label>
+              <textarea
+                placeholder="Enter additional notes"
+                value={eventNotes}
+                onChange={(e) => setEventNotes(e.target.value)}
+                className="input-field"
+              />
+            </div>
+
+            {/* File Upload */}
+            <div>
+              <label className="block font-medium">Attach Files</label>
+              <input
+                type="file"
+                multiple
+                onChange={handleFileChange}
+                className="input-field"
+              />
+            </div>
+
+            {/* Timezone */}
+            <div>
+              <label className="block font-medium">Time Zone</label>
+              <TimeZoneSelect
+                value={eventTimeZone}
+                onChange={(timezone) => setEventTimeZone(timezone.value)}
+                className="input-field"
+              />
+            </div>
+
+            {/* Reminder Time */}
+            <div>
+              <label className="block font-medium">Reminder Time</label>
+              <input
+                type="time"
+                placeholder="Set reminder time"
+                value={reminderTime}
+                onChange={(e) => setReminderTime(e.target.value)}
+                className="input-field"
+              />
+            </div>
+          </div>
+
+          <div className="modal-actions mt-6 space-x-4">
+            <button
+              onClick={currentEvent ? handleEditEvent : handleAddEvent}
+              className="bg-green-500/80 hover:bg-green-600 text-white px-4 py-2 rounded-md"
+            >
+              {currentEvent ? 'Update Meeting' : 'Schedule Meeting'}
+            </button>
+            <button
+              onClick={handleCloseModal}
+              className="bg-red-500/80 hover:bg-red-600 text-white px-4 py-2 rounded-md"
+            >
+              Close
+            </button>
+          </div>
         </div>
       </Modal>
 
@@ -573,7 +649,7 @@ const CalendarComponent = () => {
               <div>
                 <span>{participant.name}:</span>
                 <span>
-                  {participant.status === "free" ? "🟢 Free" : "🔴 Busy"}
+                  {participant.status === "free" ? "🟢 Online" : "🔴 Offline"}
                 </span>
               </div>
               <button
@@ -597,8 +673,8 @@ const CalendarComponent = () => {
             value={newParticipantStatus}
             onChange={(e) => setNewParticipantStatus(e.target.value)}
           >
-            <option value="free">Free</option>
-            <option value="busy">Busy</option>
+            <option value="free">Online</option>
+            <option value="busy">Offline</option>
           </select>
           <button
             onClick={handleAddParticipant}

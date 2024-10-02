@@ -4,7 +4,8 @@ import { AuthContext } from "@/context/AuthContext";
 
 const PotentialChats = () => {
     const { user } = useContext(AuthContext);
-    const { potentialChats, createChat, onlineUsers } = useContext(ChatContext);
+    const { createChat, onlineUsers } = useContext(ChatContext);
+    const {potentialChats} = useContext(ChatContext)
     const [searchTerm, setSearchTerm] = useState("");
     const searchContainerRef = useRef(null);
 

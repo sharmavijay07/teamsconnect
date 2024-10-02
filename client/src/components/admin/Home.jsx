@@ -5,6 +5,7 @@ import
  import 
  { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } 
  from 'recharts';
+ import Profile from '../profile/Profile';
 
 function Home() {
 
@@ -55,28 +56,11 @@ function Home() {
 
   return (
     <main className='main-container'>
-      <button></button>
+      
       <h3>DASHBOARD</h3>
 
-      {/* Profile Section */}
-      <div className='profile-container flex justify-center items-center p-8'>
-        
 
-        {/* Profile Picture */}
-        <div className="w-40 h-40 mx-8 bg-gray-300 rounded-full shadow-xl border-2 border-gray-500" 
-          style={{
-            backgroundImage: `url(${/* Add your image URL here */ ''})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        >
-        </div>
-
-        <div className="flex flex-col items-start p-4 text-left">
-          <h1 className="text-4xl font-bold">Sarang</h1>
-          <p className="text-lg text-gray-600">shantanu@gmail.com</p>
-        </div>
-      </div>
+      
 
       {/* Main cards */}
       <div className='main-cards'>

@@ -13,6 +13,7 @@ const messageRoute = require('./routes/messageRoute');
 const uploadRoute = require('./routes/uploadRoute'); // Add this line
 const videoRoute = require('./routes/videoRoute')
 const voiceRoute = require('./routes/voiceUploadRoute')
+const meetingRoute = require('./routes/meetingRoute')
 
 app.use(express.json());
 app.use(cors());
@@ -24,6 +25,7 @@ app.use('/api/messages', messageRoute);
 app.use('/api/upload', uploadRoute); // Ensure this line is included to use the upload route
 app.use('/api/upload-voice',voiceRoute)
 app.use('/api/video',videoRoute)
+app.use('/api/meeting',meetingRoute)
 
 app.get('/', (req, res) => {
     res.send("Welcome to our chat app APIs");
@@ -68,6 +70,7 @@ function getCurrDateTime() {
 
 io.on("connection", (socket) => {
     console.log("new connection", socket.id);
+
 
     // Listen for a new user
     socket.on("addNewUser", (userId) => {
@@ -261,3 +264,4 @@ io.on("connection", (socket) => {
     });
 
 });
+
